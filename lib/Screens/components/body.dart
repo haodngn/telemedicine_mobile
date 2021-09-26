@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:telemedicine_mobile/Screens/components/background.dart';
+import 'package:telemedicine_mobile/components/facebook_button.dart';
 import 'package:telemedicine_mobile/components/google_button.dart';
 
 class Body extends StatelessWidget {
@@ -15,8 +16,8 @@ class Body extends StatelessWidget {
           "assets/icons/covid-19.svg",
           height: size.height * 0.5,
         ),
+        FacebookButton(),
         GoogleButton(),
-        // FacebookButton(),
       ],
     ));
   }

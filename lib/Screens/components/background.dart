@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-//background of the login Screen
 
+//background of the login Screen
 class Background extends StatelessWidget {
   final Widget child;
   const Background({
     Key? key,
     required this.child,
   }) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,7 @@ class Background extends StatelessWidget {
         children: <Widget>[
           Positioned(
             top: -50, // set on top of screen
-            child:Image.asset(
+            child: Image.asset(
               "assets/images/login_top.png", //add picture
               width: size.width * 1.5, // size of picture
             ),
@@ -29,7 +28,7 @@ class Background extends StatelessWidget {
             bottom: 0,
             child: Image.asset(
               "assets/images/login_bottom.png", //add picture
-              width: size.width *1.1, // size of picture
+              width: size.width * 1.1, // size of picture
             ),
           ),
           child,

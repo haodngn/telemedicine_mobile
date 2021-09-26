@@ -1,22 +1,28 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:telemedicine_mobile/Screens/home_screen.dart';
 
-class GoogleSignInController with ChangeNotifier{
+class GoogleSignInController with ChangeNotifier {
   var _googleSignIn = GoogleSignIn();
-  GoogleSignInAccount? googleAccount;
+  GoogleSignInAccount? _user;
+  GoogleSignInAccount get user => _user!;
 
-  login() async {
-    this.googleAccount =await _googleSignIn.signIn();
+  Future googleLogin() async {
+    final googleUser = await _googleSignIn.signIn();
+    if (googleUser == null) return;
+    _user = googleUser;
+    final googleAuth = await googleUser.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+    await FirebaseAuth.instance.signInWithCredential(credential);
     notifyListeners();
-    // Navigator.push(context, MaterialPageRoute(builder: backtoHome));
   }
-  // Widget backtoHome(BuildContext context){
-  //   return HomeScreen();
-  // }
 
   logOut() async {
-    this.googleAccount =await _googleSignIn.signOut();
+    this._user = await _googleSignIn.signOut();
     notifyListeners();
   }
 }

@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:telemedicine_mobile/Screens/home_screen.dart';
-import 'package:telemedicine_mobile/controller/google_login_controller.dart';
+import 'package:telemedicine_mobile/controller/facebook_login_controller.dart';
 
-//button login with google
-
-class GoogleButton extends StatelessWidget {
-  const GoogleButton({
+class FacebookButton extends StatelessWidget {
+  const FacebookButton({
     Key? key,
   }) : super(key: key);
 
@@ -17,12 +14,12 @@ class GoogleButton extends StatelessWidget {
     return Container(
       child: GestureDetector(
         child: Image.asset(
-          "assets/images/google.png",
-          width: 250,
+          "assets/images/facebook.png",
+          width: 240,
         ),
         onTap: () {
-          Provider.of<GoogleSignInController>(context, listen: false)
-              .googleLogin();
+          Provider.of<FacebookSignInController>(context, listen: false)
+              .facebookLogin();
           Navigator.push(context, MaterialPageRoute(builder: backtoHome));
         },
       ),
