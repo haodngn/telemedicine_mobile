@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:telemedicine_mobile/Screens/test_screen.dart';
+import 'package:telemedicine_mobile/Screens/components/loading.dart';
 import 'controller/facebook_login_controller.dart';
 import 'controller/google_login_controller.dart';
 import 'package:telemedicine_mobile/Screens/login_screen.dart';
@@ -19,11 +19,11 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => GoogleSignInController(),
-          child: TestScreen(),
+          child: LoadingIcon(),
         ),
         ChangeNotifierProvider(
           create: (context) => FacebookSignInController(),
-          child: LoginScreen(),
+          child: LoadingIcon(),
         ),
       ],
       child: MaterialApp(

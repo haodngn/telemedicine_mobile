@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:telemedicine_mobile/Screens/home_screen.dart';
+import 'package:telemedicine_mobile/Screens/components/check_login.dart';
 import 'package:telemedicine_mobile/controller/google_login_controller.dart';
 
 //button login with google
@@ -23,13 +23,13 @@ class GoogleButton extends StatelessWidget {
         onTap: () {
           Provider.of<GoogleSignInController>(context, listen: false)
               .googleLogin();
-          Navigator.push(context, MaterialPageRoute(builder: backtoHome));
+          Navigator.push(context, MaterialPageRoute(builder: checkLoginGoogle));
         },
       ),
     );
   }
 
-  Widget backtoHome(BuildContext context) {
-    return HomeScreen();
+  Widget checkLoginGoogle(BuildContext context) {
+    return CheckLogin();
   }
 }
