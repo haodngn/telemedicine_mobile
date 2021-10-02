@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:telemedicine_mobile/Screens/home_screen.dart';
 import 'package:telemedicine_mobile/Screens/list_doctor_screen.dart';
-import 'package:telemedicine_mobile/Screens/profile_screen.dart';
+import 'package:telemedicine_mobile/Screens/patient_profile_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -15,7 +15,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   final screens = [
     HomeScreen(),
     ListDoctorScreen(),
-    ProfileScreen(),
+    PatientProfile(),
   ];
   @override
   Widget build(BuildContext context) => Scaffold(
