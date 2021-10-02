@@ -36,6 +36,7 @@ dependencies:
   bubble: ^1.1.9+1
   geolocator: ^7.6.0
   geocoder: ^0.2.1
+  http: ^0.13.3
 
   #Icon
   font_awesome_flutter: ^9.0.0

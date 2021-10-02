@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
+import 'package:telemedicine_mobile/controller/address_controller.dart';
+import 'package:telemedicine_mobile/models/City.dart';
 
 class UserInformation extends StatefulWidget {
   const UserInformation({Key? key}) : super(key: key);
@@ -19,9 +19,26 @@ class _UserInformationState extends State<UserInformation> {
   TextEditingController textCityController = TextEditingController();
   TextEditingController textPostalCodeController = TextEditingController();
 
+  List<City> cityData = [];
+
   @override
   void initState() {
     super.initState();
+    GetAddress.fetchCities().then((dataFromServer) {
+      setState(() {
+        cityData = dataFromServer;
+      });
+    });
+  }
+
+  void testAPI() {
+    print("sssssssss: " + cityData.length.toString());
+    GetAddress.fetchCities().then((dataFromServer) {
+      setState(() {
+        cityData = dataFromServer;
+      });
+    });
+    print("acaca: " + cityData.length.toString());
   }
 
   var selectedRadio;
@@ -319,7 +336,7 @@ class _UserInformationState extends State<UserInformation> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(8)),
                       ),
-                      onPressed: () => Get.to(BottomNavScreen()),
+                      onPressed: () => testAPI(),
                       child: Text(
                         "Done",
                         style: TextStyle(
