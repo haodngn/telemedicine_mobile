@@ -65,9 +65,6 @@ class _FilterScreenState extends State<FilterScreen> {
     final position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
     print(position.latitude);
-    // setState(() {
-    //   myLocation = position.toString();
-    // });
   }
 
   String myAddress = "";

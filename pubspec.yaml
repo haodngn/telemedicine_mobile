@@ -37,6 +37,7 @@ dependencies:
   geolocator: ^7.6.0
   geocoder: ^0.2.1
   http: ^0.13.3
+  progress_indicators: ^1.0.0
 
   #Icon
   font_awesome_flutter: ^9.0.0

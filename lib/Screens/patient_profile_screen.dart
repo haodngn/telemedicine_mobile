@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:telemedicine_mobile/Screens/edit_patient_profile_screen.dart';
 import 'package:telemedicine_mobile/Screens/login_screen.dart';
+import 'package:telemedicine_mobile/constant.dart';
 
 class PatientProfile extends StatefulWidget {
   const PatientProfile({Key? key}) : super(key: key);
@@ -60,7 +61,7 @@ class _PatientProfileState extends State<PatientProfile> {
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.white, width: 5),
                           shape: BoxShape.circle,
-                          color: Colors.white,
+                          color: kBackgroundColor,
                           image: DecorationImage(
                             image:
                                 AssetImage('assets/images/default_avatar.png'),
@@ -105,7 +106,7 @@ class _PatientProfileState extends State<PatientProfile> {
                         Container(
                           height: 50,
                           decoration: BoxDecoration(
-                            color: Colors.grey.shade300,
+                            color: kBlueColor,
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Row(
@@ -114,13 +115,14 @@ class _PatientProfileState extends State<PatientProfile> {
                               Padding(
                                 padding:
                                     const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                child: Icon(Icons.person),
+                                child: Icon(Icons.person, color: kWhiteColor,),
                               ),
                               Text(
                                 "My Account",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 22,
+                                  color: kWhiteColor,
                                 ),
                               ),
                               SizedBox(
@@ -135,6 +137,7 @@ class _PatientProfileState extends State<PatientProfile> {
                                 },
                                 child: Icon(
                                   Icons.edit,
+                                  color: kWhiteColor,
                                 ),
                               ),
                             ],
@@ -155,7 +158,8 @@ class _PatientProfileState extends State<PatientProfile> {
                         Container(
                           height: 50,
                           decoration: BoxDecoration(
-                            color: Colors.grey.shade300,
+                            color: kBlueColor,
+                            //Colors.grey.shade300,
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Row(
@@ -164,13 +168,14 @@ class _PatientProfileState extends State<PatientProfile> {
                               Padding(
                                 padding:
                                     const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                child: Icon(Icons.contact_support),
+                                child: Icon(Icons.contact_support, color: kWhiteColor,),
                               ),
                               Text(
                                 "General",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 22,
+                                  color: kWhiteColor,
                                 ),
                               ),
                             ],

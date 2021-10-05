@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:telemedicine_mobile/Screens/chatbot_screen.dart';
 import 'package:telemedicine_mobile/Screens/components/loading.dart';
 import 'package:telemedicine_mobile/Screens/form_after_login_screen.dart';
+import 'package:telemedicine_mobile/Screens/home_screen.dart';
 import 'controller/facebook_login_controller.dart';
 import 'controller/google_login_controller.dart';
 import 'package:telemedicine_mobile/Screens/login_screen.dart';
@@ -33,7 +35,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: UserInformation(),
+        home: LoginScreen(),
       ),
     );
   }

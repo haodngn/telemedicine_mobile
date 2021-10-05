@@ -1,25 +1,18 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
-import 'package:telemedicine_mobile/models/City.dart';
 import 'package:http/http.dart' as http;
+import 'package:telemedicine_mobile/models/Province.dart';
 
 class GetAddress {
-  static const String url = "https://provinces.open-api.vn/api/";
-
-  static List<City> parseAddress(String responseBody) {
-    var list = json.decode(responseBody) as List<dynamic>;
-    List<City> cities = list.map((model) => City.fromJSon(model)).toList();
-    return cities;
-  }
-
-  static Future<List<City>> fetchCities({int page = 1}) async {
-    final response = await http.get(Uri.parse("$url"));
+  static Future<List<Province>> fetchProvinces({int page = 1}) async {
+    final response = await http.get(Uri.parse("https://provinces.open-api.vn/api/?depth=3"), headers: {'Content-Type': 'application/json'});
     if(response.statusCode == 200) {
-      return compute(parseAddress, response.body);
+      var list = json.decode(utf8.decode(response.bodyBytes)) as List<dynamic>;
+      List<Province> provinces = list.map((e) => Province.fromJson(e)).toList();
+      return provinces;
     } else if(response.statusCode == 404) {
-      throw Exception("Not found aaaaaaaaaaaaa");
+      throw Exception("Not found");
     } else {
-      throw Exception("Can\'t get city");
+      throw Exception("Can\'t get province");
     }
   }
 }

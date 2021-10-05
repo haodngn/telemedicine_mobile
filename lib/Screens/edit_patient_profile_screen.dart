@@ -175,7 +175,6 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                           groupValue: selectedGender,
                           onChanged: (value) {
                             setSelectedGender(value);
-                            //setState(() {});
                           },
                         ),
                       ),
