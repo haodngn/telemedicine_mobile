@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:telemedicine_mobile/Screens/components/schedule.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,7 @@ class DetailScreen extends StatelessWidget {
                   children: <Widget>[
                     InkWell(
                       onTap: () {
-                        Navigator.pop(context);
+                        Get.back();
                       },
                       child: SvgPicture.asset(
                         'assets/icons/back.svg',

@@ -32,6 +32,12 @@ dependencies:
   provider: ^5.0.0
   consumer: ^2.3.0
   flutter_svg: ^0.22.0
+  get: ^4.3.8
+  bubble: ^1.1.9+1
+  geolocator: ^7.6.0
+  geocoder: ^0.2.1
+  http: ^0.13.3
+  progress_indicators: ^1.0.0
 
   #Icon
   font_awesome_flutter: ^9.0.0

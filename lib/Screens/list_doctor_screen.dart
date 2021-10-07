@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:telemedicine_mobile/Screens/components/doctor.dart';
+import 'package:telemedicine_mobile/Screens/filter_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
 
 class ListDoctorScreen extends StatelessWidget {
@@ -14,27 +16,41 @@ class ListDoctorScreen extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
-                child: Text(
-                  'Top Doctors',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: kTitleTextColor,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              buildDoctorList(),
-            ],
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+          Padding(
+          padding: const EdgeInsets.fromLTRB(300, 20, 0, 20),
+          child: ElevatedButton(
+              onPressed: () => {
+              Get.to(FilterScreen(), transition:
+              Transition.downToUp,
+              duration: Duration(milliseconds: 600))
+
+          },
+          child: Icon(Icons.search),
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 30),
+        child: Text(
+          'Top Doctors',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: kTitleTextColor,
+            fontSize: 18,
           ),
         ),
       ),
+      SizedBox(
+        height: 20,
+      ),
+      buildDoctorList(),
+
+      ],
+    ),)
+    ,
+    )
+    ,
     );
   }
 
