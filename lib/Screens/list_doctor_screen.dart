@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:telemedicine_mobile/Screens/components/doctor.dart';
 import 'package:telemedicine_mobile/Screens/filter_screen.dart';
@@ -11,46 +12,52 @@ class ListDoctorScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("DOCTOR LIST LIST"),
         backgroundColor: kBlueColor,
+        automaticallyImplyLeading: false,
       ),
       backgroundColor: kBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-          Padding(
-          padding: const EdgeInsets.fromLTRB(300, 20, 0, 20),
-          child: ElevatedButton(
-              onPressed: () => {
-              Get.to(FilterScreen(), transition:
-              Transition.downToUp,
-              duration: Duration(milliseconds: 600))
-
-          },
-          child: Icon(Icons.search),
-        ),
-      ),
-      Padding(
-        padding: EdgeInsets.symmetric(horizontal: 30),
-        child: Text(
-          'Top Doctors',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: kTitleTextColor,
-            fontSize: 18,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(300, 0, 0, 0),
+                child: MaterialButton(
+                  onPressed: () => {
+                    Get.to(FilterScreen(),
+                        transition: Transition.downToUp,
+                        duration: Duration(milliseconds: 600))
+                  },
+                  color: kOrangeColor,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 1,
+                    vertical: 2,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: SvgPicture.asset('assets/icons/search.svg'),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30),
+                child: Text(
+                  'Top Doctors',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: kTitleTextColor,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              buildDoctorList(),
+            ],
           ),
         ),
       ),
-      SizedBox(
-        height: 20,
-      ),
-      buildDoctorList(),
-
-      ],
-    ),)
-    ,
-    )
-    ,
     );
   }
 

@@ -16,44 +16,18 @@ class DetailScreen extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/detail_illustration.png'),
-              alignment: Alignment.topCenter,
-              fit: BoxFit.fitWidth,
-            ),
-          ),
+          // width: double.infinity,
+          // decoration: BoxDecoration(
+          //   image: DecorationImage(
+          //     image: AssetImage('assets/images/detail_illustration.png'),
+          //     alignment: Alignment.topCenter,
+          //     fit: BoxFit.fitWidth,
+          //   ),
+          // ),
           child: Column(
             children: <Widget>[
               SizedBox(
                 height: 50,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 30,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    InkWell(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: SvgPicture.asset(
-                        'assets/icons/back.svg',
-                        height: 18,
-                      ),
-                    ),
-                    SvgPicture.asset(
-                      'assets/icons/3dots.svg',
-                      height: 18,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.24,
               ),
               Container(
                 width: double.infinity,

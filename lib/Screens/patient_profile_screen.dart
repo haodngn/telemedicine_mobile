@@ -135,9 +135,12 @@ class _PatientProfileState extends State<PatientProfile> {
                                           Transition.rightToLeftWithFade,
                                       duration: Duration(milliseconds: 600))
                                 },
-                                child: Icon(
-                                  Icons.edit,
-                                  color: kWhiteColor,
+                                child: Padding(
+                                  padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: kWhiteColor,
+                                  ),
                                 ),
                               ),
                             ],
