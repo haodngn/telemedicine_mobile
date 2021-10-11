@@ -13,7 +13,6 @@ class HomeScreen extends StatelessWidget {
           child: SingleChildScrollView(
         child: Text("Detail Home Screen"),
       )),
-      // bottomNavigationBar: BottomNavBar(),
     );
   }
 }

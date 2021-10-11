@@ -135,6 +135,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                                                         messagePatient: ans)),
                                                 chatbotcontroller
                                                     .nextQuestion(),
+                                                chatbotcontroller.accept.value = ans,
                                               },
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
@@ -292,7 +293,7 @@ class BoxChat extends StatelessWidget {
                   chatbotcontroller.listMessage.length >
                       chatbotcontroller.indexQuestion.value &&
                   chatbotcontroller.listChatbot.length - 1 >
-                      chatbotcontroller.indexQuestion.value
+                      chatbotcontroller.indexQuestion.value && chatbotcontroller.accept.value == "Đồng ý"
               ? Bubble(
                   radius: Radius.circular(15.0),
                   color: Colors.grey.shade200,
@@ -311,7 +312,7 @@ class BoxChat extends StatelessWidget {
                   chatbotcontroller.listMessage.length <
                       chatbotcontroller.listChatbot.length &&
                   chatbotcontroller.listMessage.length ==
-                      chatbotcontroller.indexQuestion.value
+                      chatbotcontroller.indexQuestion.value && chatbotcontroller.accept.value == "Đồng ý"
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -403,7 +404,7 @@ class BoxChat extends StatelessWidget {
                         children: <Widget>[
                           Flexible(
                             child: Text(
-                              "Cảm ơn.",
+                              "Cảm ơn bạn.",
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold),

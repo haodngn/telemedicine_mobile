@@ -1,3 +1,4 @@
+import 'package:expandable_text/expandable_text.dart';
 import 'package:get/get.dart';
 import 'package:telemedicine_mobile/Screens/components/schedule.dart';
 import 'package:telemedicine_mobile/constant.dart';
@@ -6,10 +7,22 @@ import 'package:flutter_svg/svg.dart';
 
 class DetailScreen extends StatelessWidget {
   var _name;
+  var _scopeOfPractice;
   var _description;
   var _imageUrl;
+  var majorDoctors;
+  var hospitalDoctors;
+  var certificationDoctors;
 
-  DetailScreen(this._name, this._description, this._imageUrl);
+  DetailScreen(
+    this._name,
+    this._scopeOfPractice,
+    this._description,
+    this._imageUrl,
+    this.majorDoctors,
+    this.hospitalDoctors,
+    this.certificationDoctors,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +40,7 @@ class DetailScreen extends StatelessWidget {
           child: Column(
             children: <Widget>[
               SizedBox(
-                height: 50,
+                height: 30,
               ),
               Padding(
                 padding: EdgeInsets.symmetric(
@@ -53,7 +66,7 @@ class DetailScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.24,
+                height: MediaQuery.of(context).size.height * 0.005,
               ),
               Container(
                 width: double.infinity,
@@ -70,9 +83,10 @@ class DetailScreen extends StatelessWidget {
                     children: <Widget>[
                       Row(
                         children: <Widget>[
-                          Image.asset(
+                          Image.network(
                             _imageUrl,
                             height: 120,
+                            width: 112,
                           ),
                           SizedBox(
                             width: 20,
@@ -91,10 +105,13 @@ class DetailScreen extends StatelessWidget {
                               SizedBox(
                                 height: 10,
                               ),
-                              Text(
-                                _description,
-                                style: TextStyle(
-                                  color: kTitleTextColor.withOpacity(0.7),
+                              Container(
+                                width: 200,
+                                child: Text(
+                                  _scopeOfPractice,
+                                  style: TextStyle(
+                                    color: kTitleTextColor.withOpacity(0.7),
+                                  ),
                                 ),
                               ),
                               SizedBox(
@@ -148,7 +165,7 @@ class DetailScreen extends StatelessWidget {
                         height: 50,
                       ),
                       Text(
-                        'About Doctor',
+                        'Thông tin bác sĩ',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -158,11 +175,51 @@ class DetailScreen extends StatelessWidget {
                       SizedBox(
                         height: 10,
                       ),
-                      Text(
-                        'Dr. Stella is the top most heart surgeon in Flower\nHospital. She has done over 100 successful sugeries\nwithin past 3 years. She has achieved several\nawards for her wonderful contribution in her own\nfield. She’s available for private consultation for\ngiven schedules.',
-                        style: TextStyle(
-                          height: 1.6,
-                          color: kTitleTextColor.withOpacity(0.7),
+                      Container(
+                        width: double.infinity,
+                        child: ExpandableText(
+                          "Công tác tại: " +
+                              hospitalDoctors
+                                  .map((hospitalD) {
+                                    return hospitalD.hospital.name;
+                                  })
+                                  .toList()
+                                  .toString()
+                                  .replaceAll("[", "")
+                                  .replaceAll("]", "") +
+                              "\nChuyên ngành: " +
+                              majorDoctors
+                                  .map((majorD) {
+                                    return majorD.major.name;
+                                  })
+                                  .toList()
+                                  .toString()
+                                  .replaceAll("[", "")
+                                  .replaceAll("]", "") +
+                              "\nChứng chỉ: " +
+                              certificationDoctors
+                                  .map((certificationD) {
+                                    return certificationD.certification.name;
+                                  })
+                                  .toList()
+                                  .toString()
+                                  .replaceAll("[", "")
+                                  .replaceAll("]", "") + "\nMô tả: " + certificationDoctors
+                              .map((certificationD) {
+                            return certificationD.certification.description;
+                          })
+                              .toList()
+                              .toString()
+                              .replaceAll("[", "")
+                              .replaceAll("]", ""),// + _description==null || _description.isEmpty ? "" : _description,
+                          style: TextStyle(
+                            height: 1.6,
+                            color: kTitleTextColor.withOpacity(0.7),
+                            fontSize: 16,
+                          ),
+                          maxLines: 6,
+                          collapseText: "Show less",
+                          expandText: "Show more",
                         ),
                       ),
                       SizedBox(
