@@ -93,11 +93,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-            child: Text(
-          "Notification",
-        )),
+        elevation: 8,
+        title: Text("Notification"),
+        centerTitle: true,
         backgroundColor: kBlueColor,
+        automaticallyImplyLeading: false,
       ),
       body: SafeArea(
         child: Container(

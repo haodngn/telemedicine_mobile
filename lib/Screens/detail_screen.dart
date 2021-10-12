@@ -85,6 +85,7 @@ class DetailScreen extends StatelessWidget {
                         children: <Widget>[
                           Image.network(
                             _imageUrl,
+                            errorBuilder: (context, error, stackTrace) => Image.asset("assets/images/default_avatar.png",height: 120, width: 112),
                             height: 120,
                             width: 112,
                           ),
