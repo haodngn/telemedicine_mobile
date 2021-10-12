@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:geocoder/geocoder.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:telemedicine_mobile/Screens/list_doctor_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
+import 'package:telemedicine_mobile/controller/filter_controller.dart';
 
 class FilterScreen extends StatefulWidget {
   @override
@@ -11,72 +12,14 @@ class FilterScreen extends StatefulWidget {
 }
 
 class _FilterScreenState extends State<FilterScreen> {
-  late DateTime dob = DateTime.now().subtract(Duration(days: 1));
+  final filterController = Get.put(FilterController());
 
-  Future pickDate(BuildContext context) async {
-    final initialDate = DateTime.now();
-    final newDate = await showDatePicker(
-        context: context,
-        initialDate: initialDate,
-        firstDate: DateTime(initialDate.year),
-        lastDate: DateTime(initialDate.year + 50));
-
-    if (newDate == null) return;
-
-    setState(() {
-      dob = newDate as DateTime;
-    });
-  }
-
-  List problemList = [
-    "Fever or chills",
-    "Cough",
-    "Shortness of breath or difficulty breathing",
-    "Fatigue",
-    "Muscle or body aches",
-    "Headache",
-    "New loss of taste or smell",
-    "Sore throat",
-    "Congestion or runny nose",
-    "Nausea or vomiting",
-    "Diarrhea",
-    "Other",
-  ];
-
-  String problemChoose = "Other";
-
-  List speciaLists = [
-    "Dermatologists",
-    "Infectious disease doctors",
-    "Ophthalmologists",
-    "Obstetrician/gynecologists",
-    "Cardiologists",
-    "Endocrinologists",
-    "Gastroenterologists",
-    "Other",
-  ];
-
-  String specialistChoose = "Other";
-
-  var myLocation = "";
-  bool searchByLocation = false;
-
-  void getMyLocation() async {
-    final position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-
-    print(position.latitude);
-  }
-
-  String myAddress = "";
-
-  void getMyAddress() async {
-    final coordinates = new Coordinates(12.982030, 77.593540);
-    var addresses =
-        await Geocoder.local.findAddressesFromCoordinates(coordinates);
-
-    setState(() {
-      myAddress = addresses.first.addressLine;
-    });
+  @override
+  void initState() {
+    super.initState();
+    filterController.getListTimeFrame();
+    filterController.getListSymptom();
+    filterController.getListMajor();
   }
 
   @override
@@ -101,244 +44,211 @@ class _FilterScreenState extends State<FilterScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: _titleContainer("Date"),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Align(
+        child: Obx(
+          () => Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Align(
                 alignment: Alignment.centerLeft,
-                child: Container(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 0, 20, 10),
-                    child: Stack(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(320, 8, 0, 0),
-                          child: Icon(
-                            Icons.calendar_today_rounded,
-                            size: 30,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        Container(
-                          width: double.infinity,
-                          child: OutlinedButton(
-                            onPressed: () => pickDate(context),
-                            child: Text(
-                              dob.year <= DateTime.now().year &&
-                                      dob.month <= DateTime.now().month &&
-                                      dob.day < DateTime.now().day
-                                  ? ""
-                                  : "${dob.day}/${dob.month}/${dob.year}",
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.black),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: _titleContainer("Time"),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Align(
-                alignment: Alignment.center,
-                child: Container(
-                    child: Wrap(
-                  spacing: 50.0,
-                  runSpacing: 3.0,
-                  children: <Widget>[
-                    filterChipWidget(chipName: '07:00 - 08:30'),
-                    filterChipWidget(chipName: '08:45 - 10:15'),
-                    filterChipWidget(chipName: '10:30 - 12:00'),
-                    filterChipWidget(chipName: '12:30 - 02:00'),
-                    filterChipWidget(chipName: '02:15 - 03:45'),
-                    filterChipWidget(chipName: '04:00 - 05:30'),
-                  ],
-                )),
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: _titleContainer("Problems"),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Align(
-                alignment: Alignment.center,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(50, 0, 50, 10),
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: Colors.grey, width: 1),
-                    ),
-                    child: DropdownButton(
-                      onChanged: (newValue) {
-                        setState(() {
-                          problemChoose = newValue.toString();
-                        });
-                      },
-                      value: problemChoose,
-                      isExpanded: true,
-                      items: problemList.map((valueItem) {
-                        return DropdownMenuItem(
-                          value: valueItem,
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                            child: Text(
-                              valueItem,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  //Color(0xff6200ee),
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: _titleContainer("Specialists"),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Align(
-                alignment: Alignment.center,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(50, 0, 50, 10),
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: Colors.grey, width: 1),
-                    ),
-                    child: DropdownButton(
-                      onChanged: (newValue) {
-                        setState(() {
-                          specialistChoose = newValue.toString();
-                        });
-                      },
-                      value: specialistChoose,
-                      isExpanded: true,
-                      items: speciaLists.map((valueItem) {
-                        return DropdownMenuItem(
-                          value: valueItem,
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                            child: Text(
-                              valueItem,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: _titleContainer("Find nearby"),
+                  child: _titleContainer("Date"),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 20),
-                  child: Transform.scale(
-                      scale: 0.8,
-                      child: CupertinoSwitch(
-                        activeColor: kBlueColor,
-                        value: searchByLocation,
-                        onChanged: (bool val) {
-                          setState(() {
-                            if (searchByLocation) {
-                              searchByLocation = false;
-                              setState(() {
-                                myAddress = "";
-                              });
-                            }
-                            else {
-                              searchByLocation = true;
-                              getMyAddress();
-                            }
-                          });
-                        },
-                      )),
-                )
-              ],
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(57, 0, 52, 0),
-                child: Container(
-                  width: 500,
-                  height: 60,
-                  child: myAddress.isEmpty
-                      ? Text("")
-                      : SingleChildScrollView(
-                          child: Text("Your address: " + myAddress, style: TextStyle(fontSize: 15),)),
-                )),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
-              child: Container(
-                height: 50,
-                width: 200,
-                child: ElevatedButton(
-                  onPressed: () => {getMyLocation()},
-                  style: ButtonStyle(
-                    elevation: MaterialStateProperty.all(6),
-                    backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
-                      if (states.contains(MaterialState.pressed))
-                        return Colors.white70;
-                      return kBlueColor; // Defer to the widget's default.
-                    }),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(40),
-                    )),
-                  ),
-                  child: Text(
-                    "Search",
-                    style: TextStyle(fontSize: 18),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(40, 0, 50, 10),
+                      child: Stack(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(260, 8, 0, 0),
+                            child: Icon(
+                              Icons.calendar_today_rounded,
+                              size: 30,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          Container(
+                            width: double.infinity,
+                            child: OutlinedButton(
+                              onPressed: () =>
+                                  filterController.pickDate(context),
+                              child: Text(
+                                filterController.dateSearch.value.year <=
+                                            DateTime.now().year &&
+                                        filterController
+                                                .dateSearch.value.month <=
+                                            DateTime.now().month &&
+                                        filterController.dateSearch.value.day <
+                                            DateTime.now().day
+                                    ? ""
+                                    : "${filterController.dateSearch.value.day}/${filterController.dateSearch.value.month}/${filterController.dateSearch.value.year}",
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.black),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: _titleContainer("Time"),
+                ),
+              ),
+              Wrap(
+                spacing: 50.0,
+                runSpacing: 3.0,
+                children: filterController.listTimeFrame.map((element) {
+                  return filterChipWidget(
+                      chipName: element.startTime
+                              .toString()
+                              .replaceRange(5, 8, "") +
+                          " - " +
+                          element.endTime.toString().replaceRange(5, 8, ""));
+                }).toList(),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: _titleContainer("Symptom"),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(50, 0, 50, 10),
+                child: MultiSelectDialogField(
+                  items: filterController.listSymptomItem,
+                  title: Text("Symptom"),
+                  selectedColor: kBlueColor,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(color: Colors.grey, width: 1),
+                  ),
+                  buttonText: Text(
+                    "Select Symptom",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onConfirm: (results) {},
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: _titleContainer("Major"),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(50, 0, 50, 10),
+                child: MultiSelectDialogField(
+                  items: filterController.listMajorItem,
+                  title: Text("Major"),
+                  selectedColor: kBlueColor,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(color: Colors.grey, width: 1),
+                  ),
+                  buttonText: Text(
+                    "Select Major",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onConfirm: (results) {},
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: _titleContainer("Find nearby"),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20),
+                    child: Transform.scale(
+                        scale: 0.8,
+                        child: CupertinoSwitch(
+                          activeColor: kBlueColor,
+                          value: filterController.searchByLocation.value,
+                          onChanged: (bool val) {
+                            if (filterController.searchByLocation.value) {
+                              filterController.searchByLocation.value = false;
+                              filterController.myAddress.value = "";
+                            } else {
+                              filterController.getMyAddress();
+                            }
+                          },
+                        )),
+                  )
+                ],
+              ),
+              Container(
+                padding: const EdgeInsets.fromLTRB(57, 0, 52, 0),
+                width: double.infinity,
+                height: 100,
+                child: filterController.myAddress.value.isEmpty
+                    ? Text("")
+                    : SingleChildScrollView(
+                        child: Text(
+                        "Your address: " + filterController.myAddress.value,
+                        style: TextStyle(fontSize: 20),
+                      )),
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+                  child: Container(
+                    height: 50,
+                    width: 200,
+                    child: ElevatedButton(
+                      onPressed: () => Get.to(ListDoctorScreen(),
+                          transition: Transition.upToDown,
+                          duration: Duration(milliseconds: 600)),
+                      style: ButtonStyle(
+                        elevation: MaterialStateProperty.all(6),
+                        backgroundColor:
+                            MaterialStateProperty.resolveWith<Color>(
+                                (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.pressed))
+                            return Colors.white70;
+                          return kBlueColor; // Defer to the widget's default.
+                        }),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40),
+                        )),
+                      ),
+                      child: Text(
+                        "Search",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -370,10 +280,7 @@ class _filterChipWidgetState extends State<filterChipWidget> {
     return FilterChip(
       label: Text(widget.chipName),
       labelStyle: TextStyle(
-          color: Colors.black,
-          //Color(0xff6200ee),
-          fontSize: 16.0,
-          fontWeight: FontWeight.bold),
+          color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.bold),
       selected: _isSelected,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
@@ -385,7 +292,6 @@ class _filterChipWidgetState extends State<filterChipWidget> {
         });
       },
       selectedColor: kBlueColor,
-      //Color(0xffeadffd),
     );
   }
 }

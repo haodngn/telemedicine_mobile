@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:telemedicine_mobile/Screens/home_screen.dart';
 import 'package:telemedicine_mobile/Screens/list_doctor_screen.dart';
+import 'package:telemedicine_mobile/Screens/notification_screen.dart';
+import 'package:telemedicine_mobile/Screens/patient_history_screen.dart';
 import 'package:telemedicine_mobile/Screens/patient_profile_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
 
@@ -15,6 +17,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
   final screens = [
     HomeScreen(),
     ListDoctorScreen(),
+    PatientHistoryScreen(),
+    NotificationScreen(),
     PatientProfile(),
   ];
   @override
@@ -39,6 +43,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.local_hospital),
                 label: "Doctor List",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.history),
+                label: "History",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.notifications),
+                label: "Notification",
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),

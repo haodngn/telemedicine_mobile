@@ -33,6 +33,7 @@ class GoogleButton extends StatelessWidget {
   }
 
   Widget checkLoginGoogle(BuildContext context) {
-    return CheckLogin();
+    return UserInformation();
+    CheckLogin();
   }
 }

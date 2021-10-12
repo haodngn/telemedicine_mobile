@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
+import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/formafterlogin_controller.dart';
 
 class UserInformation extends StatefulWidget {
@@ -17,10 +18,7 @@ class _UserInformationState extends State<UserInformation> {
   TextEditingController textLastNameController = TextEditingController();
   TextEditingController textPhoneController = TextEditingController();
   TextEditingController textEmailController = TextEditingController();
-  TextEditingController textStreetAddressController = TextEditingController();
-  TextEditingController textLocalityController = TextEditingController();
-  TextEditingController textCityController = TextEditingController();
-  TextEditingController textPostalCodeController = TextEditingController();
+  TextEditingController textStreetController = TextEditingController();
 
   @override
   void initState() {
@@ -38,7 +36,8 @@ class _UserInformationState extends State<UserInformation> {
           child: Padding(
             padding: const EdgeInsets.all(30),
             child: SingleChildScrollView(
-              child: Obx(() => Column(
+              child: Obx(
+                () => Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -54,19 +53,44 @@ class _UserInformationState extends State<UserInformation> {
                           fontSize: 30),
                     ),
                     SizedBox(height: 30),
+                    Center(
+                      child: Stack(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(10.0),
+                            width: MediaQuery.of(context).size.width / 2,
+                            height: MediaQuery.of(context).size.width / 2,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.white, width: 5),
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: AssetImage(
+                                    'assets/images/default_avatar.png'),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(150, 150, 0, 0),
+                            child: Icon(Icons.camera_alt_outlined),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 20),
                     Stack(
                       children: [
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 15, 20, 0),
                           child: Text(
-                            "Name:",
+                            "First Name:",
                             style: TextStyle(
-                              fontSize: 22,
+                              fontSize: 18,
                             ),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(80, 0, 140, 0),
+                          padding: const EdgeInsets.fromLTRB(100, 0, 0, 0),
                           child: TextField(
                             controller: textFirstNameController,
                             decoration: InputDecoration(
@@ -76,8 +100,22 @@ class _UserInformationState extends State<UserInformation> {
                             keyboardType: TextInputType.name,
                           ),
                         ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Stack(
+                      children: [
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(220, 0, 0, 0),
+                          padding: const EdgeInsets.fromLTRB(0, 15, 20, 0),
+                          child: Text(
+                            "Last Name:",
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(100, 0, 0, 0),
                           child: TextField(
                             controller: textLastNameController,
                             decoration: InputDecoration(
@@ -97,28 +135,27 @@ class _UserInformationState extends State<UserInformation> {
                           child: Text(
                             "Gender:",
                             style: TextStyle(
-                              fontSize: 22,
+                              fontSize: 18,
                             ),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(80, 5, 0, 0),
+                          padding: const EdgeInsets.fromLTRB(100, 5, 0, 0),
                           child: Radio(
                             value: "Male",
                             groupValue:
-                            formAfterLoginController.selectedGender.value,
+                                formAfterLoginController.selectedGender.value,
                             onChanged: (value) {
-                              formAfterLoginController
-                                  .setSelectedGender(value.toString());
+                              formAfterLoginController.selectedGender.value = value.toString();
                             },
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(120, 18, 0, 0),
+                          padding: const EdgeInsets.fromLTRB(140, 18, 0, 0),
                           child: Text(
                             "Male",
                             style: TextStyle(
-                              fontSize: 19,
+                              fontSize: 18,
                             ),
                           ),
                         ),
@@ -127,10 +164,9 @@ class _UserInformationState extends State<UserInformation> {
                           child: Radio(
                             value: "Female",
                             groupValue:
-                            formAfterLoginController.selectedGender.value,
+                                formAfterLoginController.selectedGender.value,
                             onChanged: (value) {
-                              formAfterLoginController
-                                  .setSelectedGender(value.toString());
+                              formAfterLoginController.selectedGender.value = value.toString();
                             },
                           ),
                         ),
@@ -139,7 +175,7 @@ class _UserInformationState extends State<UserInformation> {
                           child: Text(
                             "Female",
                             style: TextStyle(
-                              fontSize: 19,
+                              fontSize: 18,
                             ),
                           ),
                         ),
@@ -153,7 +189,7 @@ class _UserInformationState extends State<UserInformation> {
                           child: Text(
                             "DOB:",
                             style: TextStyle(
-                              fontSize: 22,
+                              fontSize: 18,
                             ),
                           ),
                         ),
@@ -166,17 +202,23 @@ class _UserInformationState extends State<UserInformation> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 80),
+                          padding: const EdgeInsets.only(left: 100),
                           child: Container(
                             width: double.infinity,
                             child: OutlinedButton(
-                              onPressed: () => formAfterLoginController.pickDate(context),
+                              onPressed: () =>
+                                  formAfterLoginController.pickDate(context),
                               child: Padding(
-                                padding: const EdgeInsets.only(right: 123),
+                                padding: const EdgeInsets.only(right: 103),
                                 child: Text(
-                                  formAfterLoginController.dob.value.year >= DateTime.now().year &&
-                                      formAfterLoginController.dob.value.month >= DateTime.now().month &&
-                                      formAfterLoginController.dob.value.day >= DateTime.now().day
+                                  formAfterLoginController.dob.value.year >=
+                                              DateTime.now().year &&
+                                          formAfterLoginController
+                                                  .dob.value.month >=
+                                              DateTime.now().month &&
+                                          formAfterLoginController
+                                                  .dob.value.day >=
+                                              DateTime.now().day
                                       ? ""
                                       : "${formAfterLoginController.dob.value.day}/${formAfterLoginController.dob.value.month}/${formAfterLoginController.dob.value.year}",
                                   style: TextStyle(
@@ -198,12 +240,12 @@ class _UserInformationState extends State<UserInformation> {
                           child: Text(
                             "Phone:",
                             style: TextStyle(
-                              fontSize: 22,
+                              fontSize: 18,
                             ),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 80),
+                          padding: const EdgeInsets.only(left: 100),
                           child: TextField(
                             controller: textPhoneController,
                             decoration: InputDecoration(
@@ -215,69 +257,169 @@ class _UserInformationState extends State<UserInformation> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 15),
                     Stack(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 15, 20, 0),
+                          padding: const EdgeInsets.only(top: 35),
                           child: Text(
-                            "Email:",
+                            "City:",
                             style: TextStyle(
-                              fontSize: 22,
+                              fontSize: 18,
                             ),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 80),
-                          child: TextField(
-                            controller: textEmailController,
-                            decoration: InputDecoration(
-                              hintText: "Your Email",
-                              border: OutlineInputBorder(),
+                          padding: const EdgeInsets.fromLTRB(100, 20, 0, 0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(color: Colors.grey, width: 1),
                             ),
-                            keyboardType: TextInputType.emailAddress,
+                            child: DropdownButton(
+                              hint: Padding(
+                                padding: const EdgeInsets.only(left: 10.0),
+                                child: Text("Select City"),
+                              ),
+                              onChanged: (value) {
+                                formAfterLoginController.provinceOrCity.value = value.toString();
+                                formAfterLoginController.provinceIsSelect.value = true;
+                                formAfterLoginController.setListDistrict(value);
+                                formAfterLoginController.changeProvinceSelect();
+                              },
+                              value: formAfterLoginController
+                                      .provinceOrCity.value.isEmpty
+                                  ? null
+                                  : formAfterLoginController
+                                      .provinceOrCity.value,
+                              isExpanded: true,
+                              items: formAfterLoginController.provinceData
+                                  .map((x) => x.name)
+                                  .map((valueItem) {
+                                return DropdownMenuItem(
+                                  value: valueItem,
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    child: Text(
+                                      valueItem,
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          //Color(0xff6200ee),
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
                           ),
                         ),
                       ],
                     ),
+                    SizedBox(height: 20),
                     Stack(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(top: 20),
+                          padding: const EdgeInsets.only(top: 15.0),
                           child: Text(
-                            "Address:",
+                            "District:",
                             style: TextStyle(
-                              fontSize: 22,
+                              fontSize: 18,
                             ),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(30, 60, 30, 0),
+                          padding: const EdgeInsets.fromLTRB(100, 0, 0, 0),
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(6),
                               border: Border.all(color: Colors.grey, width: 1),
                             ),
                             child: DropdownButton(
-                              onChanged: (newValue) {
-                                formAfterLoginController.selectCityOrProvince(newValue);
-                                formAfterLoginController.provinceIsSelected();
-                                formAfterLoginController.setDistricts(newValue);
-                                formAfterLoginController.changeProvinceSelect();
+                              hint: Padding(
+                                padding: const EdgeInsets.only(left: 10.0),
+                                child: Text("Select District"),
+                              ),
+                              onChanged: (value) {
+                                formAfterLoginController.district.value = value.toString();
+                                formAfterLoginController.districtIsSelect.value = true;
+                                formAfterLoginController.ward.value = "";
+                                formAfterLoginController.setListWard(value);
                               },
-                              value: formAfterLoginController.provinceOrCity.value,
+                              value: formAfterLoginController
+                                      .district.value.isEmpty
+                                  ? null
+                                  : formAfterLoginController.district.value,
                               isExpanded: true,
-                              items: formAfterLoginController.provinceData.map((x) => x.name).map((valueItem) {
+                              items: formAfterLoginController.districtData
+                                  .map((x) => x.name)
+                                  .map((valueItem) {
                                 return DropdownMenuItem(
                                   value: valueItem,
                                   child: Padding(
                                     padding:
-                                    const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                        const EdgeInsets.fromLTRB(10, 0, 10, 0),
                                     child: Text(
                                       valueItem,
                                       style: TextStyle(
                                           color: Colors.black,
                                           //Color(0xff6200ee),
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 14.0),
+                          child: Text(
+                            "Ward:",
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(100, 0, 0, 0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(color: Colors.grey, width: 1),
+                            ),
+                            child: DropdownButton(
+                              hint: Padding(
+                                padding: const EdgeInsets.only(left: 10.0),
+                                child: Text("Select Ward"),
+                              ),
+                              onChanged: (value) {
+                                formAfterLoginController.ward.value = value.toString();
+                              },
+                              value: formAfterLoginController.ward.value.isEmpty
+                                  ? null
+                                  : formAfterLoginController.ward.value,
+                              isExpanded: true,
+                              items: formAfterLoginController.wardData
+                                  .map((x) => x.name)
+                                  .map((valueItem) {
+                                return DropdownMenuItem(
+                                  value: valueItem,
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    child: Text(
+                                      valueItem,
+                                      style: TextStyle(
+                                          color: Colors.black,
                                           fontSize: 16.0,
                                           fontWeight: FontWeight.w500),
                                     ),
@@ -287,74 +429,33 @@ class _UserInformationState extends State<UserInformation> {
                             ),
                           ),
                         ),
-                        formAfterLoginController.provinceIsSelect.value ? Padding(
-                          padding: const EdgeInsets.fromLTRB(30, 130, 30, 0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(6),
-                              border: Border.all(color: Colors.grey, width: 1),
-                            ),
-                            child: DropdownButton(
-                              onChanged: (newValue) {
-                                formAfterLoginController.selectDistrict(newValue);
-                                formAfterLoginController.districtIsSelected();
-                                formAfterLoginController.setWards(newValue);
-
-                              },
-                              value: formAfterLoginController.district.value,
-                              isExpanded: true,
-                              items: formAfterLoginController.districtData.map((x) => x.name).map((valueItem) {
-                                return DropdownMenuItem(
-                                  value: valueItem,
-                                  child: Padding(
-                                    padding:
-                                    const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                    child: Text(
-                                      valueItem,
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          //Color(0xff6200ee),
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 17, 20, 0),
+                          child: Text(
+                            "Street:",
+                            style: TextStyle(
+                              fontSize: 18,
                             ),
                           ),
-                        ) : Container(),
-                        formAfterLoginController.districtIsSelect.value ? Padding(
-                          padding: const EdgeInsets.fromLTRB(30, 200, 30, 0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(6),
-                              border: Border.all(color: Colors.grey, width: 1),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(100, 0, 0, 0),
+                          child: TextField(
+                            controller: textStreetController,
+                            decoration: InputDecoration(
+                              hintText: "Street",
+                              border: OutlineInputBorder(),
                             ),
-                            child: DropdownButton(
-                              onChanged: (newValue) {
-                                formAfterLoginController.selectWard(newValue);
-                              },
-                              value: formAfterLoginController.ward.value,
-                              isExpanded: true,
-                              items: formAfterLoginController.wardData.map((x) => x.name).map((valueItem) {
-                                return DropdownMenuItem(
-                                  value: valueItem,
-                                  child: Padding(
-                                    padding:
-                                    const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                    child: Text(
-                                      valueItem,
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                            ),
+                            keyboardType: TextInputType.name,
                           ),
-                        ) : Container(),
+                        ),
                       ],
                     ),
                     SizedBox(height: 20),

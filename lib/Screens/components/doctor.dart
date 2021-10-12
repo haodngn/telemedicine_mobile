@@ -1,14 +1,16 @@
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/Screens/detail_screen.dart';
 import 'package:flutter/material.dart';
 
 class DoctorCard extends StatelessWidget {
-  var _name;
-  var _description;
-  var _imageUrl;
+  var doctor;
+  var image;
   var _bgColor;
 
-  DoctorCard(this._name, this._description, this._imageUrl, this._bgColor);
+  IconData? _selectedIcon;
+
+  DoctorCard(this.doctor, this.image, this._bgColor);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,7 @@ class DoctorCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => DetailScreen(_name, _description, _imageUrl),
+            builder: (context) => DetailScreen(doctor.name, doctor.scopeOfPractice, doctor.description, image, doctor.majorDoctors, doctor.hospitalDoctors, doctor.certificationDoctors),
           ),
         );
       },
@@ -28,21 +30,50 @@ class DoctorCard extends StatelessWidget {
         ),
         child: Padding(
           padding: EdgeInsets.all(10),
-          child: ListTile(
-            leading: Image.asset(_imageUrl),
-            title: Text(
-              _name,
-              style: TextStyle(
-                color: kTitleTextColor,
-                fontWeight: FontWeight.bold,
+          child: Column(
+            children: [
+              ListTile(
+                leading: Image.network(doctor.avatar),
+                title: Text(
+                  doctor.majorDoctors.length.toString(),
+                  style: TextStyle(
+                    color: kTitleTextColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: Text(
+                  doctor.scopeOfPractice,
+                  style: TextStyle(
+                    color: kTitleTextColor.withOpacity(0.7),
+                  ),
+                ),
               ),
-            ),
-            subtitle: Text(
-              _description,
-              style: TextStyle(
-                color: kTitleTextColor.withOpacity(0.7),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(22, 5, 0, 5),
+                child: Text("Number of consultations: " + doctor.numberOfConsultants.toString()),
               ),
-            ),
+              Container(
+                width: 160,
+                child: RatingBar.builder(
+                  initialRating: doctor.rating + .0,
+                  minRating: 1,
+                  direction: Axis.horizontal,
+                  allowHalfRating: true,
+                  unratedColor: Colors.amber.withAlpha(50),
+                  itemCount: 5,
+                  itemSize: 20.0,
+                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                  itemBuilder: (context, _) => Icon(
+                    _selectedIcon ?? Icons.star,
+                    color: Colors.amber,
+                  ),
+                  onRatingUpdate: (rating) {
+                    //setState(() {});
+                  },
+                  updateOnDrag: true,
+                ),
+              ),
+            ],
           ),
         ),
       ),
