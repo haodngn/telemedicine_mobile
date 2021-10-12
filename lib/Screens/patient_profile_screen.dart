@@ -61,11 +61,11 @@ class _PatientProfileState extends State<PatientProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-            child: Text(
-          "Profile",
-        )),
+        elevation: 8,
+        title: Text("Profile"),
+        centerTitle: true,
         backgroundColor: kBlueColor,
+        automaticallyImplyLeading: false,
       ),
       body: SafeArea(
         child: SingleChildScrollView(

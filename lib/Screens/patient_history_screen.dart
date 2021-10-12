@@ -77,11 +77,11 @@ class _PatientHistoryScreenState extends State<PatientHistoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-            child: Text(
-          "History",
-        )),
+        elevation: 8,
+        title: Text("History"),
+        centerTitle: true,
         backgroundColor: kBlueColor,
+        automaticallyImplyLeading: false,
       ),
       body: SafeArea(
         child: Container(

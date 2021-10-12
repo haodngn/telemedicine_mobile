@@ -33,7 +33,9 @@ class DoctorCard extends StatelessWidget {
           child: Column(
             children: [
               ListTile(
-                leading: Image.network(doctor.avatar),
+                leading: Image.network(doctor.avatar,
+                  errorBuilder: (context, error, stackTrace) => Image.asset("assets/images/default_avatar.png"),
+                ),
                 title: Text(
                   doctor.majorDoctors.length.toString(),
                   style: TextStyle(
