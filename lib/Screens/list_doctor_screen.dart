@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:telemedicine_mobile/Screens/components/doctor.dart';
-import 'package:telemedicine_mobile/Screens/components/loading.dart';
 import 'package:telemedicine_mobile/Screens/filter_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
