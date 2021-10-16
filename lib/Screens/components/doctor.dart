@@ -52,7 +52,7 @@ class DoctorCard extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(22, 5, 0, 5),
-                child: Text("Number of consultations: " + doctor.numberOfConsultants.toString()),
+                child: Text("Số lượng cuộc hẹn: " + doctor.numberOfConsultants.toString()),
               ),
               Container(
                 width: 160,

@@ -106,7 +106,7 @@ class _ConsultationRatingScreenState extends State<ConsultationRatingScreen> {
                         fontWeight: FontWeight.w400,
                       ),
                       decoration: InputDecoration(
-                        hintText: 'Type your comment here...',
+                        hintText: 'Nhập đánh giá của bạn...',
                         border: UnderlineInputBorder(),
                       ),
                     ),
@@ -132,7 +132,7 @@ class _ConsultationRatingScreenState extends State<ConsultationRatingScreen> {
                         Get.back();
                       },
                       child: Text(
-                        'Send',
+                        'Gửi',
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.w500,

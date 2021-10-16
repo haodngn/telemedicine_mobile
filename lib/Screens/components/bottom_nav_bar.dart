@@ -38,23 +38,23 @@ class _BottomNavBarState extends State<BottomNavBar> {
             items: [
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
-                label: "Home",
+                label: "Trang chủ",
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.local_hospital),
-                label: "Doctor List",
+                label: "Danh sách bác sĩ",
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.history),
-                label: "History",
+                label: "Lịch sử",
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.notifications),
-                label: "Notification",
+                label: "Thông báo",
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),
-                label: "Profile",
+                label: "Trang cá nhân",
               ),
             ],
           ),

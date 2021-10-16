@@ -28,7 +28,7 @@ class _FilterScreenState extends State<FilterScreen> {
       appBar: AppBar(
         backgroundColor: kBlueColor,
         title: Text(
-          "Search by",
+          "Tìm kiếm theo",
           style: TextStyle(
             color: Colors.white,
           ),
@@ -52,7 +52,7 @@ class _FilterScreenState extends State<FilterScreen> {
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: _titleContainer("Date"),
+                  child: _titleContainer("Ngày"),
                 ),
               ),
               Padding(
@@ -102,7 +102,7 @@ class _FilterScreenState extends State<FilterScreen> {
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: _titleContainer("Time"),
+                  child: _titleContainer("Giờ"),
                 ),
               ),
               Wrap(
@@ -121,14 +121,14 @@ class _FilterScreenState extends State<FilterScreen> {
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: _titleContainer("Symptom"),
+                  child: _titleContainer("Triệu chứng"),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(50, 0, 50, 10),
                 child: MultiSelectDialogField(
                   items: filterController.listSymptomItem,
-                  title: Text("Symptom"),
+                  title: Text("Triệu chứng"),
                   selectedColor: kBlueColor,
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -136,7 +136,7 @@ class _FilterScreenState extends State<FilterScreen> {
                     border: Border.all(color: Colors.grey, width: 1),
                   ),
                   buttonText: Text(
-                    "Select Symptom",
+                    "Chọn triệu chứng",
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
@@ -150,14 +150,14 @@ class _FilterScreenState extends State<FilterScreen> {
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: _titleContainer("Major"),
+                  child: _titleContainer("Chuyên ngành"),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(50, 0, 50, 10),
                 child: MultiSelectDialogField(
                   items: filterController.listMajorItem,
-                  title: Text("Major"),
+                  title: Text("Chuyên ngành"),
                   selectedColor: kBlueColor,
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -165,7 +165,7 @@ class _FilterScreenState extends State<FilterScreen> {
                     border: Border.all(color: Colors.grey, width: 1),
                   ),
                   buttonText: Text(
-                    "Select Major",
+                    "Chọn chuyên ngành",
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
@@ -180,7 +180,7 @@ class _FilterScreenState extends State<FilterScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: _titleContainer("Find nearby"),
+                    child: _titleContainer("Tìm gần đây"),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 20),
@@ -209,7 +209,7 @@ class _FilterScreenState extends State<FilterScreen> {
                     ? Text("")
                     : SingleChildScrollView(
                         child: Text(
-                        "Your address: " + filterController.myAddress.value,
+                        "Địa chỉ của bạn: " + filterController.myAddress.value,
                         style: TextStyle(fontSize: 20),
                       )),
               ),
@@ -240,7 +240,7 @@ class _FilterScreenState extends State<FilterScreen> {
                         )),
                       ),
                       child: Text(
-                        "Search",
+                        "Tìm",
                         style: TextStyle(fontSize: 18),
                       ),
                     ),

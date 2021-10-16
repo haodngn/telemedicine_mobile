@@ -29,7 +29,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Edit Profile",
+          "Chỉnh sủa thông tin cá nhân",
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: kBlueColor,
@@ -90,7 +90,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 15, 20, 0),
                           child: Text(
-                            "First Name:",
+                            "Họ:",
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -122,7 +122,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 15, 20, 0),
                           child: Text(
-                            "Last Name:",
+                            "Tên:",
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -152,7 +152,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 15, 20, 0),
                           child: Text(
-                            "Gender:",
+                            "Giới tính:",
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -171,7 +171,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(140, 18, 0, 0),
                           child: Text(
-                            "Male",
+                            "Nam",
                             style: TextStyle(
                               fontSize: 19,
                             ),
@@ -190,7 +190,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(260, 18, 0, 0),
                           child: Text(
-                            "Female",
+                            "Nữ",
                             style: TextStyle(
                               fontSize: 19,
                             ),
@@ -204,7 +204,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 18, 20, 0),
                           child: Text(
-                            "DOB:",
+                            "Ngày sinh:",
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -244,7 +244,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 15, 20, 0),
                           child: Text(
-                            "Phone:",
+                            "Điện thoại:",
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -273,7 +273,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                         Padding(
                           padding: const EdgeInsets.only(top: 35),
                           child: Text(
-                            "City:",
+                            "Thành phố:",
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -289,7 +289,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                             child: DropdownButton(
                               hint: Padding(
                                 padding: const EdgeInsets.only(left: 10.0),
-                                child: Text("Select City"),
+                                child: Text("Chọn Tỉnh/Thành phố"),
                               ),
                               onChanged: (newValue) {
                                 patientProfileController.city.value = newValue.toString();
@@ -330,7 +330,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                         Padding(
                           padding: const EdgeInsets.only(top: 15.0),
                           child: Text(
-                            "District:",
+                            "Quận:",
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -346,7 +346,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                             child: DropdownButton(
                               hint: Padding(
                                 padding: const EdgeInsets.only(left: 10.0),
-                                child: Text("Select District"),
+                                child: Text("Chọn Quận/Huyện"),
                               ),
                               onChanged: (newValue) {
                                 patientProfileController.district.value = newValue.toString();
@@ -387,7 +387,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                         Padding(
                           padding: const EdgeInsets.only(top: 14.0),
                           child: Text(
-                            "Ward:",
+                            "Phường:",
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -403,7 +403,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                             child: DropdownButton(
                               hint: Padding(
                                 padding: const EdgeInsets.only(left: 10.0),
-                                child: Text("Select Ward"),
+                                child: Text("Chọn Phường/Xã"),
                               ),
                               onChanged: (newValue) {
                                 patientProfileController.ward.value = newValue.toString();
@@ -441,7 +441,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 15, 20, 0),
                           child: Text(
-                            "Street:",
+                            "Đường:",
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -477,7 +477,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                         // transition: Transition.rightToLeftWithFade,
                         // duration: Duration(milliseconds: 600)),
                         child: Text(
-                          "Save",
+                          "Lưu",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,

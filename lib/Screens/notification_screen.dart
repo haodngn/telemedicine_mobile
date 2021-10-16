@@ -94,7 +94,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 8,
-        title: Text("Notification"),
+        title: Text("Thông báo"),
         centerTitle: true,
         backgroundColor: kBlueColor,
         automaticallyImplyLeading: false,
@@ -151,7 +151,7 @@ class BoxNotification extends StatelessWidget {
               ? Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 260, 10),
                   child: Text(
-                    date.endsWith( DateFormat('dd/MM/yyyy').format(DateTime.now())) ? "Today" : date,
+                    date.endsWith( DateFormat('dd/MM/yyyy').format(DateTime.now())) ? "Hôm nay" : date,
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 )

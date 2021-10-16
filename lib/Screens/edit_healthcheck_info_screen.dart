@@ -32,7 +32,7 @@ class _EditHealthCheckInfoScreenState extends State<EditHealthCheckInfoScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Edit Health Check Info",
+          "Chỉnh sửa thông tin sức khỏe",
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: kBlueColor,
@@ -64,7 +64,7 @@ class _EditHealthCheckInfoScreenState extends State<EditHealthCheckInfoScreen> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 18, 20, 0),
                           child: Text(
-                            "Allergy:",
+                            "Dị ứng:",
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -76,7 +76,7 @@ class _EditHealthCheckInfoScreenState extends State<EditHealthCheckInfoScreen> {
                             controller: textAllergyController,
                             decoration: InputDecoration(
                               hintText:
-                              patientProfileController.patient.value.allergy == null || patientProfileController.patient.value.allergy.isEmpty ? "No allergies" : patientProfileController.patient.value.allergy,
+                              patientProfileController.patient.value.allergy == null || patientProfileController.patient.value.allergy.isEmpty ? "Không bị dị ứng" : patientProfileController.patient.value.allergy,
                               hintStyle: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 color: Colors.black,
@@ -96,7 +96,7 @@ class _EditHealthCheckInfoScreenState extends State<EditHealthCheckInfoScreen> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 18, 20, 0),
                           child: Text(
-                            "Blood Type:",
+                            "Nhóm máu:",
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -108,7 +108,7 @@ class _EditHealthCheckInfoScreenState extends State<EditHealthCheckInfoScreen> {
                             controller: textBloodTypeController,
                             decoration: InputDecoration(
                               hintText:
-                              patientProfileController.patient.value.bloodGroup == null || patientProfileController.patient.value.bloodGroup.isEmpty ? "Undefined" : patientProfileController.patient.value.bloodGroup,
+                              patientProfileController.patient.value.bloodGroup == null || patientProfileController.patient.value.bloodGroup.isEmpty ? "Chưa xác định" : patientProfileController.patient.value.bloodGroup,
                               hintStyle: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 color: Colors.black,
@@ -126,7 +126,7 @@ class _EditHealthCheckInfoScreenState extends State<EditHealthCheckInfoScreen> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 15, 20, 0),
                       child: Text(
-                        "Background Disease:",
+                        "Bệnh nền:",
                         style: TextStyle(
                           fontSize: 18,
                         ),
@@ -138,7 +138,7 @@ class _EditHealthCheckInfoScreenState extends State<EditHealthCheckInfoScreen> {
                         maxLines: 5,
                         controller: textBackgroundDiseaseController,
                         decoration: InputDecoration(
-                          hintText: patientProfileController.patient.value.backgroundDisease == null || patientProfileController.patient.value.backgroundDisease.isEmpty ? "No background disease" : patientProfileController.patient.value.backgroundDisease,
+                          hintText: patientProfileController.patient.value.backgroundDisease == null || patientProfileController.patient.value.backgroundDisease.isEmpty ? "Không có bệnh nền" : patientProfileController.patient.value.backgroundDisease,
                           hintStyle: TextStyle(
                             fontWeight: FontWeight.w400,
                             color: Colors.black,
@@ -159,7 +159,7 @@ class _EditHealthCheckInfoScreenState extends State<EditHealthCheckInfoScreen> {
                             transition: Transition.rightToLeftWithFade,
                             duration: Duration(milliseconds: 600)),
                         child: Text(
-                          "Save",
+                          "Lưu",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,

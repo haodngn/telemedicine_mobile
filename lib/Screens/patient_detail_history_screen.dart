@@ -66,7 +66,7 @@ class _PatientDetailHistoryScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Detail History"),
+        title: Text("Chi tiết lịch sử"),
         backgroundColor: kBlueColor,
         elevation: 1,
         leading: IconButton(
@@ -109,10 +109,10 @@ class _PatientDetailHistoryScreenState
                   ),
                   Text(
                     history.status == "Cancel"
-                        ? "This health check is cancel"
+                        ? "Buổi tư vấn đã được hủy"
                         : history.status == "Done"
-                            ? "This health check is done"
-                            : "This health check is coming",
+                            ? "Buổi tư vấn đã hoàn thành"
+                            : "Buổi tư vấn sắp đến",
                     style: TextStyle(
                       fontSize: 22,
                       color: history.status == "Cancel"
@@ -146,7 +146,7 @@ class _PatientDetailHistoryScreenState
                                 ),
                               ),
                               Text(
-                                "Appointment",
+                                "Thông tin cuộc hẹn",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 22,
@@ -185,7 +185,7 @@ class _PatientDetailHistoryScreenState
                                 ),
                               ),
                               Text(
-                                "Doctor",
+                                "Thông tin bác sĩ",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 22,
@@ -196,15 +196,15 @@ class _PatientDetailHistoryScreenState
                           ),
                         ),
                         textfield(
-                          hintText: "Name: Nguyen Van Tam",
+                          hintText: "Tên: Nguyen Van Tam",
                           icon: Icons.person,
                         ),
                         textfield(
-                          hintText: "Dob: 10/07/2000",
+                          hintText: "Ngày sinh: 10/07/2000",
                           icon: Icons.date_range_rounded,
                         ),
                         textfield(
-                          hintText: "Gender: Male",
+                          hintText: "Giới tính: Male",
                           icon: Icons.male,
                         ),
                         SizedBox(
@@ -214,7 +214,7 @@ class _PatientDetailHistoryScreenState
                             ? Container(
                                 width: double.infinity,
                                 child: Text(
-                                  "Advices of doctor:",
+                                  "Lời khuyên của bác sĩ:",
                                   style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold),
@@ -235,7 +235,7 @@ class _PatientDetailHistoryScreenState
                                     fontWeight: FontWeight.w400,
                                     color: Colors.black,
                                   ),
-                                  border: OutlineInputBorder(),
+                                  border: InputBorder.none,
                                 ),
                                 keyboardType: TextInputType.name,
                               )
@@ -257,7 +257,7 @@ class _PatientDetailHistoryScreenState
                                       transition:
                                           Transition.rightToLeftWithFade,
                                       duration: Duration(microseconds: 600)),
-                                  initialValue: "Your Prescription",
+                                  initialValue: "Đơn thuốc của bạn",
                                   style: TextStyle(
                                     letterSpacing: 2,
                                     color: Colors.white,
@@ -288,7 +288,7 @@ class _PatientDetailHistoryScreenState
                             ? Container(
                                 width: double.infinity,
                                 child: Text(
-                                  "Reason:",
+                                  "Lý do:",
                                   style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold),
@@ -304,7 +304,7 @@ class _PatientDetailHistoryScreenState
                                 // controller: textBackgroundDiseaseController,
                                 decoration: InputDecoration(
                                   // labelText: "The reason",
-                                  hintText: "I'm busy with unexpected work",
+                                  hintText: "Có việc đột xuất",
                                   hintStyle: TextStyle(
                                     fontWeight: FontWeight.w400,
                                     color: Colors.black,

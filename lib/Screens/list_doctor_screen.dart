@@ -25,8 +25,9 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("DOCTOR LIST LIST"),
+        title: Text("Danh sách bác sĩ"),
         backgroundColor: kBlueColor,
+        automaticallyImplyLeading: false,
       ),
       backgroundColor: kBackgroundColor,
       body: SafeArea(
@@ -46,17 +47,17 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
                     child: Icon(Icons.search),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 30),
-                  child: Text(
-                    'Top Doctors',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: kTitleTextColor,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
+                // Padding(
+                //   padding: EdgeInsets.symmetric(horizontal: 30),
+                //   child: Text(
+                //     'Top Doctors',
+                //     style: TextStyle(
+                //       fontWeight: FontWeight.bold,
+                //       color: kTitleTextColor,
+                //       fontSize: 18,
+                //     ),
+                //   ),
+                // ),
                 SizedBox(
                   height: 20,
                 ),
