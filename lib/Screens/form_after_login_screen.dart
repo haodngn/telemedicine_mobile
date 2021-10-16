@@ -42,11 +42,11 @@ class _UserInformationState extends State<UserInformation> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Welcome to the",
+                      "Chào mừng bạn đến với",
                       style: TextStyle(color: Colors.black, fontSize: 22),
                     ),
                     Text(
-                      "Counselor App",
+                      "Ứng dụng bác sĩ tư vấn trực tuyến",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
@@ -83,7 +83,7 @@ class _UserInformationState extends State<UserInformation> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 15, 20, 0),
                           child: Text(
-                            "First Name:",
+                            "Họ:",
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -94,7 +94,7 @@ class _UserInformationState extends State<UserInformation> {
                           child: TextField(
                             controller: textFirstNameController,
                             decoration: InputDecoration(
-                              hintText: "First Name",
+                              hintText: "Họ",
                               border: OutlineInputBorder(),
                             ),
                             keyboardType: TextInputType.name,
@@ -108,7 +108,7 @@ class _UserInformationState extends State<UserInformation> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 15, 20, 0),
                           child: Text(
-                            "Last Name:",
+                            "Tên:",
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -119,7 +119,7 @@ class _UserInformationState extends State<UserInformation> {
                           child: TextField(
                             controller: textLastNameController,
                             decoration: InputDecoration(
-                              hintText: "Last Name",
+                              hintText: "Tên",
                               border: OutlineInputBorder(),
                             ),
                             keyboardType: TextInputType.name,
@@ -133,7 +133,7 @@ class _UserInformationState extends State<UserInformation> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 15, 20, 0),
                           child: Text(
-                            "Gender:",
+                            "Giới tính:",
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -142,7 +142,7 @@ class _UserInformationState extends State<UserInformation> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(100, 5, 0, 0),
                           child: Radio(
-                            value: "Male",
+                            value: "Nam",
                             groupValue:
                                 formAfterLoginController.selectedGender.value,
                             onChanged: (value) {
@@ -153,7 +153,7 @@ class _UserInformationState extends State<UserInformation> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(140, 18, 0, 0),
                           child: Text(
-                            "Male",
+                            "Nam",
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -173,7 +173,7 @@ class _UserInformationState extends State<UserInformation> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(260, 18, 0, 0),
                           child: Text(
-                            "Female",
+                            "Nữ",
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -187,7 +187,7 @@ class _UserInformationState extends State<UserInformation> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 18, 20, 0),
                           child: Text(
-                            "DOB:",
+                            "Ngày sinh:",
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -238,7 +238,7 @@ class _UserInformationState extends State<UserInformation> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 15, 20, 0),
                           child: Text(
-                            "Phone:",
+                            "Điện thoại:",
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -249,7 +249,7 @@ class _UserInformationState extends State<UserInformation> {
                           child: TextField(
                             controller: textPhoneController,
                             decoration: InputDecoration(
-                              hintText: "Phone number",
+                              hintText: "Số điện thoại",
                               border: OutlineInputBorder(),
                             ),
                             keyboardType: TextInputType.phone,
@@ -262,7 +262,7 @@ class _UserInformationState extends State<UserInformation> {
                         Padding(
                           padding: const EdgeInsets.only(top: 35),
                           child: Text(
-                            "City:",
+                            "Thành phố:",
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -278,7 +278,7 @@ class _UserInformationState extends State<UserInformation> {
                             child: DropdownButton(
                               hint: Padding(
                                 padding: const EdgeInsets.only(left: 10.0),
-                                child: Text("Select City"),
+                                child: Text("Chọn Tỉnh/Thành phố"),
                               ),
                               onChanged: (value) {
                                 formAfterLoginController.provinceOrCity.value = value.toString();
@@ -322,7 +322,7 @@ class _UserInformationState extends State<UserInformation> {
                         Padding(
                           padding: const EdgeInsets.only(top: 15.0),
                           child: Text(
-                            "District:",
+                            "Quận:",
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -338,7 +338,7 @@ class _UserInformationState extends State<UserInformation> {
                             child: DropdownButton(
                               hint: Padding(
                                 padding: const EdgeInsets.only(left: 10.0),
-                                child: Text("Select District"),
+                                child: Text("Chọn Quận/Huyện"),
                               ),
                               onChanged: (value) {
                                 formAfterLoginController.district.value = value.toString();
@@ -383,7 +383,7 @@ class _UserInformationState extends State<UserInformation> {
                         Padding(
                           padding: const EdgeInsets.only(top: 14.0),
                           child: Text(
-                            "Ward:",
+                            "Phường:",
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -399,7 +399,7 @@ class _UserInformationState extends State<UserInformation> {
                             child: DropdownButton(
                               hint: Padding(
                                 padding: const EdgeInsets.only(left: 10.0),
-                                child: Text("Select Ward"),
+                                child: Text("Chọn Phường/Xã"),
                               ),
                               onChanged: (value) {
                                 formAfterLoginController.ward.value = value.toString();
@@ -439,7 +439,7 @@ class _UserInformationState extends State<UserInformation> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 17, 20, 0),
                           child: Text(
-                            "Street:",
+                            "Đường:",
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -450,7 +450,7 @@ class _UserInformationState extends State<UserInformation> {
                           child: TextField(
                             controller: textStreetController,
                             decoration: InputDecoration(
-                              hintText: "Street",
+                              hintText: "Đường",
                               border: OutlineInputBorder(),
                             ),
                             keyboardType: TextInputType.name,
@@ -468,7 +468,7 @@ class _UserInformationState extends State<UserInformation> {
                         ),
                         onPressed: () => Get.to(BottomNavScreen()),
                         child: Text(
-                          "Done",
+                          "Hoàn tất",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,

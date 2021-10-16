@@ -32,10 +32,10 @@ class _ViewDrugScreenState extends State<ViewDrugScreen> {
         ),
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            constraints: BoxConstraints.expand(),
-            color: Colors.white,
+        child: Container(
+          constraints: BoxConstraints.expand(),
+          color: Colors.white,
+          child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(30, 30, 0, 0),
               child: Column(
@@ -89,13 +89,12 @@ class _ViewDrugScreenState extends State<ViewDrugScreen> {
                     height: 10,
                   ),
                   ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: 2,
-                        itemBuilder: (BuildContext context, index) {
-                          return BoxDrug(
-                              );
-                        }),
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: 2,
+                      itemBuilder: (BuildContext context, index) {
+                        return BoxDrug();
+                      }),
                   Text(
                     "Afternoon",
                     style: TextStyle(
@@ -143,23 +142,14 @@ class _ViewDrugScreenState extends State<ViewDrugScreen> {
                   SizedBox(
                     height: 10,
                   ),
-                  Expanded(
-                    child: ListView.builder(
-                        itemCount: 2,
-                        itemBuilder: (BuildContext context, index) {
-                          return BoxDrug(
-                            // doctorImage: listHistory[index].doctorImage,
-                            // doctorName: listHistory[index].doctorName,
-                            // doctorNote: listHistory[index].doctorNote,
-                            // date: listHistory[index].date,
-                            // sameDate:
-                            //     index > 0 ? listHistory[index - 1].date : "",
-                            // timeStart: listHistory[index].timeStart,
-                            // timeEnd: listHistory[index].timeEnd,
-                            // status: listHistory[index].status,
-                          );
-                        }),
-                  ),
+                  ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: 2,
+                      itemBuilder: (BuildContext context, index) {
+                        return BoxDrug();
+                      }),
+
                   Text(
                     "Evening",
                     style: TextStyle(
@@ -207,23 +197,14 @@ class _ViewDrugScreenState extends State<ViewDrugScreen> {
                   SizedBox(
                     height: 10,
                   ),
-                  Expanded(
-                    child: ListView.builder(
+                  ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
                         itemCount: 2,
                         itemBuilder: (BuildContext context, index) {
                           return BoxDrug(
-                            // doctorImage: listHistory[index].doctorImage,
-                            // doctorName: listHistory[index].doctorName,
-                            // doctorNote: listHistory[index].doctorNote,
-                            // date: listHistory[index].date,
-                            // sameDate:
-                            //     index > 0 ? listHistory[index - 1].date : "",
-                            // timeStart: listHistory[index].timeStart,
-                            // timeEnd: listHistory[index].timeEnd,
-                            // status: listHistory[index].status,
-                          );
+                              );
                         }),
-                  ),
                   Text(
                     "Description",
                     style: TextStyle(
@@ -231,7 +212,9 @@ class _ViewDrugScreenState extends State<ViewDrugScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 0, 30, 20),
                     child: TextField(

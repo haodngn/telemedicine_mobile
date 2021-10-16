@@ -62,7 +62,7 @@ class _PatientProfileState extends State<PatientProfile> {
     return Scaffold(
       appBar: AppBar(
         elevation: 8,
-        title: Text("Profile"),
+        title: Text("Thông tin của tôi"),
         centerTitle: true,
         backgroundColor: kBlueColor,
         automaticallyImplyLeading: false,
@@ -147,7 +147,7 @@ class _PatientProfileState extends State<PatientProfile> {
                                   ),
                                 ),
                                 Text(
-                                  "My Account",
+                                  "Tài khoản của tôi",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 22,
@@ -205,7 +205,7 @@ class _PatientProfileState extends State<PatientProfile> {
                                   ),
                                 ),
                                 Text(
-                                  "My Health Check Info",
+                                  "Thông tin sức khỏe",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 22,
@@ -234,7 +234,7 @@ class _PatientProfileState extends State<PatientProfile> {
                             hintText: patientProfileController
                                 .patient.value.allergy == null || patientProfileController
                                 .patient.value.allergy.isEmpty ? patientProfileController
-                                .patient.value.allergy : "No allergies",
+                                .patient.value.allergy : "Không bị dị ứng",
                             icon: Icons.ac_unit_outlined,
                           ),
                           textfield(
@@ -242,7 +242,7 @@ class _PatientProfileState extends State<PatientProfile> {
                                         .patient.value.bloodGroup ==
                                     null || patientProfileController
                                 .patient.value.bloodGroup.isEmpty
-                                ? "Undefined"
+                                ? "Chưa xác định"
                                 : patientProfileController
                                     .patient.value.bloodGroup,
                             icon: Icons.bloodtype_outlined,
@@ -250,7 +250,7 @@ class _PatientProfileState extends State<PatientProfile> {
                           textfield(
                             hintText: patientProfileController
                                 .patient.value.backgroundDisease == null || patientProfileController
-                                .patient.value.backgroundDisease.isEmpty ? "No background disease" : patientProfileController
+                                .patient.value.backgroundDisease.isEmpty ? "Không có bệnh nền" : patientProfileController
                                 .patient.value.backgroundDisease,
                             icon: Icons.ac_unit_outlined,
                           ),
@@ -273,7 +273,7 @@ class _PatientProfileState extends State<PatientProfile> {
                                   ),
                                 ),
                                 Text(
-                                  "General",
+                                  "Chung",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 22,
@@ -284,7 +284,7 @@ class _PatientProfileState extends State<PatientProfile> {
                             ),
                           ),
                           textfield(
-                            hintText: 'History',
+                            hintText: 'Lịch sử',
                             icon: Icons.history,
                             onTap: () => {
                               Get.to(() => PatientHistoryScreen(),
@@ -293,7 +293,7 @@ class _PatientProfileState extends State<PatientProfile> {
                             },
                           ),
                           textfield(
-                            hintText: 'Logout',
+                            hintText: 'Đăng xuất',
                             icon: Icons.logout,
                             onTap: () => {
                               Get.offAll(() => LoginScreen(),

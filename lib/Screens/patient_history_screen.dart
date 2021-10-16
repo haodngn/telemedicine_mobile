@@ -78,7 +78,7 @@ class _PatientHistoryScreenState extends State<PatientHistoryScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 8,
-        title: Text("History"),
+        title: Text("Lịch sử"),
         centerTitle: true,
         backgroundColor: kBlueColor,
         automaticallyImplyLeading: false,
@@ -145,7 +145,7 @@ class BoxHistory extends StatelessWidget {
           !date.endsWith(sameDate) || sameDate.isEmpty ? Padding(
             padding: const EdgeInsets.fromLTRB(0, 20, 260, 10),
             child: Text(
-              date.endsWith( DateFormat('dd/MM/yyyy').format(DateTime.now())) ? "Today" : date,
+              date.endsWith( DateFormat('dd/MM/yyyy').format(DateTime.now())) ? "Hôm nay" : date,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
           ) : Container(),

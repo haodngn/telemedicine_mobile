@@ -167,7 +167,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                       readOnly: chatbotcontroller.isSend.value,
                       controller: textSendMessage,
                       decoration: InputDecoration.collapsed(
-                          hintText: "Send your message",
+                          hintText: "Gửi tin nhắn",
                           hintStyle: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18.0)),
                     )),

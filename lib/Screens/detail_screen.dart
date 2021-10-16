@@ -219,15 +219,15 @@ class DetailScreen extends StatelessWidget {
                             fontSize: 16,
                           ),
                           maxLines: 6,
-                          collapseText: "Show less",
-                          expandText: "Show more",
+                          collapseText: "Thu gọn",
+                          expandText: "Hiển thị thêm",
                         ),
                       ),
                       SizedBox(
                         height: 20,
                       ),
                       Text(
-                        'Upcoming Schedules',
+                        'Lịch tư vấn',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
