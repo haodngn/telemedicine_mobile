@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
-import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/formafterlogin_controller.dart';
 
 class UserInformation extends StatefulWidget {

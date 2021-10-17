@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
 import 'package:telemedicine_mobile/Screens/components/check_login.dart';
 import 'package:telemedicine_mobile/Screens/form_after_login_screen.dart';
-import 'package:telemedicine_mobile/Screens/home_screen.dart';
 import 'package:telemedicine_mobile/controller/google_login_controller.dart';
 
 //button login with google

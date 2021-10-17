@@ -37,7 +37,7 @@ class DoctorCard extends StatelessWidget {
                   errorBuilder: (context, error, stackTrace) => Image.asset("assets/images/default_avatar.png"),
                 ),
                 title: Text(
-                  doctor.majorDoctors.length.toString(),
+                  doctor.name,
                   style: TextStyle(
                     color: kTitleTextColor,
                     fontWeight: FontWeight.bold,
