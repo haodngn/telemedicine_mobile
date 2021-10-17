@@ -1,5 +1,6 @@
 import 'package:expandable_text/expandable_text.dart';
 import 'package:get/get.dart';
+import 'package:telemedicine_mobile/Screens/call_screen/videocall_screen.dart';
 import 'package:telemedicine_mobile/Screens/components/schedule.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:flutter/material.dart';
@@ -57,10 +58,6 @@ class DetailScreen extends StatelessWidget {
                         'assets/icons/back.svg',
                         height: 18,
                       ),
-                    ),
-                    SvgPicture.asset(
-                      'assets/icons/3dots.svg',
-                      height: 18,
                     ),
                   ],
                 ),
@@ -120,14 +117,21 @@ class DetailScreen extends StatelessWidget {
                               ),
                               Row(
                                 children: <Widget>[
-                                  Container(
-                                    padding: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      color: kBlueColor.withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: SvgPicture.asset(
-                                      'assets/icons/phone.svg',
+                                  InkWell(
+                                    onTap: () {
+                                      Get.to(() => CallScreen(),
+                                          transition: Transition.rightToLeftWithFade,
+                                          duration: Duration(microseconds: 600));
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        color: kBlueColor.withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: SvgPicture.asset(
+                                        'assets/icons/phone.svg',
+                                      ),
                                     ),
                                   ),
                                   SizedBox(
