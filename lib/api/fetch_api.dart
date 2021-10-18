@@ -183,9 +183,8 @@ class FetchAPI {
     }
   }
 
-  static Future<String> createNewAccount(
+  static Future<int> createNewAccount(
       AccountPost accountPost, String filePath) async {
-    print("SSS: " + filePath);
     try {
       FormData formData = new FormData.fromMap({
         "image": await MultipartFile.fromFile(filePath, filename: "avatar"),
@@ -202,7 +201,6 @@ class FetchAPI {
         "isMale": accountPost.isMale,
         "roleId": 3,
       });
-      print("fff: " + formData.fields.first.key);
       Response response =
           await Dio().post("https://binhtt.tech/api/v1/accounts",
               data: formData,
@@ -210,46 +208,21 @@ class FetchAPI {
                 HttpHeaders.contentTypeHeader: 'multipart/form-data',
                 HttpHeaders.authorizationHeader: 'Bearer $token',
               }));
-      print("SS: " + response.statusCode.toString());
+      return response.statusCode!;
     } on DioError catch (e) {
-      print("aaaaaaaaaa: " + e.response!.statusCode!.toString());
-            print("bbbbbb: " + e.response!.data.toString());
+      return e.response!.statusCode!;
     }
-
-    // final response = await http.post(
-    //     Uri.parse("https://binhtt.tech/api/v1/accounts"),
-    //     body: jsonEncode(accountPost.toJson()),
-    //     headers: <String, String>{
-    // HttpHeaders.contentTypeHeader: 'multipart/form-data',
-    // HttpHeaders.authorizationHeader: 'Bearer $token',
-    //     });
-    // print("account: " + response.statusCode.toString());
-    // if (response.statusCode == 201) {
-    //   return "Created new patient successfull";
-    // } else if (response.statusCode == 400) {
-    //   return "Field is not matched or duplicated";
-    // } else {
-    //   return "Failed to save request";
-    // }
-    return "true";
   }
 
-  static Future<String> createNewPatient(Patient patient) async {
-    final response = await http.put(
+  static Future<int> createNewPatient(Patient patient) async {
+    final response = await http.post(
         Uri.parse("https://binhtt.tech/api/v1/patients"),
         body: jsonEncode(patient.toJson()),
         headers: <String, String>{
           HttpHeaders.contentTypeHeader: 'application/json-patch+json',
           HttpHeaders.authorizationHeader: 'Bearer $token',
         });
-    print("patient: " + response.statusCode.toString());
-    if (response.statusCode == 201) {
-      return "Created new patient successfull";
-    } else if (response.statusCode == 400) {
-      return "Field is not matched or duplicated";
-    } else {
-      return "Failed to save request";
-    }
+    return response.statusCode;
   }
 
   static Future<String> createNewHealthCheck(
@@ -272,35 +245,60 @@ class FetchAPI {
     }
   }
 
-  static Future<String> updateMyAccountInfo(Account account) async {
-    final response = await http.put(
-        Uri.parse("https://binhtt.tech/api/v1/accounts"),
-        body: account.toJson(),
-        headers: <String, String>{
-          HttpHeaders.contentTypeHeader: 'multipart/form-data',
-          HttpHeaders.authorizationHeader: 'Bearer $token',
+  static Future<int> updateMyAccountInfo(
+      Account account, String filePath) async {
+    try {
+      FormData formData;
+      if (filePath.isEmpty) {
+        formData = new FormData.fromMap({
+          "id": account.id,
+          "firstName": account.firstName,
+          "lastName": account.lastName,
+          "ward": account.ward,
+          "streetAddress": account.streetAddress,
+          "locality": account.locality,
+          "city": account.city,
+          "postalCode": "000000",
+          "phone": account.phone,
+          "dob": account.dob,
+          "isMale": account.isMale,
         });
-    if (response.statusCode == 201) {
-      return "Created new patient successfull";
-    } else if (response.statusCode == 400) {
-      return "Field is not matched";
-    } else if (response.statusCode == 401) {
-      return "Unauthorized";
-    } else if (response.statusCode == 403) {
-      return "Forbidden";
-    } else if (response.statusCode == 404) {
-      return "Not found";
-    } else {
-      return "Failed to save request";
+      } else {
+        formData = new FormData.fromMap({
+          "id": account.id,
+          "image": await MultipartFile.fromFile(filePath, filename: "avatar"),
+          "firstName": account.firstName,
+          "lastName": account.lastName,
+          "ward": account.ward,
+          "streetAddress": account.streetAddress,
+          "locality": account.locality,
+          "city": account.city,
+          "postalCode": "000000",
+          "phone": account.phone,
+          "dob": account.dob,
+          "isMale": account.isMale,
+        });
+      }
+      Response response = await Dio().put("https://binhtt.tech/api/v1/accounts",
+          data: formData,
+          options: Options(headers: <String, String>{
+            HttpHeaders.contentTypeHeader: 'multipart/form-data',
+            HttpHeaders.authorizationHeader: 'Bearer $token',
+          }));
+      print("object: " + response.statusCode.toString());
+      return response.statusCode!;
+    } on DioError catch (e) {
+      print("object: " + e.response!.statusCode.toString());
+      return e.response!.statusCode!;
     }
   }
 
   static Future<String> updateMyPatientInfo(Patient patient) async {
     final response = await http.put(
         Uri.parse("https://binhtt.tech/api/v1/patients"),
-        body: patient.toJson(),
+        body: jsonEncode(patient.toJson()),
         headers: <String, String>{
-          HttpHeaders.contentTypeHeader: 'application/json-patch+json',
+          HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.authorizationHeader: 'Bearer $token',
         });
     if (response.statusCode == 201) {

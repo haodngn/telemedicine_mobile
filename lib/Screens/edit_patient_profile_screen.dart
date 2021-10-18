@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:telemedicine_mobile/Screens/patient_profile_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
@@ -23,6 +25,32 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
   void initState() {
     super.initState();
     patientProfileController.getAddress();
+    patientProfileController.image.value = new File("");
+  }
+
+  void _showOptions(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+              height: 120,
+              child: Column(children: <Widget>[
+                ListTile(
+                    onTap: () {
+                      Navigator.pop(context);
+                      patientProfileController.pickImage(ImageSource.camera);
+                    },
+                    leading: Icon(Icons.photo_camera),
+                    title: Text("Chụp ảnh từ camera")),
+                ListTile(
+                    onTap: () {
+                      Navigator.pop(context);
+                      patientProfileController.pickImage(ImageSource.gallery);
+                    },
+                    leading: Icon(Icons.photo_library),
+                    title: Text("Chọn ảnh trong máy"))
+              ]));
+        });
   }
 
   @override
@@ -57,32 +85,39 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Center(
-                      child: Stack(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(10.0),
-                            width: MediaQuery.of(context).size.width / 2,
-                            height: MediaQuery.of(context).size.width / 2,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white, width: 5),
-                              shape: BoxShape.circle,
-                              color: Colors.white,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(patientProfileController
-                                            .patient.value.avatar ==
-                                        ""
-                                    ? 'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg'
-                                    : patientProfileController
-                                        .patient.value.avatar),
-                              ),
-                            ),
+                      child: InkWell(
+                        onTap: () => _showOptions(context),
+                        child: Container(
+                          padding: EdgeInsets.all(10.0),
+                          width: MediaQuery.of(context).size.width / 2,
+                          height: MediaQuery.of(context).size.width / 2,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white, width: 5),
+                            shape: BoxShape.circle,
+                            color: Colors.white,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(150, 150, 0, 0),
-                            child: Icon(Icons.camera_alt_outlined),
-                          ),
-                        ],
+                          child:
+                              patientProfileController.image.value.path.isEmpty
+                                  ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(80),
+                                      child: Image(
+                                        fit: BoxFit.cover,
+                                        image: NetworkImage(patientProfileController
+                                                    .patient.value.avatar ==
+                                                ""
+                                            ? 'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg'
+                                            : patientProfileController
+                                                .patient.value.avatar),
+                                      ),
+                                    )
+                                  : ClipRRect(
+                                      borderRadius: BorderRadius.circular(80),
+                                      child: Image.file(
+                                        patientProfileController.image.value,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                        ),
                       ),
                     ),
                     SizedBox(height: 30),
@@ -293,13 +328,19 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                                 child: Text("Chọn Tỉnh/Thành phố"),
                               ),
                               onChanged: (newValue) {
-                                patientProfileController.city.value = newValue.toString();
-                                patientProfileController.setListDistrict(newValue);
+                                patientProfileController.city.value =
+                                    newValue.toString();
+                                patientProfileController
+                                    .setListDistrict(newValue);
                                 patientProfileController.district.value = "";
                                 patientProfileController.ward.value = "";
                                 patientProfileController.listWard.value = [];
                               },
-                              value: patientProfileController.city.value == null || patientProfileController.city.value == "" ? null : patientProfileController.city.value,
+                              value: patientProfileController.city.value ==
+                                          null ||
+                                      patientProfileController.city.value == ""
+                                  ? null
+                                  : patientProfileController.city.value,
                               isExpanded: true,
                               items: patientProfileController.listCity
                                   .map((x) => x.name)
@@ -349,11 +390,17 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                                 child: Text("Chọn Quận/Huyện"),
                               ),
                               onChanged: (newValue) {
-                                patientProfileController.district.value = newValue.toString();
+                                patientProfileController.district.value =
+                                    newValue.toString();
                                 patientProfileController.ward.value = "";
                                 patientProfileController.setListWard(newValue);
                               },
-                              value: patientProfileController.district.value == null || patientProfileController.district.value == "" ? null : patientProfileController.district.value,
+                              value: patientProfileController.district.value ==
+                                          null ||
+                                      patientProfileController.district.value ==
+                                          ""
+                                  ? null
+                                  : patientProfileController.district.value,
                               isExpanded: true,
                               items: patientProfileController.listDistrict
                                   .map((x) => x.name)
@@ -367,7 +414,6 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                                       valueItem,
                                       style: TextStyle(
                                           color: Colors.black,
-                                          //Color(0xff6200ee),
                                           fontSize: 16.0,
                                           fontWeight: FontWeight.w500),
                                     ),
@@ -379,6 +425,16 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                         )
                       ],
                     ),
+                    patientProfileController.district.value.isEmpty &&
+                            patientProfileController.emptyDistrict.value
+                        ? Padding(
+                            padding: const EdgeInsets.only(left: 110),
+                            child: Text(
+                              "Vui lòng chọn quận, huyện",
+                              style: TextStyle(color: Colors.red, fontSize: 14),
+                            ),
+                          )
+                        : Container(),
                     SizedBox(
                       height: 20,
                     ),
@@ -406,9 +462,14 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                                 child: Text("Chọn Phường/Xã"),
                               ),
                               onChanged: (newValue) {
-                                patientProfileController.ward.value = newValue.toString();
+                                patientProfileController.ward.value =
+                                    newValue.toString();
                               },
-                              value: patientProfileController.ward.value == null || patientProfileController.ward.value == "" ? null : patientProfileController.ward.value,
+                              value: patientProfileController.ward.value ==
+                                          null ||
+                                      patientProfileController.ward.value == ""
+                                  ? null
+                                  : patientProfileController.ward.value,
                               isExpanded: true,
                               items: patientProfileController.listWard
                                   .map((x) => x.name)
@@ -433,6 +494,16 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                         ),
                       ],
                     ),
+                    patientProfileController.ward.value.isEmpty &&
+                            patientProfileController.emptyWard.value
+                        ? Padding(
+                            padding: const EdgeInsets.only(left: 110),
+                            child: Text(
+                              "Vui lòng chọn phường, xã",
+                              style: TextStyle(color: Colors.red, fontSize: 14),
+                            ),
+                          )
+                        : Container(),
                     SizedBox(
                       height: 15,
                     ),
@@ -472,9 +543,16 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8)),
                         ),
-                        onPressed: () => Get.to(() => PatientProfile(),
-                        transition: Transition.rightToLeftWithFade,
-                        duration: Duration(milliseconds: 600)),
+                        onPressed: () => {
+                          patientProfileController.updateAccountInfo(
+                              textFirstNameController.text,
+                              textLastNameController.text,
+                              textPhoneController.text,
+                              textStreetController.text),
+                          Get.to(() => PatientProfile(),
+                              transition: Transition.rightToLeftWithFade,
+                              duration: Duration(milliseconds: 600)),
+                        },
                         child: Text(
                           "Lưu",
                           style: TextStyle(

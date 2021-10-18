@@ -166,8 +166,7 @@ class FormAfterLoginController extends GetxController {
         email: patientProfileController.myEmail.value,
         firstName: fName,
         lastName: lName,
-        image:
-            "https://cdn.icon-icons.com/icons2/1736/PNG/512/4043260-avatar-male-man-portrait_113269.png",
+        image: "",
         ward: ward.value,
         streetAddress: street,
         locality: district.value,
@@ -183,16 +182,18 @@ class FormAfterLoginController extends GetxController {
           id: 0,
           email: patientProfileController.myEmail.value,
           name: fName + " " + lName,
-          avatar:
-              "https://cdn.icon-icons.com/icons2/1736/PNG/512/4043260-avatar-male-man-portrait_113269.png",
+          avatar: "",
           backgroundDisease: backgroundDisease,
           allergy: allergy,
           bloodGroup: bloodGroup,
           isActive: true,
           healthChecks: []);
+      FetchAPI.createNewAccount(newAccount, image.value.path).then((value) {
+        if (value == 201) {
+          FetchAPI.createNewPatient(newPatient);
+        }
+      });
 
-      FetchAPI.createNewAccount(newAccount, image.value.path);
-      // FetchAPI.createNewPatient(newPatient);
       done.value = true;
     }
   }

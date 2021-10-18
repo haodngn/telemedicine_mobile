@@ -34,26 +34,24 @@ class _UserInformationState extends State<UserInformation> {
     formAfterLoginController.getAddress();
   }
 
-   void _showOptions(BuildContext context) {
+  void _showOptions(BuildContext context) {
     showModalBottomSheet(
         context: context,
         builder: (context) {
           return Container(
-              height: 150,
+              height: 120,
               child: Column(children: <Widget>[
                 ListTile(
                     onTap: () {
                       Navigator.pop(context);
-                      formAfterLoginController
-                                  .pickImage(ImageSource.camera);
+                      formAfterLoginController.pickImage(ImageSource.camera);
                     },
                     leading: Icon(Icons.photo_camera),
                     title: Text("Chụp ảnh từ camera")),
                 ListTile(
                     onTap: () {
                       Navigator.pop(context);
-                      formAfterLoginController
-                                  .pickImage(ImageSource.gallery);
+                      formAfterLoginController.pickImage(ImageSource.gallery);
                     },
                     leading: Icon(Icons.photo_library),
                     title: Text("Chọn ảnh trong máy"))
@@ -89,40 +87,29 @@ class _UserInformationState extends State<UserInformation> {
                     ),
                     SizedBox(height: 30),
                     Center(
-                      child: Stack(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(10.0),
-                            width: MediaQuery.of(context).size.width / 2,
-                            height: MediaQuery.of(context).size.width / 2,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white, width: 5),
-                              shape: BoxShape.circle,
-                            ),
-                            child: formAfterLoginController
-                                    .image.value.path.isEmpty
-                                ? Image(
-                                    image: AssetImage(
-                                        'assets/images/default_avatar.png'))
-                                : ClipRRect(
-                                    borderRadius: BorderRadius.circular(80),
-                                    child: Image.file(
-                                      formAfterLoginController.image.value,
-                                      fit: BoxFit.cover,
+                      child: InkWell(
+                        onTap: () => {_showOptions(context)},
+                        child: Container(
+                          padding: EdgeInsets.all(10.0),
+                          width: MediaQuery.of(context).size.width / 2,
+                          height: MediaQuery.of(context).size.width / 2,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white, width: 5),
+                            shape: BoxShape.circle,
+                          ),
+                          child:
+                              formAfterLoginController.image.value.path.isEmpty
+                                  ? Image(
+                                      image: AssetImage(
+                                          'assets/images/default_avatar.png'))
+                                  : ClipRRect(
+                                      borderRadius: BorderRadius.circular(80),
+                                      child: Image.file(
+                                        formAfterLoginController.image.value,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
-                                  ),
-                          ),
-                          InkWell(
-                            onTap: () => {
-                               _showOptions(context)
-                            },
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(150, 150, 0, 0),
-                              child: Icon(Icons.camera_alt_outlined),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
                     SizedBox(height: 20),
