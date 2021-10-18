@@ -1,6 +1,7 @@
 import 'package:expandable_text/expandable_text.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:telemedicine_mobile/Screens/call_screen/videocall_screen.dart';
 import 'package:telemedicine_mobile/Screens/components/schedule.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:flutter/material.dart';
@@ -82,6 +83,18 @@ class DetailScreen extends StatelessWidget {
                       top: Radius.circular(50),
                     ),
                   ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.005,
+                ),
+                Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: kBackgroundColor,
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(50),
+                    ),
+                  ),
                   child: Padding(
                     padding: EdgeInsets.all(30),
                     child: Column(
@@ -116,196 +129,225 @@ class DetailScreen extends StatelessWidget {
                                 SizedBox(
                                   height: 10,
                                 ),
-                                Container(
-                                  width: 200,
-                                  child: Text(
-                                    _scopeOfPractice,
-                                    style: TextStyle(
-                                      color: kTitleTextColor.withOpacity(0.7),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
                                 Row(
                                   children: <Widget>[
-                                    Container(
-                                      padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        color: kBlueColor.withOpacity(0.1),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: SvgPicture.asset(
-                                        'assets/icons/phone.svg',
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 16,
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        color: kYellowColor.withOpacity(0.1),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: SvgPicture.asset(
-                                        'assets/icons/chat.svg',
+                                    InkWell(
+                                      onTap: () {
+                                        Get.to(() => CallScreen(),
+                                            transition:
+                                                Transition.rightToLeftWithFade,
+                                            duration:
+                                                Duration(microseconds: 600));
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          color: kBlueColor.withOpacity(0.1),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: SvgPicture.asset(
+                                          'assets/icons/phone.svg',
+                                        ),
                                       ),
                                     ),
                                     SizedBox(
-                                      width: 16,
+                                      height: 10,
                                     ),
-                                    Container(
-                                      padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        color: kOrangeColor.withOpacity(0.1),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: SvgPicture.asset(
-                                        'assets/icons/video.svg',
-                                      ),
+                                    Row(
+                                      children: <Widget>[
+                                        Container(
+                                          padding: EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            color: kBlueColor.withOpacity(0.1),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: SvgPicture.asset(
+                                            'assets/icons/phone.svg',
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 16,
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            color:
+                                                kYellowColor.withOpacity(0.1),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: SvgPicture.asset(
+                                            'assets/icons/chat.svg',
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 16,
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            color:
+                                                kOrangeColor.withOpacity(0.1),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: SvgPicture.asset(
+                                            'assets/icons/video.svg',
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
-                                ),
+                                )
                               ],
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: 50,
-                        ),
-                        Text(
-                          'Thông tin bác sĩ',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                            color: kTitleTextColor,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          child: ExpandableText(
-                            "Công tác tại: " +
-                                hospitalDoctors
-                                    .map((hospitalD) {
-                                      return hospitalD.hospital.name;
-                                    })
-                                    .toList()
-                                    .toString()
-                                    .replaceAll("[", "")
-                                    .replaceAll("]", "") +
-                                "\nChuyên ngành: " +
-                                majorDoctors
-                                    .map((majorD) {
-                                      return majorD.major.name;
-                                    })
-                                    .toList()
-                                    .toString()
-                                    .replaceAll("[", "")
-                                    .replaceAll("]", "") +
-                                "\nChứng chỉ: " +
-                                certificationDoctors
-                                    .map((certificationD) {
-                                      return certificationD.certification.name;
-                                    })
-                                    .toList()
-                                    .toString()
-                                    .replaceAll("[", "")
-                                    .replaceAll("]", "") +
-                                "\nMô tả: " +
-                                certificationDoctors
-                                    .map((certificationD) {
-                                      return certificationD
-                                          .certification.description;
-                                    })
-                                    .toList()
-                                    .toString()
-                                    .replaceAll("[", "")
-                                    .replaceAll("]",
-                                        ""), // + _description==null || _description.isEmpty ? "" : _description,
-                            style: TextStyle(
-                              height: 1.6,
-                              color: kTitleTextColor.withOpacity(0.7),
-                              fontSize: 16,
                             ),
-                            maxLines: 6,
-                            collapseText: "Thu gọn",
-                            expandText: "Hiển thị thêm",
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          'Lịch tư vấn',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                            color: kTitleTextColor,
-                          ),
-                        ),
-                        listDoctorController.listSlot.length > 0
-                            ? ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: listDoctorController.listSlot.length,
-                                itemBuilder: (BuildContext context, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(bottom: 20),
-                                    child: ScheduleCard(
-                                      'Buổi tư vấn',
-                                      DateFormat('EEEE').format(DateTime.parse(
-                                              listDoctorController
-                                                  .listSlot[index]
-                                                  .assignedDate)) +
-                                          ' . ' +
-                                          listDoctorController
-                                              .listSlot[index].startTime
-                                              .toString()
-                                              .replaceRange(5, 8, "") +
-                                          " - " +
-                                          listDoctorController
-                                              .listSlot[index].endTime
-                                              .toString()
-                                              .replaceRange(5, 8, ""),
-                                      DateFormat('dd').format(DateTime.parse(
-                                          listDoctorController
-                                              .listSlot[index].assignedDate)),
-                                      DateFormat('MMM').format(DateTime.parse(
-                                          listDoctorController
-                                              .listSlot[index].assignedDate)),
-                                      index % 3 == 0
-                                          ? kOrangeColor
-                                          : index % 2 == 0
-                                              ? kYellowColor
-                                              : kBlueColor,
-                                      listDoctorController
-                                          .listSlot[index].healthCheckID,
-                                      listDoctorController.listSlot[index]
-                                          .healthCheck.patient.email,
-                                      listDoctorController.listSlot[index],
-                                    ),
-                                  );
-                                })
-                            : Padding(
-                                padding: const EdgeInsets.only(top: 20),
-                                child: Center(
-                                    child: Text(
-                                  "Bác sĩ chưa có lịch tư vấn",
-                                  style: TextStyle(fontSize: 20),
-                                )),
+                            SizedBox(
+                              height: 50,
+                            ),
+                            Text(
+                              'Thông tin bác sĩ',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: kTitleTextColor,
                               ),
-                        SizedBox(
-                          height: 20,
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              width: double.infinity,
+                              child: ExpandableText(
+                                "Công tác tại: " +
+                                    hospitalDoctors
+                                        .map((hospitalD) {
+                                          return hospitalD.hospital.name;
+                                        })
+                                        .toList()
+                                        .toString()
+                                        .replaceAll("[", "")
+                                        .replaceAll("]", "") +
+                                    "\nChuyên ngành: " +
+                                    majorDoctors
+                                        .map((majorD) {
+                                          return majorD.major.name;
+                                        })
+                                        .toList()
+                                        .toString()
+                                        .replaceAll("[", "")
+                                        .replaceAll("]", "") +
+                                    "\nChứng chỉ: " +
+                                    certificationDoctors
+                                        .map((certificationD) {
+                                          return certificationD
+                                              .certification.name;
+                                        })
+                                        .toList()
+                                        .toString()
+                                        .replaceAll("[", "")
+                                        .replaceAll("]", "") +
+                                    "\nMô tả: " +
+                                    certificationDoctors
+                                        .map((certificationD) {
+                                          return certificationD
+                                              .certification.description;
+                                        })
+                                        .toList()
+                                        .toString()
+                                        .replaceAll("[", "")
+                                        .replaceAll("]",
+                                            ""), // + _description==null || _description.isEmpty ? "" : _description,
+                                style: TextStyle(
+                                  height: 1.6,
+                                  color: kTitleTextColor.withOpacity(0.7),
+                                  fontSize: 16,
+                                ),
+                                maxLines: 6,
+                                collapseText: "Thu gọn",
+                                expandText: "Hiển thị thêm",
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              'Lịch tư vấn',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: kTitleTextColor,
+                              ),
+                            ),
+                            listDoctorController.listSlot.length > 0
+                                ? ListView.builder(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount:
+                                        listDoctorController.listSlot.length,
+                                    itemBuilder: (BuildContext context, index) {
+                                      return Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 20),
+                                        child: ScheduleCard(
+                                          'Buổi tư vấn',
+                                          DateFormat('EEEE').format(
+                                                  DateTime.parse(
+                                                      listDoctorController
+                                                          .listSlot[index]
+                                                          .assignedDate)) +
+                                              ' . ' +
+                                              listDoctorController
+                                                  .listSlot[index].startTime
+                                                  .toString()
+                                                  .replaceRange(5, 8, "") +
+                                              " - " +
+                                              listDoctorController
+                                                  .listSlot[index].endTime
+                                                  .toString()
+                                                  .replaceRange(5, 8, ""),
+                                          DateFormat('dd').format(
+                                              DateTime.parse(
+                                                  listDoctorController
+                                                      .listSlot[index]
+                                                      .assignedDate)),
+                                          DateFormat('MMM').format(
+                                              DateTime.parse(
+                                                  listDoctorController
+                                                      .listSlot[index]
+                                                      .assignedDate)),
+                                          index % 3 == 0
+                                              ? kOrangeColor
+                                              : index % 2 == 0
+                                                  ? kYellowColor
+                                                  : kBlueColor,
+                                          listDoctorController
+                                              .listSlot[index].healthCheckID,
+                                          listDoctorController.listSlot[index]
+                                              .healthCheck.patient.email,
+                                          listDoctorController.listSlot[index],
+                                        ),
+                                      );
+                                    })
+                                : Padding(
+                                    padding: const EdgeInsets.only(top: 20),
+                                    child: Center(
+                                      child: Text(
+                                        "Bác sĩ chưa có lịch tư vấn",
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                    ),
+                                  ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),
