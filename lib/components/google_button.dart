@@ -33,9 +33,9 @@ class GoogleButton extends StatelessWidget {
   }
 
   Widget checkLoginGoogle(BuildContext context) {
-    if (false)
-      return UserInformation();
-    else
+    // if (false)
+    //   return UserInformation();
+    // else
       return BottomNavScreen();
   }
 }
