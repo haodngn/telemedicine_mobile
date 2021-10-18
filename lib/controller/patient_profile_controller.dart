@@ -9,6 +9,8 @@ import 'package:telemedicine_mobile/models/Patient.dart';
 import 'package:telemedicine_mobile/models/Role.dart';
 
 class PatientProfileController extends GetxController {
+  RxString myEmail = "vantam@gmail.com".obs;
+
   Rx<Patient> patient = new Patient(
       id: 0,
       email: "",
@@ -38,8 +40,8 @@ class PatientProfileController extends GetxController {
           role: new Role(id: 0, name: "", isActive: true))
       .obs;
 
-  getMyPatient() async {
-    await FetchAPI.fetchMyPatient().then((dataFromServer) {
+  getMyPatient() {
+    FetchAPI.fetchMyPatient(myEmail.value).then((dataFromServer) {
       patient.value = dataFromServer;
     });
   }
@@ -57,38 +59,46 @@ class PatientProfileController extends GetxController {
     FetchAddressAPI.fetchProvinces().then((dataFromServer) {
       listCity.value = dataFromServer;
     });
-    new Future.delayed(const Duration(seconds: 2), () => {
-      setListDistrict(account.value.city),
-      setListWard(account.value.locality),
-    });
+    new Future.delayed(
+        const Duration(seconds: 2),
+        () => {
+              setListDistrict(account.value.city),
+              setListWard(account.value.locality),
+            });
   }
 
   setListDistrict(value) {
     listCity
         .map((element) => {
-      if(element.name == value) {listDistrict.value = element.districts}
-    }).toList();
+              if (element.name == value)
+                {listDistrict.value = element.districts}
+            })
+        .toList();
   }
 
   setListWard(value) {
     listDistrict
         .map((element) => {
-      if(element.name == value) {listWard.value = element.wards}
-    }).toList();
+              if (element.name == value) {listWard.value = element.wards}
+            })
+        .toList();
   }
 
   getMyAccount() {
-    FetchAPI.fetchMyAccount().then((dataFromServer) {
+    FetchAPI.fetchAccountDetail(myEmail.value).then((dataFromServer) {
       account.value = dataFromServer;
     });
 
-    new Future.delayed(const Duration(seconds: 2), () => {
-      isMale.value = account.value.isMale,
-      dob.value = DateFormat('yyyy-MM-dd').format(DateTime.parse(account.value.dob)),
-      city.value = account.value.city,
-      district.value = account.value.locality,
-      ward.value = account.value.ward,
-    });
+    new Future.delayed(
+        const Duration(seconds: 2),
+        () => {
+              isMale.value = account.value.isMale,
+              dob.value = DateFormat('yyyy-MM-dd')
+                  .format(DateTime.parse(account.value.dob)),
+              city.value = account.value.city,
+              district.value = account.value.locality,
+              ward.value = account.value.ward,
+            });
   }
 
   Future pickDate(BuildContext context) async {
@@ -101,10 +111,5 @@ class PatientProfileController extends GetxController {
 
     if (newDate == null) return;
     dob.value = DateFormat('yyyy-MM-dd').format(newDate as DateTime);
-  }
-
-  abc() {
-    // dob = DateTime.parse(account.value.dob).obs;
-    print("sex: " + district.value);
   }
 }

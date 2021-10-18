@@ -155,7 +155,7 @@ class _PatientProfileState extends State<PatientProfile> {
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 101,
+                                  width: 52,
                                 ),
                                 RawMaterialButton(
                                   onPressed: () => {
@@ -178,8 +178,7 @@ class _PatientProfileState extends State<PatientProfile> {
                             icon: Icons.email_outlined,
                           ),
                           textfield(
-                            hintText:
-                                patientProfileController.dob.value,
+                            hintText: patientProfileController.dob.value,
                             icon: Icons.date_range,
                           ),
                           textfield(
@@ -213,7 +212,7 @@ class _PatientProfileState extends State<PatientProfile> {
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 7,
+                                  width: 30,
                                 ),
                                 RawMaterialButton(
                                   onPressed: () => {
@@ -232,16 +231,18 @@ class _PatientProfileState extends State<PatientProfile> {
                           ),
                           textfield(
                             hintText: patientProfileController
-                                .patient.value.allergy == null || patientProfileController
-                                .patient.value.allergy.isEmpty ? patientProfileController
-                                .patient.value.allergy : "Không bị dị ứng",
+                                            .patient.value.allergy == null||
+                                    patientProfileController
+                                        .patient.value.allergy.isEmpty
+                                ? "Không bị dị ứng" : patientProfileController.patient.value.allergy,
                             icon: Icons.ac_unit_outlined,
                           ),
                           textfield(
                             hintText: patientProfileController
-                                        .patient.value.bloodGroup ==
-                                    null || patientProfileController
-                                .patient.value.bloodGroup.isEmpty
+                                            .patient.value.bloodGroup ==
+                                        null ||
+                                    patientProfileController
+                                        .patient.value.bloodGroup.isEmpty
                                 ? "Chưa xác định"
                                 : patientProfileController
                                     .patient.value.bloodGroup,
@@ -249,9 +250,13 @@ class _PatientProfileState extends State<PatientProfile> {
                           ),
                           textfield(
                             hintText: patientProfileController
-                                .patient.value.backgroundDisease == null || patientProfileController
-                                .patient.value.backgroundDisease.isEmpty ? "Không có bệnh nền" : patientProfileController
-                                .patient.value.backgroundDisease,
+                                            .patient.value.backgroundDisease ==
+                                        null ||
+                                    patientProfileController
+                                        .patient.value.backgroundDisease.isEmpty
+                                ? "Không có bệnh nền"
+                                : patientProfileController
+                                    .patient.value.backgroundDisease,
                             icon: Icons.ac_unit_outlined,
                           ),
                           Container(

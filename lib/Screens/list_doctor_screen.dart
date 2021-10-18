@@ -64,10 +64,11 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
                 ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                      itemCount: listDoctorController.listDoctor.length,
-                      itemBuilder: (BuildContext context, index) {
-                        return buildDoctorList(listDoctorController.listDoctor[index]);
-                      }),
+                    itemCount: listDoctorController.listDoctor.length,
+                    itemBuilder: (BuildContext context, index) {
+                      return buildDoctorList(
+                          listDoctorController.listDoctor[index]);
+                    }),
               ],
             ),
           ),

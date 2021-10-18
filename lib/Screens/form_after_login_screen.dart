@@ -1,7 +1,12 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
-import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/formafterlogin_controller.dart';
 
 class UserInformation extends StatefulWidget {
@@ -17,13 +22,43 @@ class _UserInformationState extends State<UserInformation> {
   TextEditingController textFirstNameController = TextEditingController();
   TextEditingController textLastNameController = TextEditingController();
   TextEditingController textPhoneController = TextEditingController();
-  TextEditingController textEmailController = TextEditingController();
   TextEditingController textStreetController = TextEditingController();
+  TextEditingController textAllergyController = TextEditingController();
+  TextEditingController textBloodGroupController = TextEditingController();
+  TextEditingController textBackgroundDiseaseController =
+      TextEditingController();
 
   @override
   void initState() {
     super.initState();
     formAfterLoginController.getAddress();
+  }
+
+   void _showOptions(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+              height: 150,
+              child: Column(children: <Widget>[
+                ListTile(
+                    onTap: () {
+                      Navigator.pop(context);
+                      formAfterLoginController
+                                  .pickImage(ImageSource.camera);
+                    },
+                    leading: Icon(Icons.photo_camera),
+                    title: Text("Chụp ảnh từ camera")),
+                ListTile(
+                    onTap: () {
+                      Navigator.pop(context);
+                      formAfterLoginController
+                                  .pickImage(ImageSource.gallery);
+                    },
+                    leading: Icon(Icons.photo_library),
+                    title: Text("Chọn ảnh trong máy"))
+              ]));
+        });
   }
 
   @override
@@ -63,16 +98,29 @@ class _UserInformationState extends State<UserInformation> {
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.white, width: 5),
                               shape: BoxShape.circle,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: AssetImage(
-                                    'assets/images/default_avatar.png'),
-                              ),
                             ),
+                            child: formAfterLoginController
+                                    .image.value.path.isEmpty
+                                ? Image(
+                                    image: AssetImage(
+                                        'assets/images/default_avatar.png'))
+                                : ClipRRect(
+                                    borderRadius: BorderRadius.circular(80),
+                                    child: Image.file(
+                                      formAfterLoginController.image.value,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(150, 150, 0, 0),
-                            child: Icon(Icons.camera_alt_outlined),
+                          InkWell(
+                            onTap: () => {
+                               _showOptions(context)
+                            },
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(150, 150, 0, 0),
+                              child: Icon(Icons.camera_alt_outlined),
+                            ),
                           ),
                         ],
                       ),
@@ -96,6 +144,11 @@ class _UserInformationState extends State<UserInformation> {
                             decoration: InputDecoration(
                               hintText: "Họ",
                               border: OutlineInputBorder(),
+                              errorText:
+                                  formAfterLoginController.emptyFName.value
+                                      ? "Vui lòng nhập họ của bạn"
+                                      : null,
+                              errorStyle: TextStyle(fontSize: 14),
                             ),
                             keyboardType: TextInputType.name,
                           ),
@@ -121,6 +174,11 @@ class _UserInformationState extends State<UserInformation> {
                             decoration: InputDecoration(
                               hintText: "Tên",
                               border: OutlineInputBorder(),
+                              errorText:
+                                  formAfterLoginController.emptyLName.value
+                                      ? "Vui lòng nhập tên của bạn"
+                                      : null,
+                              errorStyle: TextStyle(fontSize: 14),
                             ),
                             keyboardType: TextInputType.name,
                           ),
@@ -146,7 +204,8 @@ class _UserInformationState extends State<UserInformation> {
                             groupValue:
                                 formAfterLoginController.selectedGender.value,
                             onChanged: (value) {
-                              formAfterLoginController.selectedGender.value = value.toString();
+                              formAfterLoginController.selectedGender.value =
+                                  value.toString();
                             },
                           ),
                         ),
@@ -162,11 +221,12 @@ class _UserInformationState extends State<UserInformation> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(220, 5, 0, 0),
                           child: Radio(
-                            value: "Female",
+                            value: "Nữ",
                             groupValue:
                                 formAfterLoginController.selectedGender.value,
                             onChanged: (value) {
-                              formAfterLoginController.selectedGender.value = value.toString();
+                              formAfterLoginController.selectedGender.value =
+                                  value.toString();
                             },
                           ),
                         ),
@@ -181,6 +241,15 @@ class _UserInformationState extends State<UserInformation> {
                         ),
                       ],
                     ),
+                    formAfterLoginController.emptyGender.value
+                        ? Padding(
+                            padding: const EdgeInsets.only(left: 110),
+                            child: Text(
+                              "Vui lòng chọn giới tính của bạn",
+                              style: TextStyle(color: Colors.red, fontSize: 14),
+                            ),
+                          )
+                        : Container(),
                     SizedBox(height: 10),
                     Stack(
                       children: [
@@ -209,7 +278,7 @@ class _UserInformationState extends State<UserInformation> {
                               onPressed: () =>
                                   formAfterLoginController.pickDate(context),
                               child: Padding(
-                                padding: const EdgeInsets.only(right: 103),
+                                padding: const EdgeInsets.only(right: 106),
                                 child: Text(
                                   formAfterLoginController.dob.value.year >=
                                               DateTime.now().year &&
@@ -220,7 +289,8 @@ class _UserInformationState extends State<UserInformation> {
                                                   .dob.value.day >=
                                               DateTime.now().day
                                       ? ""
-                                      : "${formAfterLoginController.dob.value.day}/${formAfterLoginController.dob.value.month}/${formAfterLoginController.dob.value.year}",
+                                      : DateFormat('yyyy-MM-dd').format(
+                                          formAfterLoginController.dob.value),
                                   style: TextStyle(
                                     fontSize: 18,
                                     color: Colors.black,
@@ -232,6 +302,15 @@ class _UserInformationState extends State<UserInformation> {
                         ),
                       ],
                     ),
+                    formAfterLoginController.emptyDOB.value
+                        ? Padding(
+                            padding: const EdgeInsets.only(left: 110),
+                            child: Text(
+                              "Vui lòng chọn ngày sinh của bạn",
+                              style: TextStyle(color: Colors.red, fontSize: 14),
+                            ),
+                          )
+                        : Container(),
                     SizedBox(height: 15),
                     Stack(
                       children: [
@@ -251,6 +330,11 @@ class _UserInformationState extends State<UserInformation> {
                             decoration: InputDecoration(
                               hintText: "Số điện thoại",
                               border: OutlineInputBorder(),
+                              errorText:
+                                  formAfterLoginController.emptyPhone.value
+                                      ? "Vui lòng nhập số điện thoại"
+                                      : null,
+                              errorStyle: TextStyle(fontSize: 14),
                             ),
                             keyboardType: TextInputType.phone,
                           ),
@@ -281,8 +365,10 @@ class _UserInformationState extends State<UserInformation> {
                                 child: Text("Chọn Tỉnh/Thành phố"),
                               ),
                               onChanged: (value) {
-                                formAfterLoginController.provinceOrCity.value = value.toString();
-                                formAfterLoginController.provinceIsSelect.value = true;
+                                formAfterLoginController.provinceOrCity.value =
+                                    value.toString();
+                                formAfterLoginController
+                                    .provinceIsSelect.value = true;
                                 formAfterLoginController.setListDistrict(value);
                                 formAfterLoginController.changeProvinceSelect();
                               },
@@ -316,6 +402,15 @@ class _UserInformationState extends State<UserInformation> {
                         ),
                       ],
                     ),
+                    formAfterLoginController.emptyCity.value
+                        ? Padding(
+                            padding: const EdgeInsets.only(left: 110),
+                            child: Text(
+                              "Vui lòng chọn thành phố bạn ở",
+                              style: TextStyle(color: Colors.red, fontSize: 14),
+                            ),
+                          )
+                        : Container(),
                     SizedBox(height: 20),
                     Stack(
                       children: [
@@ -341,8 +436,10 @@ class _UserInformationState extends State<UserInformation> {
                                 child: Text("Chọn Quận/Huyện"),
                               ),
                               onChanged: (value) {
-                                formAfterLoginController.district.value = value.toString();
-                                formAfterLoginController.districtIsSelect.value = true;
+                                formAfterLoginController.district.value =
+                                    value.toString();
+                                formAfterLoginController
+                                    .districtIsSelect.value = true;
                                 formAfterLoginController.ward.value = "";
                                 formAfterLoginController.setListWard(value);
                               },
@@ -363,7 +460,6 @@ class _UserInformationState extends State<UserInformation> {
                                       valueItem,
                                       style: TextStyle(
                                           color: Colors.black,
-                                          //Color(0xff6200ee),
                                           fontSize: 16.0,
                                           fontWeight: FontWeight.w500),
                                     ),
@@ -375,6 +471,15 @@ class _UserInformationState extends State<UserInformation> {
                         )
                       ],
                     ),
+                    formAfterLoginController.emptyDistrict.value
+                        ? Padding(
+                            padding: const EdgeInsets.only(left: 110),
+                            child: Text(
+                              "Vui lòng chọn quận, huyện",
+                              style: TextStyle(color: Colors.red, fontSize: 14),
+                            ),
+                          )
+                        : Container(),
                     SizedBox(
                       height: 20,
                     ),
@@ -402,7 +507,8 @@ class _UserInformationState extends State<UserInformation> {
                                 child: Text("Chọn Phường/Xã"),
                               ),
                               onChanged: (value) {
-                                formAfterLoginController.ward.value = value.toString();
+                                formAfterLoginController.ward.value =
+                                    value.toString();
                               },
                               value: formAfterLoginController.ward.value.isEmpty
                                   ? null
@@ -431,6 +537,15 @@ class _UserInformationState extends State<UserInformation> {
                         ),
                       ],
                     ),
+                    formAfterLoginController.emptyWard.value
+                        ? Padding(
+                            padding: const EdgeInsets.only(left: 110),
+                            child: Text(
+                              "Vui lòng chọn phường, xã",
+                              style: TextStyle(color: Colors.red, fontSize: 14),
+                            ),
+                          )
+                        : Container(),
                     SizedBox(
                       height: 20,
                     ),
@@ -452,6 +567,102 @@ class _UserInformationState extends State<UserInformation> {
                             decoration: InputDecoration(
                               hintText: "Đường",
                               border: OutlineInputBorder(),
+                              errorText:
+                                  formAfterLoginController.emptyStreet.value
+                                      ? "Vui lòng nhập địa chỉ của bạn"
+                                      : null,
+                              errorStyle: TextStyle(fontSize: 14),
+                            ),
+                            keyboardType: TextInputType.name,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    Text(
+                      "Thông tin sức khỏe",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 17, 20, 0),
+                          child: Text(
+                            "Dị ứng:",
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(100, 0, 0, 0),
+                          child: TextField(
+                            controller: textAllergyController,
+                            decoration: InputDecoration(
+                              hintText: "Dị ứng",
+                              border: OutlineInputBorder(),
+                            ),
+                            keyboardType: TextInputType.name,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 17, 20, 0),
+                          child: Text(
+                            "Nhóm máu:",
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(100, 0, 0, 0),
+                          child: TextField(
+                            controller: textBloodGroupController,
+                            decoration: InputDecoration(
+                              hintText: "Nhóm máu",
+                              border: OutlineInputBorder(),
+                            ),
+                            keyboardType: TextInputType.name,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 17, 20, 0),
+                          child: Text(
+                            "Bệnh nền:",
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(100, 0, 0, 0),
+                          child: TextField(
+                            controller: textBackgroundDiseaseController,
+                            decoration: InputDecoration(
+                              hintText: "Bệnh nền",
+                              border: OutlineInputBorder(),
                             ),
                             keyboardType: TextInputType.name,
                           ),
@@ -460,13 +671,24 @@ class _UserInformationState extends State<UserInformation> {
                     ),
                     SizedBox(height: 20),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(240, 0, 0, 0),
+                      padding: const EdgeInsets.fromLTRB(220, 0, 0, 0),
                       child: RaisedButton(
                         color: Colors.blue,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8)),
                         ),
-                        onPressed: () => Get.to(BottomNavScreen()),
+                        onPressed: () => {
+                          formAfterLoginController.createAccountPatient(
+                              textFirstNameController.text,
+                              textLastNameController.text,
+                              textPhoneController.text,
+                              textStreetController.text,
+                              textAllergyController.text,
+                              textBloodGroupController.text,
+                              textBackgroundDiseaseController.text),
+                          if (formAfterLoginController.done.value)
+                            Get.to(BottomNavScreen())
+                        },
                         child: Text(
                           "Hoàn tất",
                           style: TextStyle(

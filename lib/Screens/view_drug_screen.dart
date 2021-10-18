@@ -19,7 +19,7 @@ class _ViewDrugScreenState extends State<ViewDrugScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Detail Drug"),
+        title: Text("Đơn thuốc"),
         backgroundColor: kBlueColor,
         elevation: 1,
         leading: IconButton(

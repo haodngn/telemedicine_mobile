@@ -4,7 +4,7 @@ import 'package:telemedicine_mobile/Screens/components/loading.dart';
 import 'package:telemedicine_mobile/Screens/form_after_login_screen.dart';
 
 class CheckLogin extends StatelessWidget {
-  const CheckLogin({Key? key}) : super(key: key);
+  CheckLogin({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -14,7 +14,7 @@ class CheckLogin extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
               } else if (snapshot.hasData) {
-                // return HomeScreen();
+                //  return BottomNavScreen();
                 return UserInformation();
               } else if (snapshot.hasError) {
                 return Center(child: Text("Something Went Wrong!"));

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:telemedicine_mobile/Screens/patient_profile_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 
@@ -298,7 +299,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                                 patientProfileController.ward.value = "";
                                 patientProfileController.listWard.value = [];
                               },
-                              value: patientProfileController.city.value,
+                              value: patientProfileController.city.value == null || patientProfileController.city.value == "" ? null : patientProfileController.city.value,
                               isExpanded: true,
                               items: patientProfileController.listCity
                                   .map((x) => x.name)
@@ -312,7 +313,6 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                                       valueItem,
                                       style: TextStyle(
                                           color: Colors.black,
-                                          //Color(0xff6200ee),
                                           fontSize: 16.0,
                                           fontWeight: FontWeight.w500),
                                     ),
@@ -353,7 +353,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                                 patientProfileController.ward.value = "";
                                 patientProfileController.setListWard(newValue);
                               },
-                              value: patientProfileController.district.value.isEmpty ? null : patientProfileController.district.value,
+                              value: patientProfileController.district.value == null || patientProfileController.district.value == "" ? null : patientProfileController.district.value,
                               isExpanded: true,
                               items: patientProfileController.listDistrict
                                   .map((x) => x.name)
@@ -408,7 +408,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                               onChanged: (newValue) {
                                 patientProfileController.ward.value = newValue.toString();
                               },
-                              value: patientProfileController.ward.value.isEmpty ? null : patientProfileController.ward.value,
+                              value: patientProfileController.ward.value == null || patientProfileController.ward.value == "" ? null : patientProfileController.ward.value,
                               isExpanded: true,
                               items: patientProfileController.listWard
                                   .map((x) => x.name)
@@ -472,10 +472,9 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8)),
                         ),
-                        onPressed: () => patientProfileController.abc(),
-                        // Get.to(() => PatientProfile(),
-                        // transition: Transition.rightToLeftWithFade,
-                        // duration: Duration(milliseconds: 600)),
+                        onPressed: () => Get.to(() => PatientProfile(),
+                        transition: Transition.rightToLeftWithFade,
+                        duration: Duration(milliseconds: 600)),
                         child: Text(
                           "Lưu",
                           style: TextStyle(

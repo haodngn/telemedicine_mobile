@@ -1,4 +1,8 @@
+import 'package:telemedicine_mobile/models/HealthCheckDisease.dart';
 import 'package:telemedicine_mobile/models/Patient.dart';
+import 'package:telemedicine_mobile/models/Prescription.dart';
+import 'package:telemedicine_mobile/models/Slot.dart';
+import 'package:telemedicine_mobile/models/SymptomHealthCheck.dart';
 
 class HealthCheck {
   late int id;
@@ -14,10 +18,10 @@ class HealthCheck {
   late String canceledTime;
   late String status;
   late Patient patient;
-  // late List<HealthCheckDiseases> healthCheckDiseases = [];
-  // late List<Prescriptions> prescriptions = [];
-  // late List<Slots> slots = [];
-  // late List<SymptomHealthChecks> symptomHealthChecks = [];
+  late List<HealthCheckDisease> healthCheckDiseases = [];
+  late List<Prescription> prescriptions = [];
+  late List<Slot> slots = [];
+  late List<SymptomHealthCheck> symptomHealthChecks = [];
 
   HealthCheck(
       {required this.id,
@@ -33,10 +37,10 @@ class HealthCheck {
       required this.canceledTime,
       required this.status,
       required this.patient,
-      // required this.healthCheckDiseases,
-      // required this.prescriptions,
-      // required this.slots,
-      // required this.symptomHealthChecks
+      required this.healthCheckDiseases,
+      required this.prescriptions,
+      required this.slots,
+      required this.symptomHealthChecks
       });
 
   HealthCheck.fromJson(Map<String, dynamic> json) {
@@ -55,26 +59,26 @@ class HealthCheck {
     if (json['patient'] != null) {
       patient = new Patient.fromJson(json['patient']);
     }
-    // if (json['healthCheckDiseases'] != null) {
-    //   json['healthCheckDiseases'].forEach((v) {
-    //     healthCheckDiseases.add(new HealthCheckDiseases.fromJson(v));
-    //   });
-    // }
-    // if (json['prescriptions'] != null) {
-    //   json['prescriptions'].forEach((v) {
-    //     prescriptions.add(new Prescriptions.fromJson(v));
-    //   });
-    // }
-    // if (json['slots'] != null) {
-    //   json['slots'].forEach((v) {
-    //     slots.add(new Slots.fromJson(v));
-    //   });
-    // }
-    // if (json['symptomHealthChecks'] != null) {
-    //   json['symptomHealthChecks'].forEach((v) {
-    //     symptomHealthChecks.add(new SymptomHealthChecks.fromJson(v));
-    //   });
-    // }
+    if (json['healthCheckDiseases'] != null) {
+      json['healthCheckDiseases'].forEach((v) {
+        healthCheckDiseases.add(new HealthCheckDisease.fromJson(v));
+      });
+    }
+    if (json['prescriptions'] != null) {
+      json['prescriptions'].forEach((v) {
+        prescriptions.add(new Prescription.fromJson(v));
+      });
+    }
+    if (json['slots'] != null) {
+      json['slots'].forEach((v) {
+        slots.add(new Slot.fromJson(v));
+      });
+    }
+    if (json['symptomHealthChecks'] != null) {
+      json['symptomHealthChecks'].forEach((v) {
+        symptomHealthChecks.add(new SymptomHealthCheck.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -94,21 +98,21 @@ class HealthCheck {
     if (this.patient != null) {
       data['patient'] = this.patient.toJson();
     }
-    // if (this.healthCheckDiseases != null) {
-    //   data['healthCheckDiseases'] =
-    //       this.healthCheckDiseases.map((v) => v.toJson()).toList();
-    // }
-    // if (this.prescriptions != null) {
-    //   data['prescriptions'] =
-    //       this.prescriptions.map((v) => v.toJson()).toList();
-    // }
-    // if (this.slots != null) {
-    //   data['slots'] = this.slots.map((v) => v.toJson()).toList();
-    // }
-    // if (this.symptomHealthChecks != null) {
-    //   data['symptomHealthChecks'] =
-    //       this.symptomHealthChecks.map((v) => v.toJson()).toList();
-    // }
+    if (this.healthCheckDiseases != null) {
+      data['healthCheckDiseases'] =
+          this.healthCheckDiseases.map((v) => v.toJson()).toList();
+    }
+    if (this.prescriptions != null) {
+      data['prescriptions'] =
+          this.prescriptions.map((v) => v.toJson()).toList();
+    }
+    if (this.slots != null) {
+      data['slots'] = this.slots.map((v) => v.toJson()).toList();
+    }
+    if (this.symptomHealthChecks != null) {
+      data['symptomHealthChecks'] =
+          this.symptomHealthChecks.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
