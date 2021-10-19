@@ -8,8 +8,8 @@ import 'package:telemedicine_mobile/models/Patient.dart';
 import 'package:telemedicine_mobile/models/Slot.dart';
 
 class ListDoctorController extends GetxController {
-  RxList<dynamic> listDoctor = [].obs;
 
+  RxList<dynamic> listDoctor = [].obs;
   Rx<Doctor> doctorDetail = new Doctor(
       id: 0,
       email: "",
