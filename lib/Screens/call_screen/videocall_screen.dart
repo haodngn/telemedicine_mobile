@@ -1,15 +1,16 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:get/get.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
+import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
 
 //appID in Agora
-const appID = "e776752fc87946d0bb62ea81c3ceb4a1";
+const appID = "834dec7fc5144086a2fe803cb3e51fff";
 //token to get in room of Agora
-const token =
-    "006e776752fc87946d0bb62ea81c3ceb4a1IADtczJ6goTBdKc3SdWConDpLIEt/FIl6y8yTSwC2OatZF3KywoAAAAAEACLBKCgzNlrYQEAAQC62Wth";
+// const token =
+//     "006834dec7fc5144086a2fe803cb3e51fffIAB0qhbLjA2avoDISofQO1JX58AW6S6mawUcBuuzw0MW1hPsWzIh39v0KAD+TPBS0q1vYQUAAQAAAAAAAgAAAAAAAwAAAAAABAAAAAAA6AMAAAAA";
 
 class CallScreen extends StatefulWidget {
   @override
@@ -27,9 +28,10 @@ class _CallScreenState extends State<CallScreen> {
     initAgora();
   }
 
+  final listDoctorController = Get.put(ListDoctorController());
+
   Future<void> initAgora() async {
-    // retrieve permissions
-    await [Permission.microphone, Permission.camera].request();
+    
 
     //create the engine
     _engine = await RtcEngine.createWithConfig(RtcEngineConfig(appID));
@@ -55,7 +57,12 @@ class _CallScreenState extends State<CallScreen> {
       ),
     );
 
-    await _engine.joinChannel(token, "medicinecall", null, 0);
+    await _engine.joinChannel(
+        listDoctorController.healthCheckToken.value.token,
+        "SLOT_" +
+            listDoctorController.healthCheckToken.value.slots[0].id.toString(),
+        null,
+        0);
   }
 
   // Create UI with local view and remote view
@@ -64,6 +71,7 @@ class _CallScreenState extends State<CallScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tele Medicine Video Call'),
+        automaticallyImplyLeading: false,
       ),
       body: Stack(
         children: [
@@ -99,7 +107,6 @@ class _CallScreenState extends State<CallScreen> {
   }
 
   Widget _toolbar() {
-    // if (widget.role == ClientRole.Audience) return Container();
     return Container(
       alignment: Alignment.bottomCenter,
       padding: const EdgeInsets.symmetric(vertical: 48),
@@ -148,6 +155,7 @@ class _CallScreenState extends State<CallScreen> {
   }
 
   void _onCallEnd(BuildContext context) {
+    _engine.leaveChannel();
     Navigator.pop(context);
   }
 

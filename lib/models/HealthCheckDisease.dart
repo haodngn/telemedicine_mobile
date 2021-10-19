@@ -1,17 +1,18 @@
+import 'package:telemedicine_mobile/models/Disease.dart';
+
 class HealthCheckDisease {
   late int id;
   late int healthCheckId;
   late int diseaseId;
   late bool isActive;
-
-  // late Disease disease;
+  late Disease disease;
 
   HealthCheckDisease(
       {required this.id,
       required this.healthCheckId,
       required this.diseaseId,
       required this.isActive,
-      // required this.disease
+      required this.disease
       });
 
   HealthCheckDisease.fromJson(Map<String, dynamic> json) {
@@ -19,8 +20,9 @@ class HealthCheckDisease {
     healthCheckId = json['healthCheckId'];
     diseaseId = json['diseaseId'];
     isActive = json['isActive'];
-    // disease =
-    //     json['disease'] != null ? new Disease.fromJson(json['disease']) : null;
+    if (json['disease'] != null) {
+      disease = new Disease.fromJson(json['disease']);
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -29,9 +31,9 @@ class HealthCheckDisease {
     data['healthCheckId'] = this.healthCheckId;
     data['diseaseId'] = this.diseaseId;
     data['isActive'] = this.isActive;
-    // if (this.disease != null) {
-    //   data['disease'] = this.disease.toJson();
-    // }
+    if (this.disease != null) {
+      data['disease'] = this.disease.toJson();
+    }
     return data;
   }
 }

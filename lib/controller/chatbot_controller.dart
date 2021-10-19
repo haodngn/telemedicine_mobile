@@ -6,17 +6,8 @@ import 'package:telemedicine_mobile/models/Message.dart';
 class ChatBotController extends GetxController {
   RxInt indexQuestion = 0.obs;
   var listMessage = [].obs;
-  RxString accept = "".obs;
 
   List<Chatbot> listChatbot = [
-    new Chatbot(
-      question: "Chào bạn, bạn có thể trả lời một số câu hỏi để cung cấp thông tin cơ bản cho bác sĩ cũng là để giúp buổi tư vấn diễn ra thuận lợi hơn được không ạ?",
-      listAnswer: [
-        "Đồng ý",
-        "Từ chối",
-      ],
-      typeInput: TextInputType.text,
-    ),
     new Chatbot(
       question: "Chiều cao của bạn là bao nhiêu?",
       listAnswer: [],
@@ -53,14 +44,6 @@ class ChatBotController extends GetxController {
       ],
       typeInput: TextInputType.text,
     ),
-    new Chatbot(
-        question: "Câu hỏi khác?",
-        listAnswer: [
-          "AAAAAAAAAAAAAA",
-          "BBBBBBBBBBBBBB",
-        ],
-        typeInput: TextInputType.text,
-    ),
   ];
 
   RxBool isSend = true.obs;
@@ -68,7 +51,7 @@ class ChatBotController extends GetxController {
   void nextQuestion() {
     new Future.delayed(const Duration(seconds: 2),
         () => {if (indexQuestion < listChatbot.length - 1) indexQuestion++});
-    if(indexQuestion.value == listChatbot.length - 1) {
+    if (indexQuestion.value == listChatbot.length - 1) {
       Future.delayed(const Duration(seconds: 2));
     }
   }
@@ -79,11 +62,22 @@ class ChatBotController extends GetxController {
   }
 
   void SendMessage() {
-    new Future.delayed(const Duration(seconds: 2),
-            () => isSend.value = false);
+    new Future.delayed(const Duration(seconds: 2), () => isSend.value = false);
   }
 
   void SendMessageSuccess() {
     isSend.value = true;
   }
+
+  RxBool start = false.obs;
+  startChatBot() {
+    new Future.delayed(const Duration(seconds: 4), () => start.value = true);
+  }
+
+  RxBool startBubble = false.obs;
+  bubbleAppear() {
+    new Future.delayed(const Duration(seconds: 2), () => startBubble.value = true);
+  }
+
+  
 }

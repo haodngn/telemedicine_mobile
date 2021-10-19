@@ -1,24 +1,24 @@
-import 'package:telemedicine_mobile/models/Doctor.dart';
+import 'package:telemedicine_mobile/models/Slot.dart';
 
-class ContentDoctor {
+class ContentSlot {
   late int totalCount;
   late int pageSize;
   late int totalPage;
   late int currentPage;
   late int nextPage;
   late int? previousPage;
-  late List<Doctor> doctor = [];
+  late List<Slot> slot = [];
 
-  ContentDoctor(
+  ContentSlot(
       {required this.totalCount,
-       required this.pageSize,
-       required this.totalPage,
-       required this.currentPage,
-       required this.nextPage,
-       required this.previousPage,
-       required this.doctor});
+     required this.pageSize,
+     required this.totalPage,
+     required this.currentPage,
+     required this.nextPage,
+     required this.previousPage,
+     required this.slot});
 
-  ContentDoctor.fromJson(Map<String, dynamic> json) {
+  ContentSlot.fromJson(Map<String, dynamic> json) {
     totalCount = json['totalCount'];
     pageSize = json['pageSize'];
     totalPage = json['totalPage'];
@@ -27,7 +27,7 @@ class ContentDoctor {
     previousPage = json['previousPage'];
     if (json['content'] != null) {
       json['content'].forEach((v) {
-        doctor.add(new Doctor.fromJson(v));
+        slot.add(new Slot.fromJson(v));
       });
     }
   }
@@ -40,8 +40,8 @@ class ContentDoctor {
     data['currentPage'] = this.currentPage;
     data['nextPage'] = this.nextPage;
     data['previousPage'] = this.previousPage;
-    if (this.doctor != null) {
-      data['content'] = this.doctor.map((v) => v.toJson()).toList();
+    if (this.slot != null) {
+      data['content'] = this.slot.map((v) => v.toJson()).toList();
     }
     return data;
   }

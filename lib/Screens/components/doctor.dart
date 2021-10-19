@@ -1,7 +1,10 @@
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:get/get.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/Screens/detail_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
+import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 
 class DoctorCard extends StatelessWidget {
   var doctor;
@@ -11,15 +14,25 @@ class DoctorCard extends StatelessWidget {
   IconData? _selectedIcon;
 
   DoctorCard(this.doctor, this.image, this._bgColor);
-
+  final listDoctorController = Get.put(ListDoctorController());
+  final patientProfileController = Get.put(PatientProfileController());
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        listDoctorController.getListDoctorSlot(doctor.id);
+        patientProfileController.getMyPatient();
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => DetailScreen(doctor.name, doctor.scopeOfPractice, doctor.description, image, doctor.majorDoctors, doctor.hospitalDoctors, doctor.certificationDoctors),
+            builder: (context) => DetailScreen(
+                doctor.name,
+                doctor.scopeOfPractice,
+                doctor.description,
+                image,
+                doctor.majorDoctors,
+                doctor.hospitalDoctors,
+                doctor.certificationDoctors),
           ),
         );
       },
@@ -33,8 +46,10 @@ class DoctorCard extends StatelessWidget {
           child: Column(
             children: [
               ListTile(
-                leading: Image.network(doctor.avatar,
-                  errorBuilder: (context, error, stackTrace) => Image.asset("assets/images/default_avatar.png"),
+                leading: Image.network(
+                  doctor.avatar,
+                  errorBuilder: (context, error, stackTrace) =>
+                      Image.asset("assets/images/default_avatar.png"),
                 ),
                 title: Text(
                   doctor.name,
@@ -51,8 +66,9 @@ class DoctorCard extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(22, 5, 0, 5),
-                child: Text("Số lượng cuộc hẹn: " + doctor.numberOfConsultants.toString()),
+                padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                child: Text("Số lượng cuộc hẹn: " +
+                    doctor.numberOfConsultants.toString()),
               ),
               Container(
                 width: 160,
@@ -69,9 +85,7 @@ class DoctorCard extends StatelessWidget {
                     _selectedIcon ?? Icons.star,
                     color: Colors.amber,
                   ),
-                  onRatingUpdate: (rating) {
-                    //setState(() {});
-                  },
+                  onRatingUpdate: (rating) {},
                   updateOnDrag: true,
                 ),
               ),

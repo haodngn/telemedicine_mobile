@@ -75,15 +75,21 @@ class _EditHealthCheckInfoScreenState extends State<EditHealthCheckInfoScreen> {
                           child: TextField(
                             controller: textAllergyController,
                             decoration: InputDecoration(
-                              hintText:
-                              patientProfileController.patient.value.allergy == null || patientProfileController.patient.value.allergy.isEmpty ? "Không bị dị ứng" : patientProfileController.patient.value.allergy,
+                              hintText: patientProfileController
+                                              .patient.value.allergy ==
+                                          null ||
+                                      patientProfileController
+                                          .patient.value.allergy.isEmpty
+                                  ? "Không bị dị ứng"
+                                  : patientProfileController
+                                      .patient.value.allergy,
                               hintStyle: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 color: Colors.black,
                               ),
                               border: OutlineInputBorder(),
                             ),
-                            keyboardType: TextInputType.phone,
+                            keyboardType: TextInputType.text,
                           ),
                         ),
                       ],
@@ -107,8 +113,14 @@ class _EditHealthCheckInfoScreenState extends State<EditHealthCheckInfoScreen> {
                           child: TextField(
                             controller: textBloodTypeController,
                             decoration: InputDecoration(
-                              hintText:
-                              patientProfileController.patient.value.bloodGroup == null || patientProfileController.patient.value.bloodGroup.isEmpty ? "Chưa xác định" : patientProfileController.patient.value.bloodGroup,
+                              hintText: patientProfileController
+                                              .patient.value.bloodGroup ==
+                                          null ||
+                                      patientProfileController
+                                          .patient.value.bloodGroup.isEmpty
+                                  ? "Chưa xác định"
+                                  : patientProfileController
+                                      .patient.value.bloodGroup,
                               hintStyle: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 color: Colors.black,
@@ -138,7 +150,14 @@ class _EditHealthCheckInfoScreenState extends State<EditHealthCheckInfoScreen> {
                         maxLines: 5,
                         controller: textBackgroundDiseaseController,
                         decoration: InputDecoration(
-                          hintText: patientProfileController.patient.value.backgroundDisease == null || patientProfileController.patient.value.backgroundDisease.isEmpty ? "Không có bệnh nền" : patientProfileController.patient.value.backgroundDisease,
+                          hintText: patientProfileController
+                                          .patient.value.backgroundDisease ==
+                                      null ||
+                                  patientProfileController
+                                      .patient.value.backgroundDisease.isEmpty
+                              ? "Không có bệnh nền"
+                              : patientProfileController
+                                  .patient.value.backgroundDisease,
                           hintStyle: TextStyle(
                             fontWeight: FontWeight.w400,
                             color: Colors.black,
@@ -155,9 +174,15 @@ class _EditHealthCheckInfoScreenState extends State<EditHealthCheckInfoScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8)),
                         ),
-                        onPressed: () => Get.to(() => PatientProfile(),
-                            transition: Transition.rightToLeftWithFade,
-                            duration: Duration(milliseconds: 600)),
+                        onPressed: () => {
+                          patientProfileController.updatePatientInfo(
+                              textBackgroundDiseaseController.text,
+                              textAllergyController.text,
+                              textBloodTypeController.text),
+                          Get.to(() => PatientProfile(),
+                              transition: Transition.rightToLeftWithFade,
+                              duration: Duration(milliseconds: 600))
+                        },
                         child: Text(
                           "Lưu",
                           style: TextStyle(
