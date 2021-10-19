@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:telemedicine_mobile/Screens/patient_detail_history_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
-import 'package:telemedicine_mobile/models/History.dart';
 
 class PatientHistoryScreen extends StatefulWidget {
   const PatientHistoryScreen({Key? key}) : super(key: key);
@@ -16,62 +15,11 @@ class PatientHistoryScreen extends StatefulWidget {
 class _PatientHistoryScreenState extends State<PatientHistoryScreen> {
   final patientHistoryController = Get.put(PatientHistoryController());
 
-  List<History> listHistory = [
-    new History(
-      doctorImage: "assets/images/doctor1.png",
-      doctorName: "Nguyen Van Tam",
-      doctorNote: "Kiểm tra lần 3",
-      date: "06/10/2021",
-      timeStart: "10:00",
-      timeEnd: "11:30",
-      status: "Wait",
-    ),
-    new History(
-      doctorImage: "assets/images/doctor2.png",
-      doctorName: "Le Trong Nhan",
-      doctorNote: "Kiểm tra lần 1",
-      date: "06/10/2021",
-      timeStart: "01:00",
-      timeEnd: "02:30",
-      status: "Done",
-    ),
-    new History(
-      doctorImage: "assets/images/doctor3.png",
-      doctorName: "Pham Van Danh",
-      doctorNote: "Kiểm tra lần 2",
-      date: "05/10/2021",
-      timeStart: "04:00",
-      timeEnd: "05:30",
-      status: "Cancel",
-    ),
-    new History(
-      doctorImage: "assets/images/doctor3.png",
-      doctorName: "Pham Van Danh",
-      doctorNote: "Kiểm tra lần 1",
-      date: "05/10/2021",
-      timeStart: "04:00",
-      timeEnd: "05:30",
-      status: "Done",
-    ),
-    new History(
-      doctorImage: "assets/images/doctor1.png",
-      doctorName: "Nguyen Van Tam",
-      doctorNote: "Kiểm tra lần 2",
-      date: "04/10/2021",
-      timeStart: "04:00",
-      timeEnd: "05:30",
-      status: "Done",
-    ),
-    new History(
-      doctorImage: "assets/images/doctor1.png",
-      doctorName: "Nguyen Van Tam",
-      doctorNote: "Kiểm tra lần 1",
-      date: "04/10/2021",
-      timeStart: "02:30",
-      timeEnd: "04:00",
-      status: "Done",
-    ),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    patientHistoryController.getMyHistory();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,29 +32,58 @@ class _PatientHistoryScreenState extends State<PatientHistoryScreen> {
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
-        child: Container(
-          constraints: BoxConstraints.expand(),
-          padding: EdgeInsets.only(top: 30),
-          color: Colors.white,
-          child: Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                    itemCount: listHistory.length,
-                    itemBuilder: (BuildContext context, index) {
-                      return BoxHistory(
-                        doctorImage: listHistory[index].doctorImage,
-                        doctorName: listHistory[index].doctorName,
-                        doctorNote: listHistory[index].doctorNote,
-                        date: listHistory[index].date,
-                        sameDate: index > 0 ? listHistory[index - 1].date : "",
-                        timeStart: listHistory[index].timeStart,
-                        timeEnd: listHistory[index].timeEnd,
-                        status: listHistory[index].status,
-                      );
-                    }),
-              )
-            ],
+        child: Obx(
+          () => Container(
+            constraints: BoxConstraints.expand(),
+            padding: EdgeInsets.only(top: 30),
+            color: Colors.white,
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                      itemCount:
+                          patientHistoryController.listHealthCheck.length,
+                      itemBuilder: (BuildContext context, index) {
+                        return BoxHistory(
+                          doctorImage: patientHistoryController
+                              .listHealthCheck[index].slots[0].doctor.avatar,
+                          doctorName: patientHistoryController
+                              .listHealthCheck[index].slots[0].doctor.name,
+                          doctorNote: patientHistoryController
+                                      .listHealthCheck[index].status ==
+                                  "CANCELED"
+                              ? patientHistoryController
+                                  .listHealthCheck[index].reasonCancel
+                              : patientHistoryController
+                                          .listHealthCheck[index].status ==
+                                      "COMPLETED"
+                                  ? patientHistoryController
+                                      .listHealthCheck[index].comment
+                                  : "",
+                          date: DateFormat('yyyy-MM-dd').format(DateTime.parse(
+                              patientHistoryController
+                                  .listHealthCheck[index].createdTime)),
+                          sameDate: index > 0
+                              ? DateFormat('yyyy-MM-dd').format(DateTime.parse(
+                                  patientHistoryController
+                                      .listHealthCheck[index - 1].createdTime))
+                              : "",
+                          timeStart: patientHistoryController
+                              .listHealthCheck[index].slots[0].startTime
+                              .toString()
+                              .replaceRange(5, 8, ""),
+                          timeEnd: patientHistoryController
+                              .listHealthCheck[index].slots[0].endTime
+                              .toString()
+                              .replaceRange(5, 8, ""),
+                          status: patientHistoryController
+                              .listHealthCheck[index].status,
+                          index: index,
+                        );
+                      }),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -123,6 +100,7 @@ class BoxHistory extends StatelessWidget {
   final String timeStart;
   final String timeEnd;
   final String status;
+  final int index;
 
   BoxHistory({
     required this.doctorImage,
@@ -133,6 +111,7 @@ class BoxHistory extends StatelessWidget {
     required this.timeStart,
     required this.timeEnd,
     required this.status,
+    required this.index,
   });
 
   @override
@@ -142,20 +121,27 @@ class BoxHistory extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          !date.endsWith(sameDate) || sameDate.isEmpty ? Padding(
-            padding: const EdgeInsets.fromLTRB(0, 20, 260, 10),
-            child: Text(
-              date.endsWith( DateFormat('dd/MM/yyyy').format(DateTime.now())) ? "Hôm nay" : date,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-          ) : Container(),
+          !date.endsWith(sameDate) || sameDate.isEmpty
+              ? Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 20, 260, 10),
+                  child: Text(
+                    date.endsWith(
+                            DateFormat('yyyy-MM-dd').format(DateTime.now()))
+                        ? "Hôm nay"
+                        : date,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                )
+              : Container(),
           textfield(
-              doctorImage: doctorImage,
-              doctorName: doctorName,
-              doctorNote: doctorNote,
-              timeStart: timeStart,
-              timeEnd: timeEnd,
-              status: status),
+            doctorImage: doctorImage,
+            doctorName: doctorName,
+            doctorNote: doctorNote,
+            timeStart: timeStart,
+            timeEnd: timeEnd,
+            status: status,
+            index: index,
+          ),
         ],
       ),
     );
@@ -168,7 +154,10 @@ class BoxHistory extends StatelessWidget {
       @required timeStart,
       @required timeEnd,
       @required status,
+      @required index,
       onTap}) {
+    final patientHistoryController = Get.put(PatientHistoryController());
+
     return Material(
       elevation: 4,
       shadowColor: Colors.grey,
@@ -185,9 +174,11 @@ class BoxHistory extends StatelessWidget {
               Stack(
                 children: [
                   Image(
-                    image: AssetImage(
+                    image: NetworkImage(
                       doctorImage,
                     ),
+                    errorBuilder: (context, error, stackTrace) =>
+                        Image.asset("assets/images/default_avatar.png", width: 120, height: 120,),
                     width: 120,
                     height: 120,
                   ),
@@ -195,9 +186,12 @@ class BoxHistory extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 110.0),
                     child: TextField(
                       readOnly: true,
-                      onTap: () => Get.to(() => PatientDetailHistoryScreen(),
-                          transition: Transition.rightToLeftWithFade,
-                          duration: Duration(microseconds: 600)),
+                      onTap: () {
+                        patientHistoryController.index.value = index;
+                        Get.to(() => PatientDetailHistoryScreen(),
+                            transition: Transition.rightToLeftWithFade,
+                            duration: Duration(microseconds: 600));
+                      },
                       decoration: InputDecoration(
                           hintText: doctorName,
                           suffixIcon: Icon(
@@ -220,17 +214,20 @@ class BoxHistory extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(110.0, 40, 0, 0),
                     child: TextField(
                       readOnly: true,
-                      onTap: () => Get.to(() => PatientDetailHistoryScreen(),
-                          transition: Transition.rightToLeftWithFade,
-                          duration: Duration(microseconds: 600)),
+                      onTap: () {
+                        patientHistoryController.index.value = index;
+                        Get.to(() => PatientDetailHistoryScreen(),
+                            transition: Transition.rightToLeftWithFade,
+                            duration: Duration(microseconds: 600));
+                      },
                       decoration: InputDecoration(
                           hintText: doctorNote,
-                          suffixIcon: status == "Done"
+                          suffixIcon: status == "COMPLETED"
                               ? Icon(
                                   Icons.check_circle,
                                   color: Colors.green,
                                 )
-                              : status == "Cancel"
+                              : status == "CANCELED"
                                   ? Icon(
                                       Icons.cancel,
                                       color: Colors.red,
@@ -255,9 +252,12 @@ class BoxHistory extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(110.0, 80, 0, 0),
                     child: TextField(
                       readOnly: true,
-                      onTap: () => Get.to(() => PatientDetailHistoryScreen(),
-                          transition: Transition.rightToLeftWithFade,
-                          duration: Duration(microseconds: 600)),
+                      onTap: () {
+                        patientHistoryController.index.value = index;
+                        Get.to(() => PatientDetailHistoryScreen(),
+                            transition: Transition.rightToLeftWithFade,
+                            duration: Duration(microseconds: 600));
+                      },
                       decoration: InputDecoration(
                           hintText: timeStart + " - " + timeEnd,
                           hintStyle: TextStyle(
@@ -277,9 +277,12 @@ class BoxHistory extends StatelessWidget {
                     child: TextField(
                       readOnly: true,
                       style: TextStyle(fontSize: 16, color: kBlueColor),
-                      onTap: () => Get.to(() => PatientDetailHistoryScreen(),
-                          transition: Transition.rightToLeftWithFade,
-                          duration: Duration(microseconds: 600)),
+                      onTap: (){
+                        patientHistoryController.index.value = index;
+                        Get.to(() => PatientDetailHistoryScreen(),
+                            transition: Transition.rightToLeftWithFade,
+                            duration: Duration(microseconds: 600));
+                      },
                       decoration: InputDecoration(
                         hintText: "View",
                         hintStyle: TextStyle(

@@ -72,47 +72,32 @@ class _PatientProfileState extends State<PatientProfile> {
           child: Obx(
             () => Column(
               children: [
-                Stack(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(10.0),
-                          width: MediaQuery.of(context).size.width / 2,
-                          height: MediaQuery.of(context).size.width / 2,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.white, width: 5),
-                            shape: BoxShape.circle,
-                            color: kBackgroundColor,
-                            image: DecorationImage(
-                              image: NetworkImage(patientProfileController
-                                          .patient.value.avatar ==
-                                      ""
-                                  ? 'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg'
-                                  : patientProfileController
-                                      .patient.value.avatar),
-                            ),
-                          ),
+                    Container(
+                      padding: EdgeInsets.all(10.0),
+                      width: MediaQuery.of(context).size.width / 2,
+                      height: MediaQuery.of(context).size.width / 2,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white, width: 5),
+                        shape: BoxShape.circle,
+                        color: kBackgroundColor,
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(patientProfileController
+                                      .patient.value.avatar ==
+                                  ""
+                              ? 'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg'
+                              : patientProfileController.patient.value.avatar),
                         ),
-                        Text(
-                          patientProfileController.patient.value.name,
-                          style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 120, left: 160),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.black54,
-                        child: IconButton(
-                          icon: Icon(Icons.camera_alt_outlined,
-                              color: Colors.white, size: 25),
-                          onPressed: () {},
-                        ),
+                    Text(
+                      patientProfileController.patient.value.name,
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
@@ -155,10 +140,11 @@ class _PatientProfileState extends State<PatientProfile> {
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 101,
+                                  width: 52,
                                 ),
                                 RawMaterialButton(
                                   onPressed: () => {
+                                    patientProfileController.getMyAccount(),
                                     Get.to(() => EditPatientProfile(),
                                         transition:
                                             Transition.rightToLeftWithFade,
@@ -178,8 +164,7 @@ class _PatientProfileState extends State<PatientProfile> {
                             icon: Icons.email_outlined,
                           ),
                           textfield(
-                            hintText:
-                                patientProfileController.dob.value,
+                            hintText: patientProfileController.dob.value,
                             icon: Icons.date_range,
                           ),
                           textfield(
@@ -213,7 +198,7 @@ class _PatientProfileState extends State<PatientProfile> {
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 7,
+                                  width: 30,
                                 ),
                                 RawMaterialButton(
                                   onPressed: () => {
@@ -232,16 +217,21 @@ class _PatientProfileState extends State<PatientProfile> {
                           ),
                           textfield(
                             hintText: patientProfileController
-                                .patient.value.allergy == null || patientProfileController
-                                .patient.value.allergy.isEmpty ? patientProfileController
-                                .patient.value.allergy : "Không bị dị ứng",
+                                            .patient.value.allergy ==
+                                        null ||
+                                    patientProfileController
+                                        .patient.value.allergy.isEmpty
+                                ? "Không bị dị ứng"
+                                : patientProfileController
+                                    .patient.value.allergy,
                             icon: Icons.ac_unit_outlined,
                           ),
                           textfield(
                             hintText: patientProfileController
-                                        .patient.value.bloodGroup ==
-                                    null || patientProfileController
-                                .patient.value.bloodGroup.isEmpty
+                                            .patient.value.bloodGroup ==
+                                        null ||
+                                    patientProfileController
+                                        .patient.value.bloodGroup.isEmpty
                                 ? "Chưa xác định"
                                 : patientProfileController
                                     .patient.value.bloodGroup,
@@ -249,9 +239,13 @@ class _PatientProfileState extends State<PatientProfile> {
                           ),
                           textfield(
                             hintText: patientProfileController
-                                .patient.value.backgroundDisease == null || patientProfileController
-                                .patient.value.backgroundDisease.isEmpty ? "Không có bệnh nền" : patientProfileController
-                                .patient.value.backgroundDisease,
+                                            .patient.value.backgroundDisease ==
+                                        null ||
+                                    patientProfileController
+                                        .patient.value.backgroundDisease.isEmpty
+                                ? "Không có bệnh nền"
+                                : patientProfileController
+                                    .patient.value.backgroundDisease,
                             icon: Icons.ac_unit_outlined,
                           ),
                           Container(

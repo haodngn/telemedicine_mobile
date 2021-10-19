@@ -18,36 +18,35 @@ class _NotificationScreenState extends State<NotificationScreen> {
       content:
           "It is well knows that a leader will forget his lines and that is bad",
       doctorName: "Nhan",
-      date: "08/10/2021",
+      date: "2021-10-19",
     ),
     new NotificationPatient(
       content:
           "It is well knows that a leader will forget his lines and that is bad",
       doctorName: "Tam",
-      date: "08/10/2021",
-    ),
-    new NotificationPatient(
-      content:
-          "You have an appointment",
-      doctorName: "",
-      date: "06/10/2021",
-    ),
-    new NotificationPatient(
-      content:
-          "It is well knows that a leader will forget his lines and that is bad",
-      doctorName: "Tam",
-      date: "06/10/2021",
+      date: "2021-10-19",
     ),
     new NotificationPatient(
       content: "You have an appointment",
       doctorName: "",
-      date: "05/10/2021",
+      date: "2021-10-19",
     ),
     new NotificationPatient(
       content:
           "It is well knows that a leader will forget his lines and that is bad",
       doctorName: "Tam",
-      date: "05/10/2021",
+      date: "2021-10-18",
+    ),
+    new NotificationPatient(
+      content: "You have an appointment",
+      doctorName: "",
+      date: "2021-10-17",
+    ),
+    new NotificationPatient(
+      content:
+          "It is well knows that a leader will forget his lines and that is bad",
+      doctorName: "Tam",
+      date: "2021-10-17",
     ),
   ];
 
@@ -151,7 +150,10 @@ class BoxNotification extends StatelessWidget {
               ? Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 260, 10),
                   child: Text(
-                    date.endsWith( DateFormat('dd/MM/yyyy').format(DateTime.now())) ? "Hôm nay" : date,
+                    date.endsWith(
+                            DateFormat('yyyy-MM-dd').format(DateTime.now()))
+                        ? "Hôm nay"
+                        : date,
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 )

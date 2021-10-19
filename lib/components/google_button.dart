@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
 import 'package:telemedicine_mobile/Screens/components/check_login.dart';
 import 'package:telemedicine_mobile/Screens/form_after_login_screen.dart';
-import 'package:telemedicine_mobile/Screens/home_screen.dart';
 import 'package:telemedicine_mobile/controller/google_login_controller.dart';
 
 //button login with google
@@ -33,7 +32,9 @@ class GoogleButton extends StatelessWidget {
   }
 
   Widget checkLoginGoogle(BuildContext context) {
-    return UserInformation();
-    CheckLogin();
+    // if (true)
+    //   return UserInformation();
+    // else
+      return BottomNavScreen();
   }
 }

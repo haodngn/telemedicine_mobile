@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
+import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
 
 class FilterController extends GetxController {
   RxBool searchByLocation = false.obs;
@@ -54,8 +55,9 @@ class FilterController extends GetxController {
     new Future.delayed(
         const Duration(seconds: 2),
         () => {
-              listSymptomItem.value =
-                  listSymptom.map((symptom) => MultiSelectItem(symptom, symptom.name)).toList()
+              listSymptomItem.value = listSymptom
+                  .map((symptom) => MultiSelectItem(symptom, symptom.name))
+                  .toList()
             });
   }
 
@@ -71,8 +73,20 @@ class FilterController extends GetxController {
     new Future.delayed(
         const Duration(seconds: 2),
         () => {
-              listMajorItem.value =
-                  listMajor.map((major) => MultiSelectItem(major, major.name)).toList()
+              listMajorItem.value = listMajor
+                  .map((major) => MultiSelectItem(major.id, major.name))
+                  .toList()
             });
   }
+
+  final listDoctorController = Get.put(ListDoctorController());
+
+  RxList listResultMajor = [].obs;
+  setSearchMajor() {
+    listResultMajor
+        .map((element) =>
+            {listDoctorController.searchMajor.value += "major=" + element.toString() + "&"})
+        .toList();
+  }
+
 }

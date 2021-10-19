@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:telemedicine_mobile/controller/chatbot_controller.dart';
+import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
+import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 import 'package:telemedicine_mobile/models/Chatbot.dart';
 import 'package:bubble/bubble.dart';
 import 'package:telemedicine_mobile/models/Message.dart';
@@ -24,6 +26,8 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
     if (chatbotcontroller.listChatbot[0].listAnswer.isEmpty) {
       chatbotcontroller.SendMessage();
     }
+    chatbotcontroller.startChatBot();
+    chatbotcontroller.bubbleAppear();
   }
 
   @override
@@ -49,107 +53,185 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
           child: Column(
             children: <Widget>[
               Expanded(
-                  child: chatbotcontroller.listMessage.length > 0
-                      ? ListView.builder(
-                          reverse: true,
-                          itemCount: chatbotcontroller.listMessage.length,
-                          itemBuilder: (BuildContext context, index) {
-                            return BoxChat(
-                                messageBot: chatbotcontroller
-                                    .listMessage[index].messageBot,
-                                messagePatient: chatbotcontroller
-                                    .listMessage[index].messagePatient,
-                                indexQuestion: index,
-                                chatbot: chatbotcontroller.listChatbot[
-                                    chatbotcontroller.indexQuestion.value]);
-                          })
-                      : Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 120),
-                                child: Bubble(
-                                  radius: Radius.circular(15.0),
-                                  color: Colors.grey.shade200,
-                                  alignment: Alignment.bottomLeft,
-                                  child: Padding(
-                                    padding: EdgeInsets.all(5.0),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        Flexible(
-                                          child: Text(
-                                            chatbotcontroller
-                                                .listChatbot[chatbotcontroller
-                                                    .indexQuestion.value]
-                                                .question,
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold),
+                child: chatbotcontroller.listMessage.length > 0
+                    ? ListView.builder(
+                        reverse: true,
+                        itemCount: chatbotcontroller.listMessage.length,
+                        itemBuilder: (BuildContext context, index) {
+                          return BoxChat(
+                              messageBot: chatbotcontroller
+                                  .listMessage[index].messageBot,
+                              messagePatient: chatbotcontroller
+                                  .listMessage[index].messagePatient,
+                              indexQuestion: index,
+                              chatbot: chatbotcontroller.listChatbot[
+                                  chatbotcontroller.indexQuestion.value]);
+                        })
+                    : chatbotcontroller.start.value
+                        ? Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 120),
+                                  child: Bubble(
+                                    radius: Radius.circular(15.0),
+                                    color: Colors.grey.shade200,
+                                    alignment: Alignment.bottomLeft,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(5.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          Flexible(
+                                            child: Text(
+                                              "Chào bạn, bạn vui lòng trả lời các câu hỏi sau để hoàn thành đăng ký?",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Column(
-                                  children: chatbotcontroller
-                                      .listChatbot[
-                                          chatbotcontroller.indexQuestion.value]
-                                      .listAnswer
-                                      .map(
-                                        (ans) => Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              100, 0, 100, 0),
-                                          child: SizedBox(
-                                            width: double.infinity,
-                                            child: RaisedButton(
-                                              onPressed: () => {
-                                                if (chatbotcontroller
-                                                            .listChatbot
-                                                            .length >
-                                                        1 &&
-                                                    chatbotcontroller
-                                                        .listChatbot[1]
-                                                        .listAnswer
-                                                        .isEmpty)
-                                                  {
-                                                    chatbotcontroller
-                                                        .SendMessage()
-                                                  },
-                                                chatbotcontroller.listMessage.insert(
-                                                    0,
-                                                    Message(
-                                                        messageBot: chatbotcontroller
-                                                            .listChatbot[
-                                                                chatbotcontroller
-                                                                    .indexQuestion
-                                                                    .value]
-                                                            .question,
-                                                        messagePatient: ans)),
-                                                chatbotcontroller
-                                                    .nextQuestion(),
-                                                chatbotcontroller.accept.value = ans,
-                                              },
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(8))),
-                                              child: Text(ans),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 120),
+                                  child: Bubble(
+                                    radius: Radius.circular(15.0),
+                                    color: Colors.grey.shade200,
+                                    alignment: Alignment.bottomLeft,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(5.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          Flexible(
+                                            child: Text(
+                                              chatbotcontroller
+                                                  .listChatbot[chatbotcontroller
+                                                      .indexQuestion.value]
+                                                  .question,
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                           ),
-                                        ),
-                                      )
-                                      .toList()),
-                            ],
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Column(
+                                    children: chatbotcontroller
+                                        .listChatbot[chatbotcontroller
+                                            .indexQuestion.value]
+                                        .listAnswer
+                                        .map(
+                                          (ans) => Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                100, 0, 100, 0),
+                                            child: SizedBox(
+                                              width: double.infinity,
+                                              child: RaisedButton(
+                                                onPressed: () => {
+                                                  if (chatbotcontroller
+                                                              .listChatbot
+                                                              .length >
+                                                          1 &&
+                                                      chatbotcontroller
+                                                          .listChatbot[1]
+                                                          .listAnswer
+                                                          .isEmpty)
+                                                    {
+                                                      chatbotcontroller
+                                                          .SendMessage()
+                                                    },
+                                                  chatbotcontroller.listMessage.insert(
+                                                      0,
+                                                      Message(
+                                                          messageBot: chatbotcontroller
+                                                              .listChatbot[
+                                                                  chatbotcontroller
+                                                                      .indexQuestion
+                                                                      .value]
+                                                              .question,
+                                                          messagePatient: ans)),
+                                                  chatbotcontroller
+                                                      .nextQuestion(),
+                                                },
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                8))),
+                                                child: Text(ans),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                        .toList()),
+                              ],
+                            ),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 120),
+                                  child: Bubble(
+                                    radius: Radius.circular(15.0),
+                                    color: Colors.grey.shade200,
+                                    alignment: Alignment.bottomLeft,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(5.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          Flexible(
+                                            child: Text(
+                                              "Chào bạn, bạn vui lòng trả lời các câu hỏi sau để hoàn thành đăng ký?",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                chatbotcontroller.startBubble.value
+                                    ? Bubble(
+                                        radius: Radius.circular(15.0),
+                                        color: Colors.grey.shade200,
+                                        alignment: Alignment.bottomLeft,
+                                        child: Container(
+                                          width: 45,
+                                          height: 30,
+                                          child: JumpingDotsProgressIndicator(
+                                            fontSize: 24.0,
+                                            dotSpacing: 3,
+                                          ),
+                                        ))
+                                    : Container(),
+                              ],
+                            ),
                           ),
-                        )),
+              ),
               Divider(
                 height: 10.0,
                 color: Colors.black,
@@ -171,7 +253,6 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                           hintStyle: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18.0)),
                     )),
-                    //SizedBox(width: 50,),
                     Container(
                       margin: EdgeInsets.symmetric(horizontal: 4.0),
                       child: IconButton(
@@ -232,6 +313,8 @@ class BoxChat extends StatelessWidget {
   final Chatbot chatbot;
 
   final chatbotcontroller = Get.put(ChatBotController());
+  final patientProfileController = Get.put(PatientProfileController());
+  final listDoctorController = Get.put(ListDoctorController());
 
   @override
   Widget build(BuildContext context) {
@@ -240,6 +323,39 @@ class BoxChat extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          chatbotcontroller.listMessage.length - 1 == indexQuestion
+              ? Padding(
+                  padding: const EdgeInsets.only(right: 120),
+                  child: Bubble(
+                    radius: Radius.circular(15.0),
+                    color: Colors.grey.shade200,
+                    alignment: Alignment.bottomLeft,
+                    child: Padding(
+                      padding: EdgeInsets.all(5.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Flexible(
+                            child: Text(
+                              "Chào bạn, bạn vui lòng trả lời các câu hỏi sau để hoàn thành đăng ký?",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              : Container(),
+          chatbotcontroller.listMessage.length - 1 == indexQuestion
+              ? SizedBox(
+                  height: 20,
+                )
+              : SizedBox(
+                  height: 0,
+                ),
           Padding(
             padding: const EdgeInsets.only(right: 120),
             child: Bubble(
@@ -293,7 +409,7 @@ class BoxChat extends StatelessWidget {
                   chatbotcontroller.listMessage.length >
                       chatbotcontroller.indexQuestion.value &&
                   chatbotcontroller.listChatbot.length - 1 >
-                      chatbotcontroller.indexQuestion.value && chatbotcontroller.accept.value == "Đồng ý"
+                      chatbotcontroller.indexQuestion.value
               ? Bubble(
                   radius: Radius.circular(15.0),
                   color: Colors.grey.shade200,
@@ -301,7 +417,6 @@ class BoxChat extends StatelessWidget {
                   child: Container(
                     width: 45,
                     height: 30,
-                    // padding: EdgeInsets.only(bottom: 0),
                     child: JumpingDotsProgressIndicator(
                       fontSize: 24.0,
                       dotSpacing: 3,
@@ -312,7 +427,7 @@ class BoxChat extends StatelessWidget {
                   chatbotcontroller.listMessage.length <
                       chatbotcontroller.listChatbot.length &&
                   chatbotcontroller.listMessage.length ==
-                      chatbotcontroller.indexQuestion.value && chatbotcontroller.accept.value == "Đồng ý"
+                      chatbotcontroller.indexQuestion.value
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -373,6 +488,29 @@ class BoxChat extends StatelessWidget {
                                               messageBot: chatbot.question,
                                               messagePatient: ans)),
                                       chatbotcontroller.nextQuestion(),
+                                      if (chatbotcontroller
+                                              .listMessage.length ==
+                                          chatbotcontroller.listChatbot.length)
+                                        {
+                                          listDoctorController.bookHealthCheck(
+                                              int.parse(chatbotcontroller
+                                                  .listMessage[chatbotcontroller
+                                                          .listMessage.length -
+                                                      1]
+                                                  .messagePatient),
+                                              int.parse(chatbotcontroller
+                                                  .listMessage[chatbotcontroller
+                                                          .listMessage.length -
+                                                      2]
+                                                  .messagePatient),
+                                              patientProfileController
+                                                  .patient.value,
+                                              listDoctorController.slot.value),
+                                          listDoctorController
+                                              .getListDoctorSlot(
+                                                  listDoctorController
+                                                      .slot.value.doctorId)
+                                        }
                                     },
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
@@ -404,7 +542,7 @@ class BoxChat extends StatelessWidget {
                         children: <Widget>[
                           Flexible(
                             child: Text(
-                              "Cảm ơn bạn.",
+                              "Cảm ơn bạn đã trả lời các câu hỏi. Đăng ký tư vấn thành công.",
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold),

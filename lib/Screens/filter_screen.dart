@@ -150,14 +150,14 @@ class _FilterScreenState extends State<FilterScreen> {
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: _titleContainer("Chuyên ngành"),
+                  child: _titleContainer("Chuyên khoa"),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(50, 0, 50, 10),
                 child: MultiSelectDialogField(
                   items: filterController.listMajorItem,
-                  title: Text("Chuyên ngành"),
+                  title: Text("Chuyên khoa"),
                   selectedColor: kBlueColor,
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -165,14 +165,16 @@ class _FilterScreenState extends State<FilterScreen> {
                     border: Border.all(color: Colors.grey, width: 1),
                   ),
                   buttonText: Text(
-                    "Chọn chuyên ngành",
+                    "Chọn chuyên khoa",
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  onConfirm: (results) {},
+                  onConfirm: (results) {
+                    filterController.listResultMajor.value = results;
+                  },
                 ),
               ),
               Row(
@@ -221,9 +223,11 @@ class _FilterScreenState extends State<FilterScreen> {
                     height: 50,
                     width: 200,
                     child: ElevatedButton(
-                      onPressed: () => Get.to(ListDoctorScreen(),
+                      onPressed: () => {filterController.setSearchMajor(),
+                      Get.to(ListDoctorScreen(),
                           transition: Transition.upToDown,
                           duration: Duration(milliseconds: 600)),
+                      },
                       style: ButtonStyle(
                         elevation: MaterialStateProperty.all(6),
                         backgroundColor:
