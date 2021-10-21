@@ -17,7 +17,8 @@ class GoogleSignInController with ChangeNotifier {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-    await FirebaseAuth.instance.signInWithCredential(credential);
+    var t = await FirebaseAuth.instance.signInWithCredential(credential);
+    print("TA\n" + await t.user!.getIdToken());
     notifyListeners();
   }
 

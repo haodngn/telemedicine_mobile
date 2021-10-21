@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,7 @@ class GoogleButton extends StatelessWidget {
           width: 250,
         ),
         onTap: () {
+          print(FirebaseAuth.instance.)
           Provider.of<GoogleSignInController>(context, listen: false)
               .googleLogin();
           Navigator.push(context, MaterialPageRoute(builder: checkLoginGoogle));
