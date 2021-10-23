@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:telemedicine_mobile/Screens/login_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_address_api.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
@@ -13,11 +14,11 @@ import 'package:telemedicine_mobile/models/Account.dart';
 import 'package:telemedicine_mobile/models/Patient.dart';
 import 'package:telemedicine_mobile/models/Role.dart';
 
+import 'account_controller.dart';
+
 class PatientProfileController extends GetxController {
   final patientHistoryController = Get.put(PatientHistoryController());
-
-  RxString myEmail = "tamnv1007@gmail.com".obs;
-
+  final accountController = Get.put(AccountController());
   Rx<Patient> patient = new Patient(
       id: 0,
       email: "",
@@ -48,10 +49,17 @@ class PatientProfileController extends GetxController {
       .obs;
 
   getMyPatient() {
-    FetchAPI.fetchMyPatient(myEmail.value).then((dataFromServer) {
-      patient.value = dataFromServer;
-      patientHistoryController.patientID.value = patient.value.id;
-    });
+    String myEmail = accountController.account.value.email;
+    if (myEmail.isEmpty) {
+      Get.off(LoginScreen(),
+          transition: Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500));
+    }else {
+      FetchAPI.fetchMyPatient(myEmail).then((dataFromServer) {
+        patient.value = dataFromServer;
+        patientHistoryController.patientID.value = patient.value.id;
+      });
+    }
   }
 
   RxBool isMale = true.obs;
@@ -93,7 +101,15 @@ class PatientProfileController extends GetxController {
   }
 
   getMyAccount() {
-    FetchAPI.fetchAccountDetail(myEmail.value).then((dataFromServer) {
+
+    String myEmail = accountController.account.value.email;
+    if (myEmail.isEmpty) {
+      Get.offAll(LoginScreen(),
+          transition: Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500));
+      return;
+    }
+    FetchAPI.fetchAccountDetail(myEmail).then((dataFromServer) {
       account.value = dataFromServer;
     });
 
@@ -148,6 +164,7 @@ class PatientProfileController extends GetxController {
   }
 
   Rx<File> image = new File("").obs;
+
   Future pickImage(ImageSource source) async {
     try {
       final pImage = await ImagePicker().pickImage(source: source);

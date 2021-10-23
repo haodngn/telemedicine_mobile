@@ -5,6 +5,7 @@ import 'package:telemedicine_mobile/Screens/call_screen/videocall_screen.dart';
 import 'package:telemedicine_mobile/Screens/chatbot_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:telemedicine_mobile/controller/account_controller.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 
@@ -23,6 +24,7 @@ class ScheduleCard extends StatelessWidget {
 
   final patientProfileController = Get.put(PatientProfileController());
   final listDoctorController = Get.put(ListDoctorController());
+  final accountController = Get.put(AccountController());
 
   void chatBot(BuildContext context) {
     showCupertinoDialog(
@@ -126,21 +128,21 @@ class ScheduleCard extends StatelessWidget {
                           text: healthCheckID < 1
                               ? "Buổi tư vấn sẵn sàng"
                               : emailPatient ==
-                                      patientProfileController.myEmail.value
+                                      accountController.account.value.email
                                   ? "Bạn đã đăng ký buổi này"
                                   : "Đã có người đăng ký",
                           style: TextStyle(
                               color: healthCheckID < 1
                                   ? Colors.green
                                   : emailPatient ==
-                                          patientProfileController.myEmail.value
+                                          accountController.account.value.email
                                       ? Colors.blue
                                       : Colors.red)),
                     ],
                   ),
                 ),
               ),
-              emailPatient == patientProfileController.myEmail.value
+              emailPatient == accountController.account.value.email
                   ? Padding(
                       padding: const EdgeInsets.fromLTRB(280, 20, 0, 0),
                       child: InkWell(

@@ -14,8 +14,11 @@ import 'package:telemedicine_mobile/models/AccountPost.dart';
 import 'package:telemedicine_mobile/models/Patient.dart';
 import 'package:telemedicine_mobile/models/Role.dart';
 
+import 'account_controller.dart';
+
 class FormAfterLoginController extends GetxController {
   final patientProfileController = Get.put(PatientProfileController());
+  final accountController = Get.put(AccountController());
 
   RxString selectedGender = "".obs;
   Rx<DateTime> dob = DateTime.now().obs;
@@ -163,7 +166,7 @@ class FormAfterLoginController extends GetxController {
         emptyWard.isFalse &&
         emptyStreet.isFalse) {
       AccountPost newAccount = new AccountPost(
-        email: patientProfileController.myEmail.value,
+        email: accountController.account.value.email,
         firstName: fName,
         lastName: lName,
         image: "",
@@ -180,7 +183,7 @@ class FormAfterLoginController extends GetxController {
 
       Patient newPatient = new Patient(
           id: 0,
-          email: patientProfileController.myEmail.value,
+          email: accountController.account.value.email,
           name: fName + " " + lName,
           avatar: "",
           backgroundDisease: backgroundDisease,

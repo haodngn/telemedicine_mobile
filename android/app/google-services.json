@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "872610947801-13dg5vmuhd10gafghbts3ompoi71m5ku.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.telemedicine_mobile",
+            "certificate_hash": "4ba074442100eb38efe3cd0e9e3ac8afa38ad0fd"
+          }
+        },
+        {
+          "client_id": "872610947801-agovchbcsj3gojnnj63g770qq4nhrd4o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.telemedicine_mobile",
+            "certificate_hash": "852e129258d4dfcb498cadcb4fc2fc508d72d084"
+          }
+        },
+        {
           "client_id": "872610947801-p4o47m5c4o14vh4lr9gfu0a2nkn4i60b.apps.googleusercontent.com",
           "client_type": 3
         }
