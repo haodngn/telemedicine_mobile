@@ -11,6 +11,7 @@ import 'package:telemedicine_mobile/models/Account.dart';
 import 'package:telemedicine_mobile/models/AccountPost.dart';
 import 'package:telemedicine_mobile/models/ContentDoctor.dart';
 import 'package:telemedicine_mobile/models/ContentHealthCheck.dart';
+import 'package:telemedicine_mobile/models/ContentHospital.dart';
 import 'package:telemedicine_mobile/models/ContentMajor.dart';
 import 'package:telemedicine_mobile/models/ContentSlot.dart';
 import 'package:telemedicine_mobile/models/ContentSymptom.dart';
@@ -18,6 +19,7 @@ import 'package:telemedicine_mobile/models/ContentTimeFrame.dart';
 import 'package:telemedicine_mobile/models/Doctor.dart';
 import 'package:telemedicine_mobile/models/HealthCheck.dart';
 import 'package:telemedicine_mobile/models/HealthCheckPost.dart';
+import 'package:telemedicine_mobile/models/Hospital.dart';
 import 'package:telemedicine_mobile/models/Major.dart';
 import 'package:telemedicine_mobile/models/Patient.dart';
 import 'package:telemedicine_mobile/models/Slot.dart';
@@ -26,7 +28,6 @@ import 'package:telemedicine_mobile/models/TimeFrame.dart';
 import 'package:dio/dio.dart';
 
 class FetchAPI {
-
   static Future<void> loginWithToken(String tokenId) async {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     final storage = new Storage.FlutterSecureStorage();
@@ -34,13 +35,13 @@ class FetchAPI {
     data['loginType'] = 3;
     final accountController = GetX.Get.put(AccountController());
     try {
-      final response = await http.post(
-          Uri.parse("https://binhtt.tech/api/v1/login"),
-          headers: <String, String>{
-            HttpHeaders.contentTypeHeader: 'application/json',
-          },
-          body: jsonEncode(data)
-      );
+      final response =
+          await http.post(Uri.parse("https://binhtt.tech/api/v1/login"),
+              headers: <String, String>{
+                HttpHeaders.contentTypeHeader: 'application/json',
+              },
+              body: jsonEncode(data));
+      print(response.statusCode);
       if (response.statusCode == 200) {
         var accountJson = json.decode(utf8.decode(response.bodyBytes));
         Account account = Account.fromJson(accountJson['account']);
@@ -49,24 +50,23 @@ class FetchAPI {
       } else {
         throw Exception("Internal server error");
       }
-    }catch(e)
-    {
+    } catch (e) {
       print(e);
     }
   }
 
-  static Future<List<Doctor>> fetchContentDoctor(String searchMajor) async {
+  static Future<List<Doctor>> fetchContentDoctorWithCondition(String condition) async {
     final storage = new Storage.FlutterSecureStorage();
     String token = await storage.read(key: "accessToken") ?? "";
-    if(token.isEmpty) {
-      GetX.Get.offAll(
-          LoginScreen(), transition: GetX.Transition.leftToRightWithFade,
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
           duration: Duration(milliseconds: 500));
       throw Exception("Error: UnAuthentication");
-    }else {
+    } else {
       final response = await http.get(
         Uri.parse("https://binhtt.tech/api/v1/doctors?" +
-            searchMajor +
+            condition +
             "is-verify=1&limit=50&page-offset=1"),
         headers: <String, String>{
           HttpHeaders.contentTypeHeader: 'application/json',
@@ -87,15 +87,16 @@ class FetchAPI {
     }
   }
 
+
   static Future<List<TimeFrame>> fetchContentTimeFrame() async {
     final storage = new Storage.FlutterSecureStorage();
     String token = await storage.read(key: "accessToken") ?? "";
-    if(token.isEmpty) {
-      GetX.Get.offAll(
-          LoginScreen(), transition: GetX.Transition.leftToRightWithFade,
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
           duration: Duration(milliseconds: 500));
       throw Exception("Error: UnAuthentication");
-    }else {
+    } else {
       final response = await http.get(
           Uri.parse(
               "https://binhtt.tech/api/v1/time-frames?startTime=00%3A00%3A00&endTime=00%3A00%3A00&page-offset=1&limit=20"),
@@ -106,7 +107,7 @@ class FetchAPI {
       if (response.statusCode == 200) {
         var contentJSon = json.decode(utf8.decode(response.bodyBytes));
         ContentTimeFrame contentTimeFrame =
-        ContentTimeFrame.fromJson(contentJSon);
+            ContentTimeFrame.fromJson(contentJSon);
         return contentTimeFrame.timeFrame;
       } else {
         throw Exception("Internal server error");
@@ -117,26 +118,27 @@ class FetchAPI {
   static Future<List<Symptom>> fetchContentSymptom() async {
     final storage = new Storage.FlutterSecureStorage();
     String token = await storage.read(key: "accessToken") ?? "";
-    if(token.isEmpty) {
-      GetX.Get.offAll(
-          LoginScreen(), transition: GetX.Transition.leftToRightWithFade,
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
           duration: Duration(milliseconds: 500));
       throw Exception("Error: UnAuthentication");
-    }else {
-      final response = await http.get(
-          Uri.parse(
-              "https://binhtt.tech/api/v1/symptoms?limit=20&page-offset=1"),
-          headers: <String, String>{
-            HttpHeaders.contentTypeHeader: 'application/json',
-            HttpHeaders.authorizationHeader: 'Bearer $token',
-          });
-      if (response.statusCode == 200) {
-        var contentJSon = json.decode(utf8.decode(response.bodyBytes));
-        ContentSymptom contentSymptom = ContentSymptom.fromJson(contentJSon);
-        return contentSymptom.symptom;
-      } else {
-        throw Exception("Internal server error");
-      }
+    } else {
+        final response = await http.get(
+            Uri.parse(
+                "https://binhtt.tech/api/v1/symptoms?limit=20&page-offset=1"),
+            headers: <String, String>{
+              HttpHeaders.contentTypeHeader: 'application/json',
+              HttpHeaders.authorizationHeader: 'Bearer $token',
+            });
+        if (response.statusCode == 200) {
+          var contentJSon = json.decode(utf8.decode(response.bodyBytes));
+          ContentSymptom contentSymptom = ContentSymptom.fromJson(contentJSon);
+          return contentSymptom.symptom;
+        } else {
+          print(response.statusCode);
+          throw Exception("Internal server error");
+        }
     }
   }
 
@@ -144,13 +146,13 @@ class FetchAPI {
     final storage = new Storage.FlutterSecureStorage();
     String token = await storage.read(key: "accessToken") ?? "";
     if (token.isEmpty) {
-      GetX.Get.offAll(
-          LoginScreen(), transition: GetX.Transition.leftToRightWithFade,
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
           duration: Duration(milliseconds: 500));
       throw Exception("Error: UnAuthentication");
     } else {
       final response = await http.get(
-          Uri.parse("https://binhtt.tech/api/v1/majors?page-offset=1&limit=20"),
+          Uri.parse("https://binhtt.tech/api/v1/majors?page-offset=1&limit=100"),
           headers: <String, String>{
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: 'Bearer $token',
@@ -167,12 +169,39 @@ class FetchAPI {
     }
   }
 
+  static Future<List<Hospital>> fetchContentHospital() async {
+    final storage = new Storage.FlutterSecureStorage();
+    String token = await storage.read(key: "accessToken") ?? "";
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500));
+      throw Exception("Error: UnAuthentication");
+    } else {
+      final response = await http.get(
+          Uri.parse("https://binhtt.tech/api/v1/hospitals?page-offset=1&limit=20"),
+          headers: <String, String>{
+            HttpHeaders.contentTypeHeader: 'application/json',
+            HttpHeaders.authorizationHeader: 'Bearer $token',
+          });
+      if (response.statusCode == 200) {
+        var contentJSon = json.decode(utf8.decode(response.bodyBytes));
+        ContentHospital contentHospital = ContentHospital.fromJson(contentJSon);
+        return contentHospital.hospital;
+      } else if (response.statusCode == 404) {
+        throw Exception("Not found hospitals");
+      } else {
+        throw Exception("Internal server error");
+      }
+    }
+  }
+
   static Future<Patient> fetchMyPatient(String email) async {
     final storage = new Storage.FlutterSecureStorage();
     String token = await storage.read(key: "accessToken") ?? "";
     if (token.isEmpty) {
-      GetX.Get.offAll(
-          LoginScreen(), transition: GetX.Transition.leftToRightWithFade,
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
           duration: Duration(milliseconds: 500));
       throw Exception("Error: UnAuthentication");
     } else {
@@ -200,12 +229,12 @@ class FetchAPI {
   static Future<Account> fetchAccountDetail(String email) async {
     final storage = new Storage.FlutterSecureStorage();
     String token = await storage.read(key: "accessToken") ?? "";
-    if(token.isEmpty) {
-      GetX.Get.offAll(
-          LoginScreen(), transition: GetX.Transition.leftToRightWithFade,
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
           duration: Duration(milliseconds: 500));
       throw Exception("Error: UnAuthentication");
-    }else {
+    } else {
       final response = await http.get(
         Uri.parse("https://binhtt.tech/api/v1/accounts/" +
             email +
@@ -230,12 +259,12 @@ class FetchAPI {
   static Future<List<HealthCheck>> fetchMyHealthCheck(int patientID) async {
     final storage = new Storage.FlutterSecureStorage();
     String token = await storage.read(key: "accessToken") ?? "";
-    if(token.isEmpty) {
-      GetX.Get.offAll(
-          LoginScreen(), transition: GetX.Transition.leftToRightWithFade,
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
           duration: Duration(milliseconds: 500));
       throw Exception("Error: UnAuthentication");
-    }else {
+    } else {
       final response = await http.get(
         Uri.parse("https://binhtt.tech/api/v1/health-checks?patient-id=" +
             patientID.toString() +
@@ -248,7 +277,7 @@ class FetchAPI {
       if (response.statusCode == 200) {
         var contentJSon = json.decode(utf8.decode(response.bodyBytes));
         ContentHealthCheck contentHealthCheck =
-        ContentHealthCheck.fromJson(contentJSon);
+            ContentHealthCheck.fromJson(contentJSon);
         return contentHealthCheck.healthCheck;
       } else if (response.statusCode == 404) {
         throw Exception("Not found health checks");
@@ -263,12 +292,12 @@ class FetchAPI {
   static Future<List<Slot>> fetchContentSlot(int doctorID) async {
     final storage = new Storage.FlutterSecureStorage();
     String token = await storage.read(key: "accessToken") ?? "";
-    if(token.isEmpty) {
-      GetX.Get.offAll(
-          LoginScreen(), transition: GetX.Transition.leftToRightWithFade,
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
           duration: Duration(milliseconds: 500));
       throw Exception("Error: UnAuthentication");
-    }else {
+    } else {
       final response = await http.get(
           Uri.parse("https://binhtt.tech/api/v1/slots?doctor-id=" +
               doctorID.toString() +
@@ -289,13 +318,13 @@ class FetchAPI {
     }
   }
 
-  static Future<int> createNewAccount(AccountPost accountPost,
-      String filePath) async {
+  static Future<int> createNewAccount(
+      AccountPost accountPost, String filePath) async {
     final storage = new Storage.FlutterSecureStorage();
     String token = await storage.read(key: "accessToken") ?? "";
     if (token.isEmpty) {
-      GetX.Get.offAll(
-          LoginScreen(), transition: GetX.Transition.leftToRightWithFade,
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
           duration: Duration(milliseconds: 500));
       throw Exception("Error: UnAuthentication");
     } else {
@@ -316,12 +345,12 @@ class FetchAPI {
           "roleId": 3,
         });
         Response response =
-        await Dio().post("https://binhtt.tech/api/v1/accounts",
-            data: formData,
-            options: Options(headers: <String, String>{
-              HttpHeaders.contentTypeHeader: 'multipart/form-data',
-              HttpHeaders.authorizationHeader: 'Bearer $token',
-            }));
+            await Dio().post("https://binhtt.tech/api/v1/accounts",
+                data: formData,
+                options: Options(headers: <String, String>{
+                  HttpHeaders.contentTypeHeader: 'multipart/form-data',
+                  HttpHeaders.authorizationHeader: 'Bearer $token',
+                }));
         return response.statusCode!;
       } on DioError catch (e) {
         return e.response!.statusCode!;
@@ -332,9 +361,9 @@ class FetchAPI {
   static Future<int> createNewPatient(Patient patient) async {
     final storage = new Storage.FlutterSecureStorage();
     String token = await storage.read(key: "accessToken") ?? "";
-    if(token.isEmpty) {
+    if (token.isEmpty) {
       throw Exception("Error: UnAuthentication");
-    }else {
+    } else {
       final response = await http.post(
           Uri.parse("https://binhtt.tech/api/v1/patients"),
           body: jsonEncode(patient.toJson()),
@@ -351,8 +380,8 @@ class FetchAPI {
     final storage = new Storage.FlutterSecureStorage();
     String token = await storage.read(key: "accessToken") ?? "";
     if (token.isEmpty) {
-      GetX.Get.offAll(
-          LoginScreen(), transition: GetX.Transition.leftToRightWithFade,
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
           duration: Duration(milliseconds: 500));
       throw Exception("Error: UnAuthentication");
     } else {
@@ -375,17 +404,17 @@ class FetchAPI {
     }
   }
 
-  static Future<int> updateMyAccountInfo(Account account,
-      String filePath) async {
+  static Future<int> updateMyAccountInfo(
+      Account account, String filePath) async {
     try {
       final storage = new Storage.FlutterSecureStorage();
       String token = await storage.read(key: "accessToken") ?? "";
-      if(token.isEmpty) {
-        GetX.Get.offAll(
-            LoginScreen(), transition: GetX.Transition.leftToRightWithFade,
+      if (token.isEmpty) {
+        GetX.Get.offAll(LoginScreen(),
+            transition: GetX.Transition.leftToRightWithFade,
             duration: Duration(milliseconds: 500));
         throw Exception("Error: UnAuthentication");
-      }else {
+      } else {
         FormData formData;
         if (filePath.isEmpty) {
           formData = new FormData.fromMap({
@@ -417,13 +446,13 @@ class FetchAPI {
             "isMale": account.isMale,
           });
         }
-        Response response = await Dio().put(
-            "https://binhtt.tech/api/v1/accounts",
-            data: formData,
-            options: Options(headers: <String, String>{
-              HttpHeaders.contentTypeHeader: 'multipart/form-data',
-              HttpHeaders.authorizationHeader: 'Bearer $token',
-            }));
+        Response response =
+            await Dio().put("https://binhtt.tech/api/v1/accounts",
+                data: formData,
+                options: Options(headers: <String, String>{
+                  HttpHeaders.contentTypeHeader: 'multipart/form-data',
+                  HttpHeaders.authorizationHeader: 'Bearer $token',
+                }));
         return response.statusCode!;
       }
     } on DioError catch (e) {
@@ -434,12 +463,12 @@ class FetchAPI {
   static Future<String> updateMyPatientInfo(Patient patient) async {
     final storage = new Storage.FlutterSecureStorage();
     String token = await storage.read(key: "accessToken") ?? "";
-    if(token.isEmpty) {
-      GetX.Get.offAll(
-          LoginScreen(), transition: GetX.Transition.leftToRightWithFade,
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
           duration: Duration(milliseconds: 500));
       throw Exception("Error: UnAuthentication");
-    }else {
+    } else {
       final response = await http.put(
           Uri.parse("https://binhtt.tech/api/v1/patients"),
           body: jsonEncode(patient.toJson()),
@@ -467,8 +496,8 @@ class FetchAPI {
     final storage = new Storage.FlutterSecureStorage();
     String token = await storage.read(key: "accessToken") ?? "";
     if (token.isEmpty) {
-      GetX.Get.offAll(
-          LoginScreen(), transition: GetX.Transition.leftToRightWithFade,
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
           duration: Duration(milliseconds: 500));
       throw Exception("Error: UnAuthentication");
     } else {

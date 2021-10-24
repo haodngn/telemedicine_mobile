@@ -3,8 +3,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:telemedicine_mobile/Screens/filter_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
+import 'package:telemedicine_mobile/controller/filter_controller.dart';
 
 class SearchBar extends StatelessWidget {
+  FilterController filterController = Get.put(FilterController());
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -26,7 +28,7 @@ class SearchBar extends StatelessWidget {
           alignment: Alignment.centerRight,
           child: MaterialButton(
             onPressed: () => {
-              Get.to(FilterScreen(),
+              Get.to(FilterScreen(filterController: filterController,),
                   transition: Transition.downToUp,
                   duration: Duration(milliseconds: 600))
             },

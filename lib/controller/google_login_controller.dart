@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
+import 'package:telemedicine_mobile/controller/account_controller.dart';
 
 class GoogleSignInController  with ChangeNotifier  {
   var _googleSignIn = GoogleSignIn();
@@ -10,7 +12,10 @@ class GoogleSignInController  with ChangeNotifier  {
   GoogleSignInAccount get user => _user!;
 
   Future<bool> googleLogin() async {
+    final accountController = Get.put(AccountController());
+    bool statusLogin = false;
     try {
+      accountController.isLoading.value = true;
       final googleUser = await _googleSignIn.signIn();
       if (googleUser == null) return false;
       _user = googleUser;
@@ -23,12 +28,15 @@ class GoogleSignInController  with ChangeNotifier  {
       var response = await FirebaseAuth.instance.signInWithCredential(credential);
       await FetchAPI.loginWithToken(await response.user!.getIdToken());
       notifyListeners();
-      return true;
+      statusLogin = true;
     }catch(e)
     {
       print(e);
-      return false;
+      statusLogin =  false;
+    }finally {
+      accountController.isLoading.value = false;
     }
+    return statusLogin;
   }
 
   logOut() async {

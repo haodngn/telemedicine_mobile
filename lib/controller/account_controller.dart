@@ -21,4 +21,6 @@ class AccountController extends GetxController
       active: false,
       isMale: false,
       role: new Role(id: 0, name: "", isActive: true)).obs;
+
+  RxBool isLoading = false.obs;
 }
