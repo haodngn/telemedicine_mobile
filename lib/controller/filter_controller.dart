@@ -110,45 +110,46 @@ class FilterController extends GetxController {
   setSearchHospital() {
     parseSearchHospital.value = "";
     listResultHospital
-        .map((element) =>
-    parseSearchHospital.value += "hospitals=" + element.toString() + "&")
+        .map((element) => parseSearchHospital.value +=
+            "hospitals=" + element.toString() + "&")
         .toList();
   }
-
 
   //TypeSearch: 1, search with condition, 2: search all
   searchDoctorByCondition(int typeSearch) {
     String condition = "";
-    switch(typeSearch)
-    {
-      case 1: {
-        if (listResultMajor.length > 1) {
-          setSearchMajor();
-          condition += parseSearchMajor.value;
+    switch (typeSearch) {
+      case 1:
+        {
+          if (listResultMajor.length > 1) {
+            setSearchMajor();
+            condition += parseSearchMajor.value;
+          }
+          if (listResultHospital.length != 0) {
+            setSearchHospital();
+            condition += parseSearchHospital.value;
+          }
+          if (startTime.value != "00:00") {
+            condition += ("time-start=${startTime.value}&");
+          }
+          if (endTime.value != "00:00") {
+            condition += ("time-end=${endTime.value}&");
+          }
+          String formattedDate =
+              DateFormat('yyyy-MM-dd').format(dateSearch.value);
+          condition += ("date-health-check=$formattedDate&");
+          if (nameDoctor.isNotEmpty) {
+            condition += ("name-doctor=${nameDoctor.value}&");
+          }
+          listDoctorController.condition.value = condition;
+          break;
         }
-        if (listResultHospital.length != 0) {
-          setSearchHospital();
-          condition += parseSearchHospital.value;
+      case 2:
+        {
+          listDoctorController.condition.value = "";
+          break;
         }
-        if (startTime.value != "00:00") {
-          condition += ("time-start=${startTime.value}&");
-        }
-        if (endTime.value != "00:00") {
-          condition += ("time-end=${endTime.value}&");
-        }
-        String formattedDate = DateFormat('yyyy-MM-dd').format(dateSearch.value);
-        condition += ("date-health-check=$formattedDate&");
-        if (nameDoctor.isNotEmpty) {
-          condition += ("name-doctor=${nameDoctor.value}&");
-        }
-        listDoctorController.condition.value = condition;
-        break;
-      }
-      case 2: {
-        listDoctorController.condition.value = "";
-        break;
-      }
     }
-    listDoctorController.getListDoctor();
+    listDoctorController.getListDoctor(isRefresh: true);
   }
 }

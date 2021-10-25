@@ -55,7 +55,8 @@ class FetchAPI {
     }
   }
 
-  static Future<List<Doctor>> fetchContentDoctorWithCondition(String condition) async {
+  static Future<ContentDoctor> fetchContentDoctorWithCondition(
+      String condition, int currentPage) async {
     final storage = new Storage.FlutterSecureStorage();
     String token = await storage.read(key: "accessToken") ?? "";
     if (token.isEmpty) {
@@ -67,7 +68,7 @@ class FetchAPI {
       final response = await http.get(
         Uri.parse("https://binhtt.tech/api/v1/doctors?" +
             condition +
-            "is-verify=1&limit=50&page-offset=1"),
+            "is-verify=1&limit=8&page-offset=$currentPage"),
         headers: <String, String>{
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.authorizationHeader: 'Bearer $token',
@@ -76,7 +77,7 @@ class FetchAPI {
       if (response.statusCode == 200) {
         var contentJSon = json.decode(utf8.decode(response.bodyBytes));
         ContentDoctor contentDoctor = ContentDoctor.fromJson(contentJSon);
-        return contentDoctor.doctor;
+        return contentDoctor;
       } else if (response.statusCode == 404) {
         throw Exception("Not found doctor");
       } else if (response.statusCode == 401) {
@@ -86,7 +87,6 @@ class FetchAPI {
       }
     }
   }
-
 
   static Future<List<TimeFrame>> fetchContentTimeFrame() async {
     final storage = new Storage.FlutterSecureStorage();
@@ -124,21 +124,21 @@ class FetchAPI {
           duration: Duration(milliseconds: 500));
       throw Exception("Error: UnAuthentication");
     } else {
-        final response = await http.get(
-            Uri.parse(
-                "https://binhtt.tech/api/v1/symptoms?limit=20&page-offset=1"),
-            headers: <String, String>{
-              HttpHeaders.contentTypeHeader: 'application/json',
-              HttpHeaders.authorizationHeader: 'Bearer $token',
-            });
-        if (response.statusCode == 200) {
-          var contentJSon = json.decode(utf8.decode(response.bodyBytes));
-          ContentSymptom contentSymptom = ContentSymptom.fromJson(contentJSon);
-          return contentSymptom.symptom;
-        } else {
-          print(response.statusCode);
-          throw Exception("Internal server error");
-        }
+      final response = await http.get(
+          Uri.parse(
+              "https://binhtt.tech/api/v1/symptoms?limit=20&page-offset=1"),
+          headers: <String, String>{
+            HttpHeaders.contentTypeHeader: 'application/json',
+            HttpHeaders.authorizationHeader: 'Bearer $token',
+          });
+      if (response.statusCode == 200) {
+        var contentJSon = json.decode(utf8.decode(response.bodyBytes));
+        ContentSymptom contentSymptom = ContentSymptom.fromJson(contentJSon);
+        return contentSymptom.symptom;
+      } else {
+        print(response.statusCode);
+        throw Exception("Internal server error");
+      }
     }
   }
 
@@ -152,7 +152,8 @@ class FetchAPI {
       throw Exception("Error: UnAuthentication");
     } else {
       final response = await http.get(
-          Uri.parse("https://binhtt.tech/api/v1/majors?page-offset=1&limit=100"),
+          Uri.parse(
+              "https://binhtt.tech/api/v1/majors?page-offset=1&limit=100"),
           headers: <String, String>{
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: 'Bearer $token',
@@ -179,7 +180,8 @@ class FetchAPI {
       throw Exception("Error: UnAuthentication");
     } else {
       final response = await http.get(
-          Uri.parse("https://binhtt.tech/api/v1/hospitals?page-offset=1&limit=20"),
+          Uri.parse(
+              "https://binhtt.tech/api/v1/hospitals?page-offset=1&limit=20"),
           headers: <String, String>{
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: 'Bearer $token',

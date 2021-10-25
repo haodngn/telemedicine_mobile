@@ -8,8 +8,13 @@ import 'package:telemedicine_mobile/models/Patient.dart';
 import 'package:telemedicine_mobile/models/Slot.dart';
 
 class ListDoctorController extends GetxController {
-
   RxList<dynamic> listDoctor = [].obs;
+  RxInt totalCount = 0.obs;
+  RxInt pageSize = 0.obs;
+  RxInt totalPage = 0.obs;
+  RxInt currentPage = 0.obs;
+  RxInt nextPage = 0.obs;
+  RxInt? previousPage = 0.obs;
   RxBool isLoading = false.obs;
   Rx<Doctor> doctorDetail = new Doctor(
       id: 0,
@@ -33,12 +38,30 @@ class ListDoctorController extends GetxController {
 
   RxString condition = "".obs;
 
-  getListDoctor() {
+  Future<bool> getListDoctor({bool isRefresh = false}) async {
     isLoading.value = true;
-    FetchAPI.fetchContentDoctorWithCondition(condition.value).then((dataFromServer) {
-      listDoctor.value = dataFromServer;
+    if (isRefresh) {
+      currentPage.value = 1;
+    }
+    await FetchAPI.fetchContentDoctorWithCondition(
+            condition.value, currentPage.value)
+        .then((dataFromServer) {
+      print(dataFromServer.doctor);
+      if (isRefresh) {
+        listDoctor.value = dataFromServer.doctor;
+      } else {
+        listDoctor.addAll(dataFromServer.doctor);
+      }
+      totalCount.value = dataFromServer.totalCount;
+      pageSize.value = dataFromServer.pageSize;
+      totalPage.value = dataFromServer.totalPage;
+      currentPage.value = dataFromServer.currentPage;
+      nextPage.value = dataFromServer.nextPage;
+      previousPage!.value = dataFromServer.previousPage ?? 0;
       isLoading.value = false;
+      return true;
     });
+    return false;
   }
 
   getListDoctorSlot(int doctorID) {
