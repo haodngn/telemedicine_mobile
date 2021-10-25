@@ -1,41 +1,49 @@
 {
   "project_info": {
-    "project_number": "1080537376912",
-    "project_id": "telemedicine-3fd55",
-    "storage_bucket": "telemedicine-3fd55.appspot.com"
+    "project_number": "872610947801",
+    "project_id": "telemedicine-fc0ee",
+    "storage_bucket": "telemedicine-fc0ee.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1080537376912:android:a77e511260bc25ee5ad015",
+        "mobilesdk_app_id": "1:872610947801:android:59dcacef7c7734209354c8",
         "android_client_info": {
           "package_name": "com.example.telemedicine_mobile"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1080537376912-5ut6s10h5k2hg03g2v5vef17ttam3s86.apps.googleusercontent.com",
+          "client_id": "872610947801-13dg5vmuhd10gafghbts3ompoi71m5ku.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.telemedicine_mobile",
-            "certificate_hash": "56f64271f70720584b78a359b47c0dd5c131ff0d"
+            "certificate_hash": "4ba074442100eb38efe3cd0e9e3ac8afa38ad0fd"
           }
         },
         {
-          "client_id": "1080537376912-ba6f0vig4bkuc4nia5erafpqvo7rkin5.apps.googleusercontent.com",
+          "client_id": "872610947801-agovchbcsj3gojnnj63g770qq4nhrd4o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.telemedicine_mobile",
+            "certificate_hash": "852e129258d4dfcb498cadcb4fc2fc508d72d084"
+          }
+        },
+        {
+          "client_id": "872610947801-p4o47m5c4o14vh4lr9gfu0a2nkn4i60b.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBa94UpHZsdYf-kscftPrtz0aV_0CULU2o"
+          "current_key": "AIzaSyDOVVKhmHR0H8QskPHSIZxUGwbKBMAz2HY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1080537376912-ba6f0vig4bkuc4nia5erafpqvo7rkin5.apps.googleusercontent.com",
+              "client_id": "872610947801-p4o47m5c4o14vh4lr9gfu0a2nkn4i60b.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

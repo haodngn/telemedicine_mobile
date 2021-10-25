@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
 import 'package:telemedicine_mobile/Screens/components/check_login.dart';
@@ -15,17 +17,22 @@ class GoogleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery
+        .of(context)
+        .size;
     return Container(
       child: GestureDetector(
         child: Image.asset(
           "assets/images/google.png",
           width: 250,
         ),
-        onTap: () {
-          Provider.of<GoogleSignInController>(context, listen: false)
+        onTap: () async{
+          bool checkLogin = await Provider.of<GoogleSignInController>(
+              context, listen: false)
               .googleLogin();
-          Navigator.push(context, MaterialPageRoute(builder: checkLoginGoogle));
+          if (checkLogin) {
+            Navigator.push(context, MaterialPageRoute(builder: checkLoginGoogle));
+          }
         },
       ),
     );
@@ -35,6 +42,6 @@ class GoogleButton extends StatelessWidget {
     // if (true)
     //   return UserInformation();
     // else
-      return BottomNavScreen();
+    return BottomNavScreen();
   }
 }

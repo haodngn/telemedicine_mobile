@@ -47,7 +47,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             currentIndex: currentIndex,
             onTap: (index) => {
               setState(() => currentIndex = index),
-              if (index == 1) {listDoctorController.searchMajor.value = ""}
+              if (index == 1) {listDoctorController.condition.value = ""}
             },
             items: [
               BottomNavigationBarItem(
