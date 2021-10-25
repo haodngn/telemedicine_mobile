@@ -14,7 +14,7 @@ class Doctor {
   late String scopeOfPractice;
   late String description;
   late int numberOfConsultants;
-  late int rating;
+  late double rating;
   late bool isVerify;
   late List<CertificationDoctors> certificationDoctors = [];
   late List<HospitalDoctors> hospitalDoctors = [];

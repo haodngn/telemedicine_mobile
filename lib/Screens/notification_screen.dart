@@ -148,7 +148,7 @@ class BoxNotification extends StatelessWidget {
         children: [
           !date.endsWith(sameDate) || sameDate.isEmpty
               ? Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 260, 10),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 200, 10),
                   child: Text(
                     date.endsWith(
                             DateFormat('yyyy-MM-dd').format(DateTime.now()))

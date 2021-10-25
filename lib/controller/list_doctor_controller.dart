@@ -10,6 +10,7 @@ import 'package:telemedicine_mobile/models/Slot.dart';
 class ListDoctorController extends GetxController {
 
   RxList<dynamic> listDoctor = [].obs;
+  RxBool isLoading = false.obs;
   Rx<Doctor> doctorDetail = new Doctor(
       id: 0,
       email: "",
@@ -30,11 +31,13 @@ class ListDoctorController extends GetxController {
 
   RxList<dynamic> listSlot = [].obs;
 
-  RxString searchMajor = "".obs;
+  RxString condition = "".obs;
 
   getListDoctor() {
-    FetchAPI.fetchContentDoctor(searchMajor.value).then((dataFromServer) {
+    isLoading.value = true;
+    FetchAPI.fetchContentDoctorWithCondition(condition.value).then((dataFromServer) {
       listDoctor.value = dataFromServer;
+      isLoading.value = false;
     });
   }
 

@@ -46,6 +46,8 @@ dependencies:
   dio: ^4.0.0
   get_storage: ^2.0.3
   url_launcher: ^6.0.8
+  date_time_picker: ^2.1.0
+  klocalizations_flutter: ^0.0.4
 
 
   #Icon
@@ -62,6 +64,7 @@ dependencies:
   #Agora
   agora_rtc_engine: ^4.0.7
   permission_handler:
+  flutter_secure_storage: ^4.2.1
 
 
 dev_dependencies:

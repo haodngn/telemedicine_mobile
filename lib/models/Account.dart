@@ -16,7 +16,6 @@ class Account {
   late bool active;
   late bool isMale;
   late Role role;
-
   Account(
       {required this.id,
       required this.email,
@@ -35,23 +34,23 @@ class Account {
       required this.role});
 
   Account.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    email = json['email'];
-    firstName = json['firstName'];
-    lastName = json['lastName'];
-    ward = json['ward'];
-    streetAddress = json['streetAddress'];
-    locality = json['locality'];
-    city = json['city'];
-    postalCode = json['postalCode'];
-    phone = json['phone'];
-    avatar = json['avatar'];
-    dob = json['dob'];
-    active = json['active'];
-    isMale = json['isMale'];
-    if (json['role'] != null) {
-      role = new Role.fromJson(json['role']);
-    }
+      id = json['id'];
+      email = json['email'];
+      firstName = json['firstName'];
+      lastName = json['lastName'];
+      ward = json['ward'];
+      streetAddress = json['streetAddress'];
+      locality = json['locality'];
+      city = json['city'];
+      postalCode = json['postalCode'];
+      phone = json['phone'];
+      avatar = json['avatar'];
+      dob = json['dob'];
+      active = json['active'];
+      isMale = json['isMale'];
+      if (json['role'] != null) {
+        role = new Role.fromJson(json['role']);
+      }
   }
 
   Map<String, dynamic> toJson() {

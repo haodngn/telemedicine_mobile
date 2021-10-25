@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:telemedicine_mobile/Screens/components/doctor.dart';
 import 'package:telemedicine_mobile/Screens/filter_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
+import 'package:telemedicine_mobile/controller/filter_controller.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
 
 class ListDoctorScreen extends StatefulWidget {
@@ -14,62 +15,64 @@ class ListDoctorScreen extends StatefulWidget {
 
 class _ListDoctorScreenState extends State<ListDoctorScreen> {
   final listDoctorController = Get.put(ListDoctorController());
+  FilterController filterController = Get.put(FilterController());
 
   @override
   void initState() {
     super.initState();
     listDoctorController.getListDoctor();
-    print("aAAa: " + listDoctorController.searchMajor.value);
+    print("aAAa: " + listDoctorController.condition.value);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Danh sách bác sĩ"),
-        backgroundColor: kBlueColor,
-        automaticallyImplyLeading: false,
-      ),
-      backgroundColor: kBackgroundColor,
-      body: SafeArea(
-        child: Obx(
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Danh sách bác sĩ"),
+          backgroundColor: kBlueColor,
+          automaticallyImplyLeading: false,
+        ),
+        backgroundColor: kBackgroundColor,
+        body: Obx(
           () => SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: listDoctorController.isLoading.value
+                  ? CrossAxisAlignment.center
+                  : CrossAxisAlignment.start,
+              mainAxisAlignment: listDoctorController.isLoading.value
+                  ? MainAxisAlignment.center
+                  : MainAxisAlignment.start,
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.fromLTRB(300, 20, 0, 20),
                   child: ElevatedButton(
                     onPressed: () => {
-                      Get.to(FilterScreen(),
+                      Get.to(FilterScreen(filterController: filterController,),
                           transition: Transition.downToUp,
                           duration: Duration(milliseconds: 600))
                     },
                     child: Icon(Icons.search),
                   ),
                 ),
-                // Padding(
-                //   padding: EdgeInsets.symmetric(horizontal: 30),
-                //   child: Text(
-                //     'Top Doctors',
-                //     style: TextStyle(
-                //       fontWeight: FontWeight.bold,
-                //       color: kTitleTextColor,
-                //       fontSize: 18,
-                //     ),
-                //   ),
-                // ),
                 SizedBox(
                   height: 20,
                 ),
-                ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: listDoctorController.listDoctor.length,
-                    itemBuilder: (BuildContext context, index) {
-                      return buildDoctorList(
-                          listDoctorController.listDoctor[index]);
-                    }),
+                listDoctorController.isLoading.value
+                    ? CircularProgressIndicator()
+                    : listDoctorController.listDoctor.length == 0
+                        ? Container(
+                            child: Center(
+                                child: Text("Không tìm thấy bác sĩ phù hợp")),
+                          )
+                        : ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: listDoctorController.listDoctor.length,
+                            itemBuilder: (BuildContext context, index) {
+                              return buildDoctorList(
+                                  listDoctorController.listDoctor[index]);
+                            }),
               ],
             ),
           ),

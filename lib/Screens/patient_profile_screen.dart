@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:telemedicine_mobile/Screens/edit_healthcheck_info_screen.dart';
@@ -125,7 +126,7 @@ class _PatientProfileState extends State<PatientProfile> {
                               children: [
                                 Padding(
                                   padding:
-                                      const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                      const EdgeInsets.fromLTRB(14, 0, 14, 0),
                                   child: Icon(
                                     Icons.person,
                                     color: kWhiteColor,
@@ -139,8 +140,8 @@ class _PatientProfileState extends State<PatientProfile> {
                                     color: kWhiteColor,
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 52,
+                                Expanded(
+                                  child: Container(),
                                 ),
                                 RawMaterialButton(
                                   onPressed: () => {
@@ -183,7 +184,7 @@ class _PatientProfileState extends State<PatientProfile> {
                               children: [
                                 Padding(
                                   padding:
-                                      const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                      const EdgeInsets.fromLTRB(14, 0, 14, 0),
                                   child: Icon(
                                     Icons.person,
                                     color: kWhiteColor,
@@ -197,9 +198,7 @@ class _PatientProfileState extends State<PatientProfile> {
                                     color: kWhiteColor,
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 30,
-                                ),
+                                Expanded(child: Container()),
                                 RawMaterialButton(
                                   onPressed: () => {
                                     Get.to(() => EditHealthCheckInfoScreen(),

@@ -7,6 +7,7 @@ import 'controller/facebook_login_controller.dart';
 import 'controller/google_login_controller.dart';
 import 'package:telemedicine_mobile/Screens/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,8 +36,16 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
+        debugShowCheckedModeBanner: false,
         home: LoginScreen(),
+        localizationsDelegates: [
+          GlobalWidgetsLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [Locale('en', 'US')],
       ),
+
     );
   }
 }
