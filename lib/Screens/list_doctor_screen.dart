@@ -19,14 +19,13 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
   void initState() {
     super.initState();
     listDoctorController.getListDoctor();
-    print("aAAa: " + listDoctorController.searchMajor.value);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Danh sách bác sĩ"),
+        title: Center(child: Text("Danh sách bác sĩ")),
         backgroundColor: kBlueColor,
         automaticallyImplyLeading: false,
       ),
@@ -48,17 +47,6 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
                     child: Icon(Icons.search),
                   ),
                 ),
-                // Padding(
-                //   padding: EdgeInsets.symmetric(horizontal: 30),
-                //   child: Text(
-                //     'Top Doctors',
-                //     style: TextStyle(
-                //       fontWeight: FontWeight.bold,
-                //       color: kTitleTextColor,
-                //       fontSize: 18,
-                //     ),
-                //   ),
-                // ),
                 SizedBox(
                   height: 20,
                 ),

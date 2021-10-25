@@ -11,12 +11,12 @@ class ContentDoctor {
 
   ContentDoctor(
       {required this.totalCount,
-       required this.pageSize,
-       required this.totalPage,
-       required this.currentPage,
-       required this.nextPage,
-       required this.previousPage,
-       required this.doctor});
+      required this.pageSize,
+      required this.totalPage,
+      required this.currentPage,
+      required this.nextPage,
+      required this.previousPage,
+      required this.doctor});
 
   ContentDoctor.fromJson(Map<String, dynamic> json) {
     totalCount = json['totalCount'];

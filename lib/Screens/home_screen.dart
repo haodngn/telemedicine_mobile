@@ -22,17 +22,6 @@ class HomeScreen extends StatelessWidget {
         centerTitle: true,
         automaticallyImplyLeading: false,
         backgroundColor: kBlueColor,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.smart_toy),
-            color: Colors.white,
-            onPressed: () {
-              Get.to(ChatBotScreen(),
-                  transition: Transition.downToUp,
-                  duration: Duration(milliseconds: 600));
-            },
-          )
-        ],
       ),
       backgroundColor: kBackgroundColor,
       body: SafeArea(

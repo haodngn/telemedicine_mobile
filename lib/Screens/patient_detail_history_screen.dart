@@ -68,17 +68,8 @@ class _PatientDetailHistoryScreenState
         .slots[0]
         .doctor
         .email);
-    symptom = new RichText(
-      text: new TextSpan(children: <TextSpan>[
-        new TextSpan(
-            text: 'Triệu chứng của bạn',
-            style: new TextStyle(fontWeight: FontWeight.bold)),
-        new TextSpan(
-          text: 'World',
-        ),
-      ]),
-    );
     listDoctorController.getListDoctor();
+    patientHistoryController.getPrescription();
   }
 
   @override
@@ -486,10 +477,13 @@ class _PatientDetailHistoryScreenState
                                   padding: EdgeInsets.fromLTRB(5, 0, 20, 0),
                                   child: TextFormField(
                                     readOnly: true,
-                                    onTap: () => Get.to(() => ViewDrugScreen(),
-                                        transition:
-                                            Transition.rightToLeftWithFade,
-                                        duration: Duration(microseconds: 600)),
+                                    onTap: () => {
+                                      Get.to(() => ViewDrugScreen(),
+                                          transition:
+                                              Transition.rightToLeftWithFade,
+                                          duration:
+                                              Duration(microseconds: 600)),
+                                    },
                                     initialValue: "Đơn thuốc",
                                     style: TextStyle(
                                       letterSpacing: 2,
