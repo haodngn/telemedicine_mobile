@@ -17,6 +17,8 @@ class DetailScreen extends StatelessWidget {
   var majorDoctors;
   var hospitalDoctors;
   var certificationDoctors;
+  var rating;
+  var numberOfConsultants;
 
   DetailScreen(
     this._name,
@@ -26,6 +28,8 @@ class DetailScreen extends StatelessWidget {
     this.majorDoctors,
     this.hospitalDoctors,
     this.certificationDoctors,
+    this.rating,
+    this.numberOfConsultants,
   );
 
   final listDoctorController = Get.put(ListDoctorController());
@@ -180,6 +184,75 @@ class DetailScreen extends StatelessWidget {
                         ),
                         SizedBox(
                           height: 50,
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              alignment: Alignment.center,
+                              width: 100,
+                              height: 100,
+                              color: Colors.grey.withOpacity(0.25),
+                              padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text("Bệnh nhân"),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(numberOfConsultants.toString() + "+",
+                                      style: TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                            ),
+                            Expanded(child: Container()),
+                            Container(
+                              alignment: Alignment.center,
+                              width: 100,
+                              height: 100,
+                              color: Colors.grey.withOpacity(0.25),
+                              padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text("Kinh nghiệm"),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text("5 năm",
+                                      style: TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                            ),
+                            Expanded(child: Container()),
+                            Container(
+                              alignment: Alignment.center,
+                              width: 100,
+                              height: 100,
+                              color: Colors.grey.withOpacity(0.25),
+                              padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text("Đánh giá"),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(rating.toString(),
+                                      style: TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 40,
                         ),
                         Text(
                           'Thông tin bác sĩ',

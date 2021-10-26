@@ -31,7 +31,8 @@ class FetchAPI {
   static Future<void> loginWithToken(String tokenId) async {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     final storage = new Storage.FlutterSecureStorage();
-    data['tokenId'] = tokenId;
+    data['tokenId'] =
+        "eyJhbGciOiJSUzI1NiIsImtpZCI6IjhmYmRmMjQxZTdjM2E2NTEzNTYwNmRkYzFmZWQyYzU1MjI2MzBhODciLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiVsSDbiBUw6JtIE5ndXnhu4VuIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FBVFhBSnlxZ3pjYVRhNjlJdWtxZVdkUFh4TC13dExzYnk2UmQ1TTBTOGc0PXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL3RlbGVtZWRpY2luZS1mYzBlZSIsImF1ZCI6InRlbGVtZWRpY2luZS1mYzBlZSIsImF1dGhfdGltZSI6MTYzNTIzMDY1MywidXNlcl9pZCI6IlYwY05VbER2OVZoY2tXTGw5RGxnV29HeTFyRjIiLCJzdWIiOiJWMGNOVWxEdjlWaGNrV0xsOURsZ1dvR3kxckYyIiwiaWF0IjoxNjM1MjMwNjUzLCJleHAiOjE2MzUyMzQyNTMsImVtYWlsIjoidmFudGFtMTQxN0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNjc5ODQ1NDM5NDI4ODgyNzAyOSJdLCJlbWFpbCI6WyJ2YW50YW0xNDE3QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.T7cLO2VA4Lw_ROhdXfPwxb6UHaQhoI7ve8zBO5FR7VE5KZv-u7zx0pUAFBFZQOZAWeWfRS2wtGYUuCg6T0R_i2lV_mVrGOLjzWE-f8B0c4NYFWEUS617I249S7jPzeguWGFvoDU52RvQ0i93s-UCX33dH3dkk-VYbnJOdVZHeF1ufb_AVtM3lk5zk_tlTkUQzvhbhmbwgN-B8sdVDeT5zxj45sAyiiUrapkplj-rxY5YP_Npm6Lfiz-6-jUSVlCNrLLWmXK2VwwcILzppe18virfLmukXQuhsvnJgBqGaXuuXJXte9WhVW853R-xpiTGZ8ObH-Vlh9j2_fAy3sk6Rw";
     data['loginType'] = 3;
     final accountController = GetX.Get.put(AccountController());
     try {
@@ -41,7 +42,6 @@ class FetchAPI {
                 HttpHeaders.contentTypeHeader: 'application/json',
               },
               body: jsonEncode(data));
-      print(response.statusCode);
       if (response.statusCode == 200) {
         var accountJson = json.decode(utf8.decode(response.bodyBytes));
         Account account = Account.fromJson(accountJson['account']);
@@ -82,6 +82,70 @@ class FetchAPI {
         throw Exception("Not found doctor");
       } else if (response.statusCode == 401) {
         throw Exception("Error: Unauthorized");
+      } else {
+        throw Exception("Internal server error");
+      }
+    }
+  }
+
+  static Future<List<Doctor>> fetchContentTopDoctor() async {
+    final storage = new Storage.FlutterSecureStorage();
+    String token = await storage.read(key: "accessToken") ?? "";
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500));
+      throw Exception("Error: UnAuthentication");
+    } else {
+      final response = await http.get(
+        Uri.parse(
+            "https://binhtt.tech/api/v1/doctors?order-by=Rating&order-type=desc&is-verify=1&limit=8&page-offset=1"),
+        headers: <String, String>{
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        var contentJSon = json.decode(utf8.decode(response.bodyBytes));
+        ContentDoctor contentDoctor = ContentDoctor.fromJson(contentJSon);
+        return contentDoctor.doctor;
+      } else if (response.statusCode == 404) {
+        throw Exception("Not found doctor");
+      } else if (response.statusCode == 401) {
+        throw Exception("Error: Unauthorized");
+      } else {
+        throw Exception("Internal server error");
+      }
+    }
+  }
+
+  static Future<HealthCheck> fetchNearestHealthCheck(int patientID) async {
+    final storage = new Storage.FlutterSecureStorage();
+    String token = await storage.read(key: "accessToken") ?? "";
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500));
+      throw Exception("Error: UnAuthentication");
+    } else {
+      final response = await http.get(
+        Uri.parse(
+            "https://binhtt.tech/api/v1/health-checks?mode-search=NEAREST&type-role=USER&patient-id=" +
+                patientID.toString() +
+                "&page-offset=1&limit=1"),
+        headers: <String, String>{
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        var contentJSon = json.decode(utf8.decode(response.bodyBytes));
+        HealthCheck healthCheck = HealthCheck.fromJson(contentJSon);
+        return healthCheck;
+      } else if (response.statusCode == 404) {
+        throw Exception("Not found health checks");
+      } else if (response.statusCode == 400) {
+        throw Exception("Bad requests");
       } else {
         throw Exception("Internal server error");
       }
@@ -136,7 +200,6 @@ class FetchAPI {
         ContentSymptom contentSymptom = ContentSymptom.fromJson(contentJSon);
         return contentSymptom.symptom;
       } else {
-        print(response.statusCode);
         throw Exception("Internal server error");
       }
     }
