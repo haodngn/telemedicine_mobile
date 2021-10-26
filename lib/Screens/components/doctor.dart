@@ -113,9 +113,9 @@ class DoctorCard extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
+                            color: kTitleTextColor.withOpacity(0.7),
                             fontWeight: FontWeight.w500,
-                            fontSize: 15,
-                            color: kBlueColor.withOpacity(0.8),
+                            fontSize: 13,
                           ),
                         ),
                       ],

@@ -103,73 +103,78 @@ class DetailScreen extends StatelessWidget {
                             SizedBox(
                               width: 20,
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  _name,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                    color: kTitleTextColor,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Container(
-                                  width: 200,
-                                  child: Text(
-                                    _scopeOfPractice,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    _name,
                                     style: TextStyle(
-                                      color: kTitleTextColor.withOpacity(0.7),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: kTitleTextColor,
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  children: <Widget>[
-                                    Container(
-                                      padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        color: kBlueColor.withOpacity(0.1),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: SvgPicture.asset(
-                                        'assets/icons/phone.svg',
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Container(
+                                    width: 200,
+                                    child: Text(
+                                      _scopeOfPractice,
+                                      style: TextStyle(
+                                        color: kTitleTextColor.withOpacity(0.7),
                                       ),
                                     ),
-                                    SizedBox(
-                                      width: 16,
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        color: kYellowColor.withOpacity(0.1),
-                                        borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Container(
+                                        padding: EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          color: kBlueColor.withOpacity(0.1),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: SvgPicture.asset(
+                                          'assets/icons/phone.svg',
+                                        ),
                                       ),
-                                      child: SvgPicture.asset(
-                                        'assets/icons/chat.svg',
+                                      SizedBox(
+                                        width: 16,
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width: 16,
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        color: kOrangeColor.withOpacity(0.1),
-                                        borderRadius: BorderRadius.circular(10),
+                                      Container(
+                                        padding: EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          color: kYellowColor.withOpacity(0.1),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: SvgPicture.asset(
+                                          'assets/icons/chat.svg',
+                                        ),
                                       ),
-                                      child: SvgPicture.asset(
-                                        'assets/icons/video.svg',
+                                      SizedBox(
+                                        width: 16,
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                      Container(
+                                        padding: EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          color: kOrangeColor.withOpacity(0.1),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: SvgPicture.asset(
+                                          'assets/icons/video.svg',
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             )
                           ],
                         ),

@@ -70,27 +70,26 @@ class _FilterScreenState extends State<FilterScreen> {
           },
         ),
       ),
-      body: SingleChildScrollView(
-        child: Obx(
-          () => Form(
-            key: _oFormKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  height: 10,
-                ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(left: 10.0, right: 10, top: 10),
-                    child: _titleContainer("Tên bác sĩ:"),
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(18, 0, 18, 0),
+        child: SingleChildScrollView(
+          child: Obx(
+            () => Form(
+              key: _oFormKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: 10,
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0, right: 20),
-                  child: TextFormField(
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: _titleContainer("Tên bác sĩ:"),
+                    ),
+                  ),
+                  TextFormField(
                     controller: textNameDoctorController,
                     onChanged: (val) =>
                         widget.filterController.nameDoctor.value = val,
@@ -100,199 +99,190 @@ class _FilterScreenState extends State<FilterScreen> {
                         fontWeight: FontWeight.bold,
                         fontSize: 18.0),
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 10.0, right: 10.0, top: 10, bottom: 8),
-                    child: _titleContainer("Ngày:"),
+                  SizedBox(
+                    height: 10,
                   ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(left: 20.0, right: 20, top: 10),
-                  child: Align(
+                  Align(
                     alignment: Alignment.centerLeft,
-                    child: Container(
-                      child: Stack(
-                        children: [
-                          Positioned.fill(
-                            child: Align(
-                              child: Icon(
-                                Icons.calendar_today_rounded,
-                                size: 30,
-                                color: Colors.grey,
-                              ),
-                              alignment: Alignment.centerLeft,
-                            ),
-                          ),
-                          Container(
-                            width: double.infinity,
-                            child: OutlinedButton(
-                              onPressed: () =>
-                                  widget.filterController.pickDate(context),
-                              child: Text(
-                                "${widget.filterController.dateSearch.value.day}/${widget.filterController.dateSearch.value.month}/${widget.filterController.dateSearch.value.year}",
-                                style: TextStyle(
-                                    fontSize: 18, color: Colors.black),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 8),
+                      child: _titleContainer("Ngày:"),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        child: Stack(
+                          children: [
+                            Positioned.fill(
+                              child: Align(
+                                child: Icon(
+                                  Icons.calendar_today_rounded,
+                                  size: 30,
+                                  color: Colors.grey,
+                                ),
+                                alignment: Alignment.centerLeft,
                               ),
                             ),
-                          ),
-                        ],
+                            Container(
+                              width: double.infinity,
+                              child: OutlinedButton(
+                                onPressed: () =>
+                                    widget.filterController.pickDate(context),
+                                child: Text(
+                                  "${widget.filterController.dateSearch.value.day}/${widget.filterController.dateSearch.value.month}/${widget.filterController.dateSearch.value.year}",
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.black),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 10.0, right: 10.0, top: 10, bottom: 8),
-                    child: _titleContainer("Khoảng thời gian:"),
+                  SizedBox(
+                    height: 10,
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-                  child: DateTimePicker(
-                    type: DateTimePickerType.time,
-                    timePickerEntryModeInput: true,
-                    controller: _controller3,
-                    // initialValue: '',
-                    icon: Icon(Icons.access_time),
-                    timeLabelText: "Thời gian bắt đầu:",
-                    use24HourFormat: true,
-                    locale: Locale('pt', 'BR'),
-                    onChanged: (val) =>
-                        widget.filterController.startTime.value = val,
-                    validator: (val) {
-                      widget.filterController.startTime.value = val ?? '';
-                      return null;
-                    },
-                    onSaved: (val) => {
-                      widget.filterController.startTime.value = val!,
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-                  child: DateTimePicker(
-                    type: DateTimePickerType.time,
-                    timePickerEntryModeInput: true,
-                    controller: _controller4,
-                    // initialValue: '',
-                    icon: Icon(Icons.access_time),
-                    timeLabelText: "Thời gian kết thúc:",
-                    use24HourFormat: true,
-                    locale: Locale('pt', 'BR'),
-                    onChanged: (val) =>
-                        widget.filterController.endTime.value = val,
-                    validator: (val) {
-                      widget.filterController.endTime.value = val ?? '';
-                      return null;
-                    },
-                    onSaved: (val) => (val) => {
-                          widget.filterController.endTime.value = val!,
-                          print(val),
-                        },
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 10.0, right: 10.0, top: 10, bottom: 8),
-                    child: _titleContainer("Chuyên khoa:"),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-                  child: MultiSelectDialogField(
-                    initialValue: widget.filterController.listResultMajor,
-                    items: widget.filterController.listMajorItem,
-                    title: Text("Chuyên khoa"),
-                    selectedColor: kBlueColor,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: Colors.grey, width: 1),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 8),
+                      child: _titleContainer("Khoảng thời gian:"),
                     ),
-                    buttonText: Text(
-                      "Chọn chuyên khoa",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: DateTimePicker(
+                      type: DateTimePickerType.time,
+                      timePickerEntryModeInput: true,
+                      controller: _controller3,
+                      // initialValue: '',
+                      icon: Icon(Icons.access_time),
+                      timeLabelText: "Thời gian bắt đầu:",
+                      use24HourFormat: true,
+                      locale: Locale('pt', 'BR'),
+                      onChanged: (val) =>
+                          widget.filterController.startTime.value = val,
+                      validator: (val) {
+                        widget.filterController.startTime.value = val ?? '';
+                        return null;
+                      },
+                      onSaved: (val) => {
+                        widget.filterController.startTime.value = val!,
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: DateTimePicker(
+                      type: DateTimePickerType.time,
+                      timePickerEntryModeInput: true,
+                      controller: _controller4,
+                      // initialValue: '',
+                      icon: Icon(Icons.access_time),
+                      timeLabelText: "Thời gian kết thúc:",
+                      use24HourFormat: true,
+                      locale: Locale('pt', 'BR'),
+                      onChanged: (val) =>
+                          widget.filterController.endTime.value = val,
+                      validator: (val) {
+                        widget.filterController.endTime.value = val ?? '';
+                        return null;
+                      },
+                      onSaved: (val) => (val) => {
+                            widget.filterController.endTime.value = val!,
+                            print(val),
+                          },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 8),
+                      child: _titleContainer("Chuyên khoa:"),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: MultiSelectDialogField(
+                      initialValue: widget.filterController.listResultMajor,
+                      items: widget.filterController.listMajorItem,
+                      title: Text("Chuyên khoa"),
+                      selectedColor: kBlueColor,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(color: Colors.grey, width: 1),
                       ),
-                    ),
-                    onConfirm: (results) {
-                      widget.filterController.listResultMajor.value = results;
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 10.0, right: 10, top: 10, bottom: 8),
-                    child: _titleContainer("Bệnh viện:"),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-                  child: MultiSelectDialogField(
-                    initialValue: widget.filterController.listResultHospital,
-                    items: widget.filterController.listHospitalItem,
-                    title: Text("Bệnh viện"),
-                    selectedColor: kBlueColor,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: Colors.grey, width: 1),
-                    ),
-                    buttonText: Text(
-                      "Chọn bệnh viện",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                      buttonText: Text(
+                        "Chọn chuyên khoa",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
+                      onConfirm: (results) {
+                        widget.filterController.listResultMajor.value = results;
+                      },
                     ),
-                    onConfirm: (results) {
-                      widget.filterController.listResultHospital.value =
-                          results;
-                    },
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 10.0, right: 10, top: 10, bottom: 8),
-                      child: _titleContainer("Tìm gần đây:"),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 8),
+                      child: _titleContainer("Bệnh viện:"),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 20),
-                      child: Transform.scale(
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: MultiSelectDialogField(
+                      initialValue: widget.filterController.listResultHospital,
+                      items: widget.filterController.listHospitalItem,
+                      title: Text("Bệnh viện"),
+                      selectedColor: kBlueColor,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(color: Colors.grey, width: 1),
+                      ),
+                      buttonText: Text(
+                        "Chọn bệnh viện",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      onConfirm: (results) {
+                        widget.filterController.listResultHospital.value =
+                            results;
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10, bottom: 8),
+                        child: _titleContainer("Tìm gần đây:"),
+                      ),
+                      Transform.scale(
                           scale: 0.8,
                           child: CupertinoSwitch(
                             activeColor: kBlueColor,
@@ -308,92 +298,95 @@ class _FilterScreenState extends State<FilterScreen> {
                                 widget.filterController.getMyAddress();
                               }
                             },
-                          )),
-                    )
-                  ],
-                ),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(57, 0, 52, 0),
-                  width: double.infinity,
-                  height: 100,
-                  child: widget.filterController.myAddress.value.isEmpty
-                      ? Text("")
-                      : SingleChildScrollView(
-                          child: Text(
-                          "Địa chỉ của bạn: " +
-                              widget.filterController.myAddress.value,
-                          style: TextStyle(fontSize: 20),
-                        )),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 50,
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () => {
-                            widget.filterController.searchDoctorByCondition(1),
-                            Get.back(),
-                          },
-                          style: ButtonStyle(
-                            elevation: MaterialStateProperty.all(6),
-                            backgroundColor:
-                                MaterialStateProperty.resolveWith<Color>(
-                                    (Set<MaterialState> states) {
-                              if (states.contains(MaterialState.pressed))
-                                return Colors.white70;
-                              return kBlueColor; // Defer to the widget's default.
-                            }),
-                            shape:
-                                MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(40),
-                            )),
-                          ),
-                          child: Text(
-                            "Tìm",
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 14,
-                      ),
-                      Container(
-                        height: 50,
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () => {
-                            widget.filterController.searchDoctorByCondition(2),
-                            Get.back(),
-                          },
-                          style: ButtonStyle(
-                            elevation: MaterialStateProperty.all(6),
-                            backgroundColor:
-                            MaterialStateProperty.resolveWith<Color>(
-                                    (Set<MaterialState> states) {
-                                  if (states.contains(MaterialState.pressed))
-                                    return Colors.white70;
-                                  return kGreenLightColor; // Defer to the widget's default.
-                                }),
-                            shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(40),
-                                )),
-                          ),
-                          child: Text(
-                            "Tìm tất cả",
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ),
-                      ),
+                          ))
                     ],
                   ),
-                ),
-              ],
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(57, 0, 57, 0),
+                    width: double.infinity,
+                    height: 100,
+                    child: widget.filterController.myAddress.value.isEmpty
+                        ? Text("")
+                        : SingleChildScrollView(
+                            child: Text(
+                            "Địa chỉ của bạn: " +
+                                widget.filterController.myAddress.value,
+                            style: TextStyle(fontSize: 20),
+                          )),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 14, horizontal: 10),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 50,
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () => {
+                              widget.filterController
+                                  .searchDoctorByCondition(1),
+                              Get.back(),
+                            },
+                            style: ButtonStyle(
+                              elevation: MaterialStateProperty.all(6),
+                              backgroundColor:
+                                  MaterialStateProperty.resolveWith<Color>(
+                                      (Set<MaterialState> states) {
+                                if (states.contains(MaterialState.pressed))
+                                  return Colors.white70;
+                                return kBlueColor; // Defer to the widget's default.
+                              }),
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(40),
+                              )),
+                            ),
+                            child: Text(
+                              "Tìm",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 14,
+                        ),
+                        Container(
+                          height: 50,
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () => {
+                              widget.filterController
+                                  .searchDoctorByCondition(2),
+                              Get.back(),
+                            },
+                            style: ButtonStyle(
+                              elevation: MaterialStateProperty.all(6),
+                              backgroundColor:
+                                  MaterialStateProperty.resolveWith<Color>(
+                                      (Set<MaterialState> states) {
+                                if (states.contains(MaterialState.pressed))
+                                  return Colors.white70;
+                                return kGreenLightColor; // Defer to the widget's default.
+                              }),
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(40),
+                              )),
+                            ),
+                            child: Text(
+                              "Tìm tất cả",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
