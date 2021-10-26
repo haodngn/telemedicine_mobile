@@ -6,6 +6,7 @@ import 'package:telemedicine_mobile/Screens/edit_patient_profile_screen.dart';
 import 'package:telemedicine_mobile/Screens/login_screen.dart';
 import 'package:telemedicine_mobile/Screens/patient_history_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
+import 'package:telemedicine_mobile/controller/bottom_navbar_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 
 class PatientProfile extends StatefulWidget {
@@ -50,6 +51,7 @@ class _PatientProfileState extends State<PatientProfile> {
   }
 
   final patientProfileController = Get.put(PatientProfileController());
+  final bottomNavbarController = Get.put(BottomNavbarController());
 
   @override
   void initState() {
@@ -279,11 +281,8 @@ class _PatientProfileState extends State<PatientProfile> {
                           textfield(
                             hintText: 'Lịch sử',
                             icon: Icons.history,
-                            onTap: () => {
-                              Get.to(() => PatientHistoryScreen(),
-                                  transition: Transition.rightToLeftWithFade,
-                                  duration: Duration(microseconds: 600))
-                            },
+                            onTap: () =>
+                                {bottomNavbarController.currentIndex.value = 2},
                           ),
                           textfield(
                             hintText: 'Đăng xuất',

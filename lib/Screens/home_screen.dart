@@ -8,9 +8,12 @@ import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:telemedicine_mobile/Screens/components/category.dart';
+import 'package:telemedicine_mobile/Screens/detail_screen.dart';
 import 'package:telemedicine_mobile/Screens/list_doctor_screen.dart';
-import 'package:telemedicine_mobile/Screens/patient_history_screen.dart';
+import 'package:telemedicine_mobile/Screens/notification_screen.dart';
+import 'package:telemedicine_mobile/Screens/patient_detail_history_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
+import 'package:telemedicine_mobile/controller/bottom_navbar_controller.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
@@ -22,6 +25,7 @@ class HomeScreen extends StatelessWidget {
   final RefreshController refreshController =
       RefreshController(initialRefresh: true);
   final patientHistoryController = Get.put(PatientHistoryController());
+  final bottomNavbarController = Get.put(BottomNavbarController());
 
   Future<bool> getDoctorData({bool isRefresh = false}) async {
     if (!isRefresh) {
@@ -47,6 +51,17 @@ class HomeScreen extends StatelessWidget {
         centerTitle: true,
         automaticallyImplyLeading: false,
         backgroundColor: kBlueColor,
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.notifications,
+              size: 30,
+            ),
+            onPressed: () {
+              Get.to(NotificationScreen());
+            },
+          )
+        ],
       ),
       backgroundColor: kBackgroundColor,
       body: SafeArea(
@@ -77,7 +92,9 @@ class HomeScreen extends StatelessWidget {
                       width: double.infinity,
                       height: 46,
                       child: OutlinedButton(
-                        onPressed: () => {Get.to(ListDoctorScreen())},
+                        onPressed: () => {
+                          bottomNavbarController.currentIndex.value = 1,
+                        },
                         child: Row(children: [
                           Icon(
                             Icons.search,
@@ -120,7 +137,8 @@ class HomeScreen extends StatelessWidget {
                       ),
                       Expanded(child: Container()),
                       InkWell(
-                        onTap: () => {Get.to(PatientHistoryScreen())},
+                        onTap: () =>
+                            {bottomNavbarController.currentIndex.value = 2},
                         child: Text(
                           'Xem tất cả',
                           style: TextStyle(
@@ -135,268 +153,156 @@ class HomeScreen extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                  child: InkWell(
-                    onTap: () => {},
-                    child: Container(
-                      padding: EdgeInsets.all(15),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: kBlueColor,
-                      ),
-                      child: Stack(
-                        children: [
-                          Container(
-                            width: 60,
-                            height: 60,
+                patientProfileController.nearestHealthCheck.value.id == 0
+                    ? Center(
+                        child: Text(
+                        "Bạn chưa có lịch hẹn",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w500),
+                      ))
+                    : Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                        child: InkWell(
+                          onTap: () => {
+                            patientHistoryController.index.value = 0,
+                            Get.to(() => PatientDetailHistoryScreen(),
+                                transition: Transition.rightToLeftWithFade,
+                                duration: Duration(microseconds: 600)),
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(15),
+                            width: double.infinity,
                             decoration: BoxDecoration(
-                              shape: BoxShape.circle,
+                              borderRadius: BorderRadius.circular(20),
+                              color: kBlueColor,
                             ),
-                            child: Image.network(patientHistoryController
-                                .nearestHealthCheck
-                                .value
-                                .slots[0]
-                                .doctor
-                                .avatar),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 80),
-                            child: Text(
-                              patientHistoryController.nearestHealthCheck.value
-                                  .slots[0].doctor.name,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(80, 30, 0, 0),
-                            child: Text(
-                              "Chuyên khoa",
-                              style: TextStyle(
-                                  color: Colors.grey[300],
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 80),
-                            child: Container(
-                              width: double.infinity,
-                              height: 60,
-                              padding: EdgeInsets.all(20),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Color(0xff85a7fa),
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.date_range,
-                                    color: Colors.white,
+                            child: Stack(
+                              children: [
+                                Container(
+                                  width: 60,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 5.0),
-                                    child: Text(
-                                      DateFormat('EEE').format(DateTime.parse(
-                                              patientHistoryController
-                                                  .nearestHealthCheck
-                                                  .value
-                                                  .slots[0]
-                                                  .assignedDate)) +
-                                          ", " +
-                                          DateFormat('dd').format(
-                                              DateTime.parse(
-                                                  patientHistoryController
-                                                      .nearestHealthCheck
-                                                      .value
-                                                      .slots[0]
-                                                      .assignedDate)) +
-                                          " tháng" +
-                                          DateFormat('MM').format(DateTime.parse(
-                                              patientHistoryController.nearestHealthCheck.value.slots[0].assignedDate)),
-                                      style: TextStyle(
+                                  child: Image.network(patientProfileController
+                                      .nearestHealthCheck
+                                      .value
+                                      .slots[0]
+                                      .doctor
+                                      .avatar),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 80),
+                                  child: Text(
+                                    patientProfileController.nearestHealthCheck
+                                        .value.slots[0].doctor.name,
+                                    style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(80, 30, 0, 0),
+                                  child: Text(
+                                    "Chuyên khoa",
+                                    style: TextStyle(
+                                        color: Colors.grey[300],
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 80),
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: 60,
+                                    padding: EdgeInsets.all(20),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Color(0xff85a7fa),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.date_range,
+                                          color: Colors.white,
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 5.0),
+                                          child: Text(
+                                            DateFormat('EEE').format(
+                                                    DateTime.parse(
+                                                        patientProfileController
+                                                            .nearestHealthCheck
+                                                            .value
+                                                            .slots[0]
+                                                            .assignedDate)) +
+                                                ", " +
+                                                DateFormat('dd').format(
+                                                    DateTime.parse(
+                                                        patientProfileController
+                                                            .nearestHealthCheck
+                                                            .value
+                                                            .slots[0]
+                                                            .assignedDate)) +
+                                                " tháng" +
+                                                DateFormat('MM').format(
+                                                    DateTime.parse(
+                                                        patientProfileController
+                                                            .nearestHealthCheck
+                                                            .value
+                                                            .slots[0]
+                                                            .assignedDate)),
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(child: Container()),
+                                        Icon(
+                                          Icons.watch_later_outlined,
+                                          color: Colors.white,
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 5.0),
+                                          child: Text(
+                                            patientProfileController
+                                                    .nearestHealthCheck
+                                                    .value
+                                                    .slots[0]
+                                                    .startTime
+                                                    .toString()
+                                                    .replaceRange(5, 8, "") +
+                                                " - " +
+                                                patientProfileController
+                                                    .nearestHealthCheck
+                                                    .value
+                                                    .slots[0]
+                                                    .endTime
+                                                    .toString()
+                                                    .replaceRange(5, 8, ""),
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  Expanded(child: Container()),
-                                  Icon(
-                                    Icons.watch_later_outlined,
-                                    color: Colors.white,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 5.0),
-                                    child: Text(
-                                      "11:00 - 12:00",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-
-                //History
-                // Padding(
-                //   padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
-                //   child: InkWell(
-                //     onTap: () => {},
-                //     child: Container(
-                //       padding: EdgeInsets.all(15),
-                //       width: double.infinity,
-                //       decoration: BoxDecoration(
-                //         borderRadius: BorderRadius.circular(20),
-                //         color: kWhiteColor,
-                //         boxShadow: [
-                //           BoxShadow(
-                //               blurRadius: 7,
-                //               spreadRadius: 5,
-                //               color: Colors.grey.withOpacity(0.5),
-                //               offset: Offset(7, 8)),
-                //         ],
-                //       ),
-                //       child: Stack(
-                //         children: [
-                //           Container(
-                //             width: 60,
-                //             height: 60,
-                //             decoration: BoxDecoration(
-                //               shape: BoxShape.circle,
-                //             ),
-                //             child: Image.asset("assets/icons/list_doctor.png"),
-                //           ),
-                //           Padding(
-                //             padding: const EdgeInsets.only(left: 80),
-                //             child: Text(
-                //               "Nguyen Van Tam",
-                //               style: TextStyle(
-                //                   color: Colors.black,
-                //                   fontSize: 18,
-                //                   fontWeight: FontWeight.bold),
-                //             ),
-                //           ),
-                //           Padding(
-                //             padding: const EdgeInsets.fromLTRB(80, 30, 0, 0),
-                //             child: Text(
-                //               "Chuyên khoa",
-                //               style: TextStyle(
-                //                   color: Colors.grey[400],
-                //                   fontSize: 16,
-                //                   fontWeight: FontWeight.w500),
-                //             ),
-                //           ),
-                //           Padding(
-                //             padding: const EdgeInsets.only(top: 80),
-                //             child: Container(
-                //               width: double.infinity,
-                //               height: 60,
-                //               padding: EdgeInsets.all(20),
-                //               decoration: BoxDecoration(
-                //                 borderRadius: BorderRadius.circular(20),
-                //                 color: Color(0xffededed),
-                //               ),
-                //               child: Row(
-                //                 children: [
-                //                   Icon(
-                //                     Icons.date_range,
-                //                     color: Colors.black,
-                //                   ),
-                //                   Padding(
-                //                     padding: const EdgeInsets.only(top: 5.0),
-                //                     child: Text(
-                //                       "Thứ 2, 29 Tháng 10",
-                //                       style: TextStyle(
-                //                         color: Colors.black,
-                //                         fontSize: 14,
-                //                         fontWeight: FontWeight.bold,
-                //                       ),
-                //                     ),
-                //                   ),
-                //                   Expanded(child: Container()),
-                //                   Icon(
-                //                     Icons.watch_later_outlined,
-                //                     color: Colors.black,
-                //                   ),
-                //                   Padding(
-                //                     padding: const EdgeInsets.only(top: 5.0),
-                //                     child: Text(
-                //                       "11:00 - 12:00",
-                //                       style: TextStyle(
-                //                         color: Colors.black,
-                //                         fontSize: 14,
-                //                         fontWeight: FontWeight.bold,
-                //                       ),
-                //                     ),
-                //                   ),
-                //                 ],
-                //               ),
-                //             ),
-                //           ),
-                //           Padding(
-                //             padding: const EdgeInsets.only(top: 170.0),
-                //             child: Row(
-                //               children: [
-                //                 Container(
-                //                   width: 140,
-                //                   height: 50,
-                //                   decoration: BoxDecoration(
-                //                     borderRadius: BorderRadius.circular(28),
-                //                     border: Border.all(width: 1),
-                //                     color: kWhiteColor,
-                //                   ),
-                //                   child: Center(
-                //                     child: Text(
-                //                       "Hủy",
-                //                       style: TextStyle(
-                //                         fontSize: 18,
-                //                         color: Colors.black,
-                //                       ),
-                //                     ),
-                //                   ),
-                //                 ),
-                //                 Expanded(child: Container()),
-                //                 Container(
-                //                   width: 140,
-                //                   height: 50,
-                //                   decoration: BoxDecoration(
-                //                     borderRadius: BorderRadius.circular(28),
-                //                     color: Color(0xff85a7fa),
-                //                   ),
-                //                   child: Center(
-                //                     child: Text(
-                //                       "Chi tiết",
-                //                       style: TextStyle(
-                //                         fontSize: 18,
-                //                         color: Colors.black,
-                //                       ),
-                //                     ),
-                //                   ),
-                //                 ),
-                //               ],
-                //             ),
-                //           ),
-                //         ],
-                //       ),
-                //     ),
-                //   ),
-                // ),
-                //History
-
                 SizedBox(
                   height: 30,
                 ),
@@ -414,288 +320,360 @@ class HomeScreen extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                  child: InkWell(
-                    onTap: () => {},
-                    child: Container(
-                      padding: EdgeInsets.all(15),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: kWhiteColor,
-                        boxShadow: [
-                          BoxShadow(
-                              blurRadius: 7,
-                              spreadRadius: 5,
-                              color: Colors.grey.withOpacity(0.5),
-                              offset: Offset(7, 8)),
-                        ],
-                      ),
-                      child: Stack(
-                        children: [
-                          Container(
-                            width: 80,
-                            height: 90,
-                            child: Image.network(patientHistoryController
-                                .listTopDoctor[0].avatar),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 90),
-                            child: Text(
+                patientHistoryController.listTopDoctor.length > 0
+                    ? Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                        child: InkWell(
+                          onTap: () => {
+                            listDoctorController.getListDoctorSlot(
+                                patientHistoryController.listTopDoctor[0].id),
+                            patientProfileController.getMyPatient(),
+                            Get.to(DetailScreen(
                               patientHistoryController.listTopDoctor[0].name,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500),
+                              patientHistoryController
+                                  .listTopDoctor[0].scopeOfPractice,
+                              patientHistoryController
+                                  .listTopDoctor[0].description,
+                              patientHistoryController.listTopDoctor[0].avatar,
+                              patientHistoryController
+                                  .listTopDoctor[0].majorDoctors,
+                              patientHistoryController
+                                  .listTopDoctor[0].hospitalDoctors,
+                              patientHistoryController
+                                  .listTopDoctor[0].certificationDoctors,
+                              patientHistoryController.listTopDoctor[0].rating,
+                              patientHistoryController
+                                  .listTopDoctor[0].numberOfConsultants,
+                            )),
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(15),
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: kWhiteColor,
+                              boxShadow: [
+                                BoxShadow(
+                                    blurRadius: 7,
+                                    spreadRadius: 5,
+                                    color: Colors.grey.withOpacity(0.5),
+                                    offset: Offset(7, 8)),
+                              ],
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(90, 30, 0, 0),
-                            child: Text(
-                              patientHistoryController.listTopDoctor[0]
-                                          .majorDoctors.length >
-                                      0
-                                  ? patientHistoryController.listTopDoctor[0]
-                                      .majorDoctors[0].major.name
-                                  : "",
-                              style: TextStyle(
-                                  color: Colors.grey.withOpacity(0.75),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(90, 60, 0, 0),
-                            child: Row(
+                            child: Stack(
                               children: [
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
+                                Container(
+                                  width: 80,
+                                  height: 90,
+                                  child: Image.network(patientHistoryController
+                                      .listTopDoctor[0].avatar),
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(5, 5, 0, 0),
+                                  padding: const EdgeInsets.only(left: 90),
                                   child: Text(
                                     patientHistoryController
-                                        .listTopDoctor[0].rating
-                                        .toString(),
+                                        .listTopDoctor[0].name,
                                     style: TextStyle(
-                                        color: Colors.grey.withOpacity(0.75),
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400),
+                                        color: Colors.black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500),
                                   ),
                                 ),
                                 Padding(
                                   padding:
-                                      const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                  child: Text(
-                                    ".",
-                                    style: TextStyle(
-                                        color: Colors.grey.withOpacity(0.75),
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                      const EdgeInsets.fromLTRB(90, 30, 0, 0),
                                   child: Text(
                                     patientHistoryController.listTopDoctor[0]
-                                            .numberOfConsultants
-                                            .toString() +
-                                        " Lượt đánh giá",
+                                                .majorDoctors.length >
+                                            0
+                                        ? patientHistoryController
+                                            .listTopDoctor[0]
+                                            .majorDoctors[0]
+                                            .major
+                                            .name
+                                        : "",
                                     style: TextStyle(
                                         color: Colors.grey.withOpacity(0.75),
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400),
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(90, 60, 0, 0),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            5, 5, 0, 0),
+                                        child: Text(
+                                          patientHistoryController
+                                              .listTopDoctor[0].rating
+                                              .toString(),
+                                          style: TextStyle(
+                                              color:
+                                                  Colors.grey.withOpacity(0.75),
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            10, 0, 10, 0),
+                                        child: Text(
+                                          ".",
+                                          style: TextStyle(
+                                              color:
+                                                  Colors.grey.withOpacity(0.75),
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 5, 0, 0),
+                                        child: Text(
+                                          patientHistoryController
+                                                  .listTopDoctor[0]
+                                                  .numberOfConsultants
+                                                  .toString() +
+                                              " Lượt đánh giá",
+                                          style: TextStyle(
+                                              color:
+                                                  Colors.grey.withOpacity(0.75),
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                        ),
+                      )
+                    : Container(),
                 SizedBox(
                   height: 20,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                  child: InkWell(
-                    onTap: () => {},
-                    child: Container(
-                      padding: EdgeInsets.all(15),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: kWhiteColor,
-                        boxShadow: [
-                          BoxShadow(
-                              blurRadius: 7,
-                              spreadRadius: 5,
-                              color: Colors.grey.withOpacity(0.5),
-                              offset: Offset(7, 8)),
-                        ],
-                      ),
-                      child: Stack(
-                        children: [
-                          Container(
-                            width: 80,
-                            height: 90,
-                            child: Image.network(patientHistoryController
-                                .listTopDoctor[1].avatar),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 90),
-                            child: Text(
+                patientHistoryController.listTopDoctor.length > 0
+                    ? Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                        child: InkWell(
+                          onTap: () => {
+                            listDoctorController.getListDoctorSlot(
+                                patientHistoryController.listTopDoctor[1].id),
+                            patientProfileController.getMyPatient(),
+                            Get.to(DetailScreen(
                               patientHistoryController.listTopDoctor[1].name,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500),
+                              patientHistoryController
+                                  .listTopDoctor[1].scopeOfPractice,
+                              patientHistoryController
+                                  .listTopDoctor[1].description,
+                              patientHistoryController.listTopDoctor[1].avatar,
+                              patientHistoryController
+                                  .listTopDoctor[1].majorDoctors,
+                              patientHistoryController
+                                  .listTopDoctor[1].hospitalDoctors,
+                              patientHistoryController
+                                  .listTopDoctor[1].certificationDoctors,
+                              patientHistoryController.listTopDoctor[1].rating,
+                              patientHistoryController
+                                  .listTopDoctor[1].numberOfConsultants,
+                            )),
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(15),
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: kWhiteColor,
+                              boxShadow: [
+                                BoxShadow(
+                                    blurRadius: 7,
+                                    spreadRadius: 5,
+                                    color: Colors.grey.withOpacity(0.5),
+                                    offset: Offset(7, 8)),
+                              ],
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(90, 30, 0, 0),
-                            child: Text(
-                              patientHistoryController.listTopDoctor[1]
-                                          .majorDoctors.length >
-                                      0
-                                  ? patientHistoryController.listTopDoctor[1]
-                                      .majorDoctors[0].major.name
-                                  : "",
-                              style: TextStyle(
-                                  color: Colors.grey.withOpacity(0.75),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(90, 60, 0, 0),
-                            child: Row(
+                            child: Stack(
                               children: [
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
+                                Container(
+                                  width: 80,
+                                  height: 90,
+                                  child: Image.network(patientHistoryController
+                                      .listTopDoctor[1].avatar),
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(5, 5, 0, 0),
+                                  padding: const EdgeInsets.only(left: 90),
                                   child: Text(
                                     patientHistoryController
-                                        .listTopDoctor[1].rating
-                                        .toString(),
+                                        .listTopDoctor[1].name,
                                     style: TextStyle(
-                                        color: Colors.grey.withOpacity(0.75),
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400),
+                                        color: Colors.black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500),
                                   ),
                                 ),
                                 Padding(
                                   padding:
-                                      const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                  child: Text(
-                                    ".",
-                                    style: TextStyle(
-                                        color: Colors.grey.withOpacity(0.75),
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                      const EdgeInsets.fromLTRB(90, 30, 0, 0),
                                   child: Text(
                                     patientHistoryController.listTopDoctor[1]
-                                            .numberOfConsultants
-                                            .toString() +
-                                        "Lượt đánh giá",
+                                                .majorDoctors.length >
+                                            0
+                                        ? patientHistoryController
+                                            .listTopDoctor[1]
+                                            .majorDoctors[0]
+                                            .major
+                                            .name
+                                        : "",
                                     style: TextStyle(
                                         color: Colors.grey.withOpacity(0.75),
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400),
                                   ),
                                 ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(90, 60, 0, 0),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            5, 5, 0, 0),
+                                        child: Text(
+                                          patientHistoryController
+                                              .listTopDoctor[1].rating
+                                              .toString(),
+                                          style: TextStyle(
+                                              color:
+                                                  Colors.grey.withOpacity(0.75),
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            10, 0, 10, 0),
+                                        child: Text(
+                                          ".",
+                                          style: TextStyle(
+                                              color:
+                                                  Colors.grey.withOpacity(0.75),
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 5, 0, 0),
+                                        child: Text(
+                                          patientHistoryController
+                                                  .listTopDoctor[1]
+                                                  .numberOfConsultants
+                                                  .toString() +
+                                              "Lượt đánh giá",
+                                          style: TextStyle(
+                                              color:
+                                                  Colors.grey.withOpacity(0.75),
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                        ),
+                      )
+                    : Container(),
                 SizedBox(
                   height: 20,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                  child: InkWell(
-                    onTap: () => {},
-                    child: Container(
-                      padding: EdgeInsets.all(15),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: kWhiteColor,
-                        boxShadow: [
-                          BoxShadow(
-                              blurRadius: 7,
-                              spreadRadius: 5,
-                              color: Colors.grey.withOpacity(0.5),
-                              offset: Offset(7, 8)),
-                        ],
-                      ),
-                      child: Stack(
-                        children: [
-                          Container(
-                            width: 80,
-                            height: 90,
-                            child: Image.network(patientHistoryController
-                                .listTopDoctor[2].avatar),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 90),
-                            child: Text(
+                patientHistoryController.listTopDoctor.length > 0
+                    ? Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                        child: InkWell(
+                          onTap: () => {
+                            listDoctorController.getListDoctorSlot(
+                                patientHistoryController.listTopDoctor[2].id),
+                            patientProfileController.getMyPatient(),
+                            Get.to(DetailScreen(
                               patientHistoryController.listTopDoctor[2].name,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500),
+                              patientHistoryController
+                                  .listTopDoctor[2].scopeOfPractice,
+                              patientHistoryController
+                                  .listTopDoctor[2].description,
+                              patientHistoryController.listTopDoctor[2].avatar,
+                              patientHistoryController
+                                  .listTopDoctor[2].majorDoctors,
+                              patientHistoryController
+                                  .listTopDoctor[2].hospitalDoctors,
+                              patientHistoryController
+                                  .listTopDoctor[2].certificationDoctors,
+                              patientHistoryController.listTopDoctor[2].rating,
+                              patientHistoryController
+                                  .listTopDoctor[2].numberOfConsultants,
+                            )),
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(15),
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: kWhiteColor,
+                              boxShadow: [
+                                BoxShadow(
+                                    blurRadius: 7,
+                                    spreadRadius: 5,
+                                    color: Colors.grey.withOpacity(0.5),
+                                    offset: Offset(7, 8)),
+                              ],
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(90, 30, 0, 0),
-                            child: Text(
-                              patientHistoryController.listTopDoctor[2]
-                                          .majorDoctors.length >
-                                      0
-                                  ? patientHistoryController.listTopDoctor[2]
-                                      .majorDoctors[0].major.name
-                                  : "",
-                              style: TextStyle(
-                                  color: Colors.grey.withOpacity(0.75),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(90, 60, 0, 0),
-                            child: Row(
+                            child: Stack(
                               children: [
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
+                                Container(
+                                  width: 80,
+                                  height: 90,
+                                  child: Image.network(patientHistoryController
+                                      .listTopDoctor[2].avatar),
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(5, 5, 0, 0),
+                                  padding: const EdgeInsets.only(left: 90),
                                   child: Text(
                                     patientHistoryController
-                                        .listTopDoctor[2].rating
-                                        .toString(),
+                                        .listTopDoctor[2].name,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(90, 30, 0, 0),
+                                  child: Text(
+                                    patientHistoryController.listTopDoctor[2]
+                                                .majorDoctors.length >
+                                            0
+                                        ? patientHistoryController
+                                            .listTopDoctor[2]
+                                            .majorDoctors[0]
+                                            .major
+                                            .name
+                                        : "",
                                     style: TextStyle(
                                         color: Colors.grey.withOpacity(0.75),
                                         fontSize: 16,
@@ -704,37 +682,64 @@ class HomeScreen extends StatelessWidget {
                                 ),
                                 Padding(
                                   padding:
-                                      const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                  child: Text(
-                                    ".",
-                                    style: TextStyle(
-                                        color: Colors.grey.withOpacity(0.75),
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                                  child: Text(
-                                    patientHistoryController.listTopDoctor[0]
-                                            .numberOfConsultants
-                                            .toString() +
-                                        "Lượt đánh giá",
-                                    style: TextStyle(
-                                        color: Colors.grey.withOpacity(0.75),
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400),
+                                      const EdgeInsets.fromLTRB(90, 60, 0, 0),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            5, 5, 0, 0),
+                                        child: Text(
+                                          patientHistoryController
+                                              .listTopDoctor[2].rating
+                                              .toString(),
+                                          style: TextStyle(
+                                              color:
+                                                  Colors.grey.withOpacity(0.75),
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            10, 0, 10, 0),
+                                        child: Text(
+                                          ".",
+                                          style: TextStyle(
+                                              color:
+                                                  Colors.grey.withOpacity(0.75),
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 5, 0, 0),
+                                        child: Text(
+                                          patientHistoryController
+                                                  .listTopDoctor[0]
+                                                  .numberOfConsultants
+                                                  .toString() +
+                                              "Lượt đánh giá",
+                                          style: TextStyle(
+                                              color:
+                                                  Colors.grey.withOpacity(0.75),
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                        ),
+                      )
+                    : Container(),
                 SizedBox(
                   height: 30,
                 ),
@@ -786,7 +791,7 @@ class HomeScreen extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        children: <Widget>[
+        children: [
           SizedBox(
             width: 30,
           ),

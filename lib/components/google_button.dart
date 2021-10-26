@@ -4,8 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
-import 'package:telemedicine_mobile/Screens/components/check_login.dart';
-import 'package:telemedicine_mobile/Screens/form_after_login_screen.dart';
 import 'package:telemedicine_mobile/controller/google_login_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
 
@@ -26,7 +24,6 @@ class GoogleButton extends StatelessWidget {
           width: 250,
         ),
         onTap: () async {
-          patientHistoryController.getNearestHealthCheck();
           patientHistoryController.getTopDoctor();
           bool checkLogin =
               await Provider.of<GoogleSignInController>(context, listen: false)

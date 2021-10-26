@@ -112,7 +112,6 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
   }
 
   buildDoctorList(Doctor doctor) {
-    print(doctor);
     return Container(
       margin: EdgeInsets.only(top: 18),
       padding: EdgeInsets.symmetric(
