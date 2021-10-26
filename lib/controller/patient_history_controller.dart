@@ -10,9 +10,11 @@ class PatientHistoryController extends GetxController {
 
   RxList<dynamic> listHealthCheck = [].obs;
   RxInt index = 0.obs;
+  RxString sttHistory = "upcoming".obs;
+  RxList<dynamic> listHistorySTT = [].obs;
 
-  getMyHistory() async {
-    await FetchAPI.fetchMyHealthCheck(patientID.value).then((dataFromServer) {
+  getMyHistory() {
+    FetchAPI.fetchMyHealthCheck(patientID.value).then((dataFromServer) {
       listHealthCheck.value = dataFromServer;
     });
   }
@@ -25,37 +27,8 @@ class PatientHistoryController extends GetxController {
     });
   }
 
-  Rx<HealthCheck> nearestHealthCheck = new HealthCheck(
-      id: 0,
-      height: 0,
-      weight: 0,
-      reasonCancel: "",
-      rating: 0,
-      comment: "",
-      advice: "",
-      token: "",
-      patientId: 0,
-      createdTime: "",
-      canceledTime: "",
-      status: "",
-      patient: new Patient(
-          id: 0,
-          email: "",
-          name: "",
-          avatar: "",
-          backgroundDisease: "",
-          allergy: "",
-          bloodGroup: "",
-          isActive: true,
-          healthChecks: []),
-      healthCheckDiseases: [],
-      prescriptions: [],
-      slots: [],
-      symptomHealthChecks: []).obs;
-
-  getNearestHealthCheck() {
-    FetchAPI.fetchNearestHealthCheck(33).then((dataFromServer) {
-      nearestHealthCheck.value = dataFromServer;
-    });
+  RxList<dynamic> listPrescriptions = [].obs;
+  getPrescription() {
+    listPrescriptions.value = listHealthCheck[index.value].prescriptions;
   }
 }
