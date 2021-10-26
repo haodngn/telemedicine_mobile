@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:telemedicine_mobile/Screens/components/loading.dart';
+import 'package:telemedicine_mobile/Screens/home_screen.dart';
 import 'controller/facebook_login_controller.dart';
 import 'controller/google_login_controller.dart';
 import 'package:telemedicine_mobile/Screens/login_screen.dart';

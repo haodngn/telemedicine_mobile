@@ -16,6 +16,7 @@ class DoctorCard extends StatelessWidget {
   DoctorCard(this.doctor, this.image, this._bgColor);
   final listDoctorController = Get.put(ListDoctorController());
   final patientProfileController = Get.put(PatientProfileController());
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -32,7 +33,9 @@ class DoctorCard extends StatelessWidget {
                 image,
                 doctor.majorDoctors,
                 doctor.hospitalDoctors,
-                doctor.certificationDoctors),
+                doctor.certificationDoctors,
+                doctor.rating,
+                doctor.numberOfConsultants,),
           ),
         );
       },

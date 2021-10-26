@@ -46,7 +46,6 @@ class ListDoctorController extends GetxController {
     await FetchAPI.fetchContentDoctorWithCondition(
             condition.value, currentPage.value)
         .then((dataFromServer) {
-      print(dataFromServer.doctor);
       if (isRefresh) {
         listDoctor.value = dataFromServer.doctor;
       } else {

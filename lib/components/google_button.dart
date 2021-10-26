@@ -7,31 +7,33 @@ import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
 import 'package:telemedicine_mobile/Screens/components/check_login.dart';
 import 'package:telemedicine_mobile/Screens/form_after_login_screen.dart';
 import 'package:telemedicine_mobile/controller/google_login_controller.dart';
+import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
 
 //button login with google
 
 class GoogleButton extends StatelessWidget {
-  const GoogleButton({
+  GoogleButton({
     Key? key,
   }) : super(key: key);
-
+  final patientHistoryController = Get.put(PatientHistoryController());
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
     return Container(
       child: GestureDetector(
         child: Image.asset(
           "assets/images/google.png",
           width: 250,
         ),
-        onTap: () async{
-          bool checkLogin = await Provider.of<GoogleSignInController>(
-              context, listen: false)
-              .googleLogin();
+        onTap: () async {
+          patientHistoryController.getNearestHealthCheck();
+          patientHistoryController.getTopDoctor();
+          bool checkLogin =
+              await Provider.of<GoogleSignInController>(context, listen: false)
+                  .googleLogin();
           if (checkLogin) {
-            Navigator.push(context, MaterialPageRoute(builder: checkLoginGoogle));
+            Navigator.push(
+                context, MaterialPageRoute(builder: checkLoginGoogle));
           }
         },
       ),

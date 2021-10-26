@@ -269,7 +269,11 @@ class _PatientDetailHistoryScreenState
                                         listDoctorController
                                             .doctorDetail.value.hospitalDoctors,
                                         listDoctorController.doctorDetail.value
-                                            .certificationDoctors),
+                                            .certificationDoctors,
+                                        listDoctorController
+                                            .doctorDetail.value.rating,
+                                        listDoctorController.doctorDetail.value
+                                            .numberOfConsultants,),
                                     transition: Transition.rightToLeftWithFade,
                                     duration: Duration(microseconds: 600)),
                               },

@@ -23,7 +23,6 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
   @override
   void initState() {
     super.initState();
-    print("aAAa: " + listDoctorController.condition.value);
   }
 
   Future<bool> getDoctorData({bool isRefresh = false}) async {
