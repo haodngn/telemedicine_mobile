@@ -4,6 +4,7 @@ var kBackgroundColor = Color(0xffF9F9F9);
 var kWhiteColor = Color(0xffffffff);
 var kOrangeColor = Color(0xffEF716B);
 var kBlueColor = Color(0xff4B7FFB);
+var kBlueLightColor = Color(0xffdbf9ff);
 var kGreenLightColor = Color(0xf0348e22);
 var kYellowColor = Color(0xffFFB167);
 var kTitleTextColor = Color(0xff1E1C61);

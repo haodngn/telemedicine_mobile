@@ -5,9 +5,10 @@ import 'package:telemedicine_mobile/Screens/detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
+import 'package:telemedicine_mobile/models/Doctor.dart';
 
 class DoctorCard extends StatelessWidget {
-  var doctor;
+  Doctor doctor;
   var image;
   var _bgColor;
 
@@ -19,6 +20,7 @@ class DoctorCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      borderRadius: BorderRadius.circular(14.0),
       onTap: () {
         listDoctorController.getListDoctorSlot(doctor.id);
         patientProfileController.getMyPatient();
@@ -36,57 +38,89 @@ class DoctorCard extends StatelessWidget {
           ),
         );
       },
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: _bgColor.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(10),
-          child: Column(
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: 100,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: kBlueLightColor.withOpacity(0.6),
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: Row(
             children: [
-              ListTile(
-                leading: Image.network(
-                  doctor.avatar,
-                  errorBuilder: (context, error, stackTrace) =>
-                      Image.asset("assets/images/default_avatar.png"),
-                ),
-                title: Text(
-                  doctor.name,
-                  style: TextStyle(
-                    color: kTitleTextColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                subtitle: Text(
-                  doctor.scopeOfPractice,
-                  style: TextStyle(
-                    color: kTitleTextColor.withOpacity(0.7),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                child: Text("Số lượng cuộc hẹn: " +
-                    doctor.numberOfConsultants.toString()),
-              ),
               Container(
-                width: 160,
-                child: RatingBar.builder(
-                  initialRating: doctor.rating + .0,
-                  minRating: 1,
-                  direction: Axis.horizontal,
-                  allowHalfRating: true,
-                  unratedColor: Colors.amber.withAlpha(50),
-                  itemCount: 5,
-                  itemSize: 20.0,
-                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                  itemBuilder: (context, _) => Icon(
-                    _selectedIcon ?? Icons.star,
-                    color: Colors.amber,
+                padding: const EdgeInsets.all(8),
+                margin: const EdgeInsets.only(right: 10),
+                width: 100.0,
+                height: 100.0,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(14.0),
+                  child: Image.network(
+                    doctor.avatar,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) =>
+                        Image.asset("assets/images/default_avatar.png"),
                   ),
-                  onRatingUpdate: (rating) {},
-                  updateOnDrag: true,
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Bs." + doctor.name,
+                      softWrap: false,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: kTitleTextColor,
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        wordSpacing: 2.2,
+                      ),
+                    ),
+                    Text(
+                      doctor.scopeOfPractice,
+                      softWrap: true,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: kTitleTextColor.withOpacity(0.7),
+                        fontSize: 15,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Icon(Icons.star, color: kYellowColor.withOpacity(0.8)),
+                        SizedBox(
+                          width: 3,
+                        ),
+                        Text(
+                          doctor.rating != 0
+                              ? doctor.rating.toStringAsFixed(1)
+                              : "0",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 6,
+                        ),
+                        Text(
+                          "( ${doctor.numberOfConsultants != 0 ? doctor.numberOfConsultants.toStringAsFixed(0) : "0"} lượt tư vấn )",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: kTitleTextColor.withOpacity(0.7),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
               ),
             ],

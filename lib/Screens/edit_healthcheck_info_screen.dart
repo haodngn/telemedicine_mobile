@@ -51,128 +51,122 @@ class _EditHealthCheckInfoScreenState extends State<EditHealthCheckInfoScreen> {
           constraints: BoxConstraints.expand(),
           color: Colors.white,
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(30, 60, 30, 30),
+            padding: const EdgeInsets.all(30.0),
             child: SingleChildScrollView(
               child: Obx(
                 () => Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 30),
-                    Stack(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 18, 20, 0),
-                          child: Text(
-                            "Dị ứng:",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
+                        Text(
+                          "Dị ứng:",
+                          style: TextStyle(
+                            fontSize: 17,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 100),
-                          child: TextField(
-                            controller: textAllergyController,
-                            decoration: InputDecoration(
-                              hintText: patientProfileController
-                                              .patient.value.allergy ==
-                                          null ||
-                                      patientProfileController
-                                          .patient.value.allergy.isEmpty
-                                  ? "Không bị dị ứng"
-                                  : patientProfileController
-                                      .patient.value.allergy,
-                              hintStyle: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black,
-                              ),
-                              border: OutlineInputBorder(),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        TextField(
+                          controller: textAllergyController,
+                          decoration: InputDecoration(
+                            hintText: patientProfileController
+                                            .patient.value.allergy ==
+                                        null ||
+                                    patientProfileController
+                                        .patient.value.allergy.isEmpty
+                                ? "Không bị dị ứng"
+                                : patientProfileController
+                                    .patient.value.allergy,
+                            hintStyle: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
                             ),
-                            keyboardType: TextInputType.text,
+                            border: OutlineInputBorder(),
                           ),
+                          keyboardType: TextInputType.text,
                         ),
                       ],
                     ),
                     SizedBox(
-                      height: 15,
+                      height: 24,
                     ),
-                    Stack(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 18, 20, 0),
-                          child: Text(
-                            "Nhóm máu:",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
+                        Text(
+                          "Nhóm máu:",
+                          style: TextStyle(
+                            fontSize: 17,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(100, 0, 0, 0),
-                          child: TextField(
-                            controller: textBloodTypeController,
-                            decoration: InputDecoration(
-                              hintText: patientProfileController
-                                              .patient.value.bloodGroup ==
-                                          null ||
-                                      patientProfileController
-                                          .patient.value.bloodGroup.isEmpty
-                                  ? "Chưa xác định"
-                                  : patientProfileController
-                                      .patient.value.bloodGroup,
-                              hintStyle: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black,
-                              ),
-                              border: OutlineInputBorder(),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        TextField(
+                          controller: textBloodTypeController,
+                          decoration: InputDecoration(
+                            hintText: patientProfileController
+                                            .patient.value.bloodGroup ==
+                                        null ||
+                                    patientProfileController
+                                        .patient.value.bloodGroup.isEmpty
+                                ? "Chưa xác định"
+                                : patientProfileController
+                                    .patient.value.bloodGroup,
+                            hintStyle: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
                             ),
-                            keyboardType: TextInputType.name,
+                            border: OutlineInputBorder(),
                           ),
+                          keyboardType: TextInputType.name,
                         ),
                       ],
                     ),
                     SizedBox(
-                      height: 15,
+                      height: 24,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 15, 20, 0),
-                      child: Text(
-                        "Bệnh nền:",
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
+                    Text(
+                      "Bệnh nền:",
+                      style: TextStyle(
+                        fontSize: 17,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 18, 0, 0),
-                      child: TextField(
-                        maxLines: 5,
-                        controller: textBackgroundDiseaseController,
-                        decoration: InputDecoration(
-                          hintText: patientProfileController
-                                          .patient.value.backgroundDisease ==
-                                      null ||
-                                  patientProfileController
-                                      .patient.value.backgroundDisease.isEmpty
-                              ? "Không có bệnh nền"
-                              : patientProfileController
-                                  .patient.value.backgroundDisease,
-                          hintStyle: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black,
-                          ),
-                          border: OutlineInputBorder(),
-                        ),
-                        keyboardType: TextInputType.name,
-                      ),
+                    SizedBox(
+                      height: 8,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(240, 20, 0, 0),
+                    TextField(
+                      maxLines: 5,
+                      controller: textBackgroundDiseaseController,
+                      decoration: InputDecoration(
+                        hintText: patientProfileController
+                                        .patient.value.backgroundDisease ==
+                                    null ||
+                                patientProfileController
+                                    .patient.value.backgroundDisease.isEmpty
+                            ? "Không có bệnh nền"
+                            : patientProfileController
+                                .patient.value.backgroundDisease,
+                        hintStyle: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.name,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 24),
+                      width: double.infinity,
+                      height: 50,
                       child: RaisedButton(
                         color: Colors.blue,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          borderRadius: BorderRadius.all(Radius.circular(24)),
                         ),
                         onPressed: () => {
                           patientProfileController.updatePatientInfo(
