@@ -10,9 +10,7 @@ import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/filter_controller.dart';
 
 class FilterScreen extends StatefulWidget {
-  const FilterScreen({Key? key, required this.filterController})
-      : super(key: key);
-  final FilterController filterController;
+  const FilterScreen({Key? key}) : super(key: key);
 
   @override
   _FilterScreenState createState() => _FilterScreenState();
@@ -25,17 +23,17 @@ class _FilterScreenState extends State<FilterScreen> {
   late TextEditingController _controller3;
   late TextEditingController _controller4;
   TextEditingController textNameDoctorController = TextEditingController();
+  final filterController = Get.put(FilterController());
 
   @override
   void initState() {
     super.initState();
     Intl.defaultLocale = 'pt_BR';
-    textNameDoctorController.text = widget.filterController.nameDoctor.value;
+    textNameDoctorController.text = filterController.nameDoctor.value;
     _controller3 = TextEditingController(text: '00:00');
     _controller4 = TextEditingController(text: '00:00');
     _getValue();
-    widget.filterController.getListMajor();
-    widget.filterController.getListHospital();
+    filterController.getListHospital();
   }
 
   /// This implementation is just to simulate a load data behavior
@@ -43,8 +41,8 @@ class _FilterScreenState extends State<FilterScreen> {
   Future<void> _getValue() async {
     await Future.delayed(const Duration(seconds: 6), () {
       setState(() {
-        _controller3.text = widget.filterController.startTime.value;
-        _controller4.text = widget.filterController.endTime.value;
+        _controller3.text = filterController.startTime.value;
+        _controller4.text = filterController.endTime.value;
       });
     });
   }
@@ -91,8 +89,7 @@ class _FilterScreenState extends State<FilterScreen> {
                   ),
                   TextFormField(
                     controller: textNameDoctorController,
-                    onChanged: (val) =>
-                        widget.filterController.nameDoctor.value = val,
+                    onChanged: (val) => filterController.nameDoctor.value = val,
                     keyboardType: TextInputType.text,
                     style: TextStyle(
                         color: Colors.black,
@@ -130,9 +127,9 @@ class _FilterScreenState extends State<FilterScreen> {
                               width: double.infinity,
                               child: OutlinedButton(
                                 onPressed: () =>
-                                    widget.filterController.pickDate(context),
+                                    filterController.pickDate(context),
                                 child: Text(
-                                  "${widget.filterController.dateSearch.value.day}/${widget.filterController.dateSearch.value.month}/${widget.filterController.dateSearch.value.year}",
+                                  "${filterController.dateSearch.value.day}/${filterController.dateSearch.value.month}/${filterController.dateSearch.value.year}",
                                   style: TextStyle(
                                       fontSize: 18, color: Colors.black),
                                 ),
@@ -165,13 +162,13 @@ class _FilterScreenState extends State<FilterScreen> {
                       use24HourFormat: true,
                       locale: Locale('pt', 'BR'),
                       onChanged: (val) =>
-                          widget.filterController.startTime.value = val,
+                          filterController.startTime.value = val,
                       validator: (val) {
-                        widget.filterController.startTime.value = val ?? '';
+                        filterController.startTime.value = val ?? '';
                         return null;
                       },
                       onSaved: (val) => {
-                        widget.filterController.startTime.value = val!,
+                        filterController.startTime.value = val!,
                       },
                     ),
                   ),
@@ -189,14 +186,13 @@ class _FilterScreenState extends State<FilterScreen> {
                       timeLabelText: "Thời gian kết thúc:",
                       use24HourFormat: true,
                       locale: Locale('pt', 'BR'),
-                      onChanged: (val) =>
-                          widget.filterController.endTime.value = val,
+                      onChanged: (val) => filterController.endTime.value = val,
                       validator: (val) {
-                        widget.filterController.endTime.value = val ?? '';
+                        filterController.endTime.value = val ?? '';
                         return null;
                       },
                       onSaved: (val) => (val) => {
-                            widget.filterController.endTime.value = val!,
+                            filterController.endTime.value = val!,
                             print(val),
                           },
                     ),
@@ -214,8 +210,8 @@ class _FilterScreenState extends State<FilterScreen> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: MultiSelectDialogField(
-                      initialValue: widget.filterController.listResultMajor,
-                      items: widget.filterController.listMajorItem,
+                      initialValue: filterController.listResultMajor,
+                      items: filterController.listMajorItem,
                       title: Text("Chuyên khoa"),
                       selectedColor: kBlueColor,
                       decoration: BoxDecoration(
@@ -232,7 +228,7 @@ class _FilterScreenState extends State<FilterScreen> {
                         ),
                       ),
                       onConfirm: (results) {
-                        widget.filterController.listResultMajor.value = results;
+                        filterController.listResultMajor.value = results;
                       },
                     ),
                   ),
@@ -249,8 +245,8 @@ class _FilterScreenState extends State<FilterScreen> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: MultiSelectDialogField(
-                      initialValue: widget.filterController.listResultHospital,
-                      items: widget.filterController.listHospitalItem,
+                      initialValue: filterController.listResultHospital,
+                      items: filterController.listHospitalItem,
                       title: Text("Bệnh viện"),
                       selectedColor: kBlueColor,
                       decoration: BoxDecoration(
@@ -267,8 +263,7 @@ class _FilterScreenState extends State<FilterScreen> {
                         ),
                       ),
                       onConfirm: (results) {
-                        widget.filterController.listResultHospital.value =
-                            results;
+                        filterController.listResultHospital.value = results;
                       },
                     ),
                   ),
@@ -286,16 +281,13 @@ class _FilterScreenState extends State<FilterScreen> {
                           scale: 0.8,
                           child: CupertinoSwitch(
                             activeColor: kBlueColor,
-                            value:
-                                widget.filterController.searchByLocation.value,
+                            value: filterController.searchByLocation.value,
                             onChanged: (bool val) {
-                              if (widget
-                                  .filterController.searchByLocation.value) {
-                                widget.filterController.searchByLocation.value =
-                                    false;
-                                widget.filterController.myAddress.value = "";
+                              if (filterController.searchByLocation.value) {
+                                filterController.searchByLocation.value = false;
+                                filterController.myAddress.value = "";
                               } else {
-                                widget.filterController.getMyAddress();
+                                filterController.getMyAddress();
                               }
                             },
                           ))
@@ -305,12 +297,12 @@ class _FilterScreenState extends State<FilterScreen> {
                     padding: const EdgeInsets.fromLTRB(57, 0, 57, 0),
                     width: double.infinity,
                     height: 100,
-                    child: widget.filterController.myAddress.value.isEmpty
+                    child: filterController.myAddress.value.isEmpty
                         ? Text("")
                         : SingleChildScrollView(
                             child: Text(
                             "Địa chỉ của bạn: " +
-                                widget.filterController.myAddress.value,
+                                filterController.myAddress.value,
                             style: TextStyle(fontSize: 20),
                           )),
                   ),
@@ -324,8 +316,7 @@ class _FilterScreenState extends State<FilterScreen> {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () => {
-                              widget.filterController
-                                  .searchDoctorByCondition(1),
+                              filterController.searchDoctorByCondition(1),
                               Get.back(),
                             },
                             style: ButtonStyle(
@@ -357,8 +348,7 @@ class _FilterScreenState extends State<FilterScreen> {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () => {
-                              widget.filterController
-                                  .searchDoctorByCondition(2),
+                              filterController.searchDoctorByCondition(2),
                               Get.back(),
                             },
                             style: ButtonStyle(

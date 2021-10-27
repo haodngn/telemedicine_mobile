@@ -31,8 +31,6 @@ class _CallScreenState extends State<CallScreen> {
   final listDoctorController = Get.put(ListDoctorController());
 
   Future<void> initAgora() async {
-    
-
     //create the engine
     _engine = await RtcEngine.createWithConfig(RtcEngineConfig(appID));
 

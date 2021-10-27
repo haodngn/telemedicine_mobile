@@ -42,4 +42,8 @@ class PatientHistoryController extends GetxController {
     FetchAPI.cancelHealthCheck(healthCheckChangeSTT)
         .then((value) => getMyHistory());
   }
+
+  ratingHealthCheck(int rating, String comment) {
+    
+  }
 }

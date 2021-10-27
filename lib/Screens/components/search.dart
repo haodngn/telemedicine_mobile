@@ -28,7 +28,7 @@ class SearchBar extends StatelessWidget {
           alignment: Alignment.centerRight,
           child: MaterialButton(
             onPressed: () => {
-              Get.to(FilterScreen(filterController: filterController,),
+              Get.to(FilterScreen(),
                   transition: Transition.downToUp,
                   duration: Duration(milliseconds: 600))
             },
