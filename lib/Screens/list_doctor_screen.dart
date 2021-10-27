@@ -47,6 +47,7 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
       minimum: const EdgeInsets.only(top: 10.0, bottom: 10.0),
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: Text("Danh sách bác sĩ"),
           backgroundColor: kBlueColor,
           automaticallyImplyLeading: false,
@@ -97,7 +98,6 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
                     ),
                   )
                 : ListView.builder(
-                    // physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: listDoctorController.listDoctor.length,
                     itemBuilder: (BuildContext context, index) {

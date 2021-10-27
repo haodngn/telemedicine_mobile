@@ -34,40 +34,44 @@ class _BottomNavBarState extends State<BottomNavBar> {
   ];
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: Obx(() => screens[bottomNavbarController.currentIndex.value]),
-        bottomNavigationBar: Obx(() => SizedBox(
-              height: 45,
-              child: BottomNavigationBar(
-                type: BottomNavigationBarType.fixed,
-                backgroundColor: kBackgroundColor,
-                selectedItemColor: kBlueColor,
-                showUnselectedLabels: false,
-                iconSize: 25,
-                selectedFontSize: 8,
-                currentIndex: bottomNavbarController.currentIndex.value,
-                onTap: (index) => {
-                  bottomNavbarController.currentIndex.value = index,
-                  if (index == 1) {listDoctorController.condition.value = ""}
-                },
-                items: [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: "Trang chủ",
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.local_hospital),
-                    label: "Danh sách bác sĩ",
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.history),
-                    label: "Lịch sử",
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.person),
-                    label: "Trang cá nhân",
-                  ),
-                ],
+        body: Obx(() => SafeArea(
+            child: screens[bottomNavbarController.currentIndex.value])),
+        bottomNavigationBar: Obx(
+          () => BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: kBackgroundColor,
+            selectedItemColor: kBlueColor,
+            showUnselectedLabels: false,
+            iconSize: 25,
+            selectedFontSize: 8,
+            currentIndex: bottomNavbarController.currentIndex.value,
+            onTap: (index) => {
+              bottomNavbarController.currentIndex.value = index,
+              patientProfileController.getNearestHealthCheck(),
+              if (index == 1)
+                {
+                  listDoctorController.condition.value = "",
+                }
+            },
+            items: [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: "Trang chủ",
               ),
-            )),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.local_hospital),
+                label: "Danh sách bác sĩ",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.history),
+                label: "Lịch sử",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: "Trang cá nhân",
+              ),
+            ],
+          ),
+        ),
       );
 }

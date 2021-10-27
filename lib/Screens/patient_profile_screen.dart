@@ -225,7 +225,7 @@ class _PatientProfileState extends State<PatientProfile> {
                                 ? "Không bị dị ứng"
                                 : patientProfileController
                                     .patient.value.allergy,
-                            icon: Icons.ac_unit_outlined,
+                            icon: Icons.api,
                           ),
                           textfield(
                             hintText: patientProfileController

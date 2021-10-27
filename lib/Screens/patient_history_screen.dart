@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:telemedicine_mobile/Screens/patient_detail_history_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
+import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
 
 class PatientHistoryScreen extends StatefulWidget {
@@ -14,10 +16,12 @@ class PatientHistoryScreen extends StatefulWidget {
 
 class _PatientHistoryScreenState extends State<PatientHistoryScreen> {
   final patientHistoryController = Get.put(PatientHistoryController());
+  final listDoctorController = Get.put(ListDoctorController());
 
   @override
   void initState() {
     super.initState();
+    listDoctorController.getAllDoctor();
     patientHistoryController.getMyHistory();
     patientHistoryController.sttHistory.value = "upcoming";
   }
@@ -167,33 +171,17 @@ class _PatientHistoryScreenState extends State<PatientHistoryScreen> {
                                     .slots[0]
                                     .doctor
                                     .name,
-                                date: DateFormat('EEE').format(DateTime.parse(
-                                        patientHistoryController
-                                            .listHealthCheck[index]
-                                            .slots[0]
-                                            .assignedDate)) +
-                                    ", " +
-                                    DateFormat('dd').format(DateTime.parse(
-                                        patientHistoryController
-                                            .listHealthCheck[index]
-                                            .slots[0]
-                                            .assignedDate)) +
-                                    " tháng" +
-                                    DateFormat('MM').format(DateTime.parse(
-                                        patientHistoryController
-                                            .listHealthCheck[index]
-                                            .slots[0]
-                                            .assignedDate)),
+                                date: patientHistoryController
+                                    .listHealthCheck[index]
+                                    .slots[0]
+                                    .assignedDate,
                                 timeStart: patientHistoryController
-                                    .listHealthCheck[index].slots[0].startTime
-                                    .toString()
-                                    .replaceRange(5, 8, ""),
+                                    .listHealthCheck[index].slots[0].startTime,
                                 timeEnd: patientHistoryController
-                                    .listHealthCheck[index].slots[0].endTime
-                                    .toString()
-                                    .replaceRange(5, 8, ""),
+                                    .listHealthCheck[index].slots[0].endTime,
                                 index: index,
-                              )
+                                healthCheckID: patientHistoryController
+                                    .listHealthCheck[index].id)
                             : patientHistoryController
                                             .listHealthCheck[index].status ==
                                         "COMPLETED" &&
@@ -210,8 +198,8 @@ class _PatientHistoryScreenState extends State<PatientHistoryScreen> {
                                         .slots[0]
                                         .doctor
                                         .name,
-                                    date: DateFormat('EEE').format(
-                                            DateTime.parse(
+                                    date: DateFormat.E(Locale("vi", "VN").languageCode)
+                                            .format(DateTime.parse(
                                                 patientHistoryController
                                                     .listHealthCheck[index]
                                                     .slots[0]
@@ -224,10 +212,7 @@ class _PatientHistoryScreenState extends State<PatientHistoryScreen> {
                                                 .assignedDate)) +
                                         " tháng" +
                                         DateFormat('MM').format(DateTime.parse(
-                                            patientHistoryController
-                                                .listHealthCheck[index]
-                                                .slots[0]
-                                                .assignedDate)),
+                                            patientHistoryController.listHealthCheck[index].slots[0].assignedDate)),
                                     timeStart: patientHistoryController
                                         .listHealthCheck[index]
                                         .slots[0]
@@ -258,24 +243,22 @@ class _PatientHistoryScreenState extends State<PatientHistoryScreen> {
                                             .slots[0]
                                             .doctor
                                             .name,
-                                        date: DateFormat('EEE').format(
-                                                DateTime.parse(
+                                        date: DateFormat.E(Locale("vi", "VN").languageCode)
+                                                .format(DateTime.parse(
                                                     patientHistoryController
                                                         .listHealthCheck[index]
                                                         .slots[0]
                                                         .assignedDate)) +
                                             ", " +
-                                            DateFormat('dd').format(DateTime.parse(
-                                                patientHistoryController
-                                                    .listHealthCheck[index]
-                                                    .slots[0]
-                                                    .assignedDate)) +
+                                            DateFormat('dd').format(
+                                                DateTime.parse(
+                                                    patientHistoryController
+                                                        .listHealthCheck[index]
+                                                        .slots[0]
+                                                        .assignedDate)) +
                                             " tháng" +
                                             DateFormat('MM').format(DateTime.parse(
-                                                patientHistoryController
-                                                    .listHealthCheck[index]
-                                                    .slots[0]
-                                                    .assignedDate)),
+                                                patientHistoryController.listHealthCheck[index].slots[0].assignedDate)),
                                         timeStart: patientHistoryController
                                             .listHealthCheck[index]
                                             .slots[0]
@@ -304,6 +287,8 @@ class _PatientHistoryScreenState extends State<PatientHistoryScreen> {
 
 class BoxHistory extends StatelessWidget {
   final patientHistoryController = Get.put(PatientHistoryController());
+  final listDoctorController = Get.put(ListDoctorController());
+  TextEditingController reason = TextEditingController();
 
   final String doctorImage;
   final String doctorName;
@@ -311,6 +296,7 @@ class BoxHistory extends StatelessWidget {
   final String timeStart;
   final String timeEnd;
   final int index;
+  final int healthCheckID;
 
   BoxHistory({
     required this.doctorImage,
@@ -319,6 +305,7 @@ class BoxHistory extends StatelessWidget {
     required this.timeStart,
     required this.timeEnd,
     required this.index,
+    required this.healthCheckID,
   });
 
   @override
@@ -355,7 +342,7 @@ class BoxHistory extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 80),
               child: Text(
-                doctorName,
+                "Bs. " + doctorName,
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 18,
@@ -370,6 +357,44 @@ class BoxHistory extends StatelessWidget {
                     color: Colors.grey[400],
                     fontSize: 16,
                     fontWeight: FontWeight.w500),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(250, 0, 0, 0),
+              child: InkWell(
+                onTap: () => {
+                  if (DateTime.now().compareTo(DateTime.parse(
+                          DateFormat("yyyy-MM-dd")
+                                  .format(DateTime.parse(date)) +
+                              " " +
+                              timeStart)) ==
+                      1)
+                    {
+                      listDoctorController.getTokenHealthCheck(healthCheckID),
+                    }
+                  else
+                    {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text("Thông báo"),
+                              content: Text("Chưa tới giờ tư vấn"),
+                              actions: [
+                                OutlineButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: Text("Đóng"),
+                                )
+                              ],
+                            );
+                          })
+                    }
+                },
+                child: Icon(
+                  Icons.phone,
+                  size: 40,
+                  color: kBlueColor,
+                ),
               ),
             ),
             Padding(
@@ -391,7 +416,12 @@ class BoxHistory extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 5.0),
                       child: Text(
-                        date,
+                        DateFormat.E(Locale("vi", "VN").languageCode)
+                                .format(DateTime.parse(date)) +
+                            ", " +
+                            DateFormat('dd').format(DateTime.parse(date)) +
+                            " tháng" +
+                            DateFormat('MM').format(DateTime.parse(date)),
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 14,
@@ -407,7 +437,9 @@ class BoxHistory extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 5.0),
                       child: Text(
-                        timeStart + " - " + timeEnd,
+                        timeStart.toString().replaceRange(5, 8, "") +
+                            " - " +
+                            timeEnd.toString().replaceRange(5, 8, ""),
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 14,
@@ -423,20 +455,89 @@ class BoxHistory extends StatelessWidget {
               padding: const EdgeInsets.only(top: 170.0),
               child: Row(
                 children: [
-                  Container(
-                    width: 140,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(28),
-                      border: Border.all(width: 1),
-                      color: kWhiteColor,
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Hủy",
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.black,
+                  InkWell(
+                    onTap: () => {
+                      patientHistoryController.emptyReason.value = false,
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text("Thông báo"),
+                              content: Text("Bạn có muốn hủy lịch hẹn này?"),
+                              actions: [
+                                MaterialButton(
+                                  elevation: 5,
+                                  child: Text("Không"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                MaterialButton(
+                                  elevation: 5,
+                                  child: Text("Có"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: Text("Lý do?"),
+                                            content: Obx(
+                                              () => TextField(
+                                                controller: reason,
+                                                decoration: InputDecoration(
+                                                  errorText:
+                                                      patientHistoryController
+                                                              .emptyReason.value
+                                                          ? "Vui lòng nhập lý do hủy lịch hẹn"
+                                                          : null,
+                                                  errorStyle:
+                                                      TextStyle(fontSize: 14),
+                                                ),
+                                              ),
+                                            ),
+                                            actions: [
+                                              MaterialButton(
+                                                elevation: 5,
+                                                child: Text("Gửi"),
+                                                onPressed: () {
+                                                  if (reason.text.isEmpty) {
+                                                    patientHistoryController
+                                                        .emptyReason
+                                                        .value = true;
+                                                  } else {
+                                                    patientHistoryController
+                                                        .cancelHealthCheck(
+                                                            healthCheckID,
+                                                            reason.text);
+                                                    Navigator.of(context).pop();
+                                                  }
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        });
+                                  },
+                                ),
+                              ],
+                            );
+                          }),
+                    },
+                    child: Container(
+                      width: 140,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(28),
+                        border: Border.all(width: 1),
+                        color: kWhiteColor,
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Hủy",
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                     ),
@@ -479,6 +580,7 @@ class BoxHistory extends StatelessWidget {
 
 class BoxHistoryPast extends StatelessWidget {
   final patientHistoryController = Get.put(PatientHistoryController());
+  TextEditingController comment = TextEditingController();
 
   final String doctorImage;
   final String doctorName;
@@ -532,7 +634,7 @@ class BoxHistoryPast extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 80),
                   child: Text(
-                    doctorName,
+                    "Bs. " + doctorName,
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 18,
@@ -598,31 +700,164 @@ class BoxHistoryPast extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 170.0),
-                  child: InkWell(
-                    onTap: () => {
-                      patientHistoryController.index.value = index,
-                      Get.to(() => PatientDetailHistoryScreen(),
-                          transition: Transition.rightToLeftWithFade,
-                          duration: Duration(microseconds: 600)),
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(28),
-                        color: Color(0xff85a7fa),
-                      ),
-                      child: Center(
-                        child: Text(
-                          "Chi tiết",
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.black,
+                  child: patientHistoryController.sttHistory.value == "complete"
+                      ? Row(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                patientHistoryController.emptyComment.value =
+                                    false;
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: Center(child: Text("Đánh giá")),
+                                        content: Container(
+                                          height: 180,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Bình luận",
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    color: Colors.black),
+                                              ),
+                                              Obx(
+                                                () => TextField(
+                                                  controller: comment,
+                                                  decoration: InputDecoration(
+                                                    errorText:
+                                                        patientHistoryController
+                                                                .emptyComment
+                                                                .value
+                                                            ? "Vui lòng nhập bình luận"
+                                                            : null,
+                                                    errorStyle:
+                                                        TextStyle(fontSize: 14),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 30,
+                                              ),
+                                              Center(
+                                                child: Container(
+                                                  height: 50,
+                                                  padding: EdgeInsets.only(
+                                                      top: 8, bottom: 8),
+                                                  child: RatingBar.builder(
+                                                    onRatingUpdate: (rating) {},
+                                                    initialRating: 1,
+                                                    direction: Axis.horizontal,
+                                                    allowHalfRating: true,
+                                                    unratedColor: Colors.amber
+                                                        .withAlpha(50),
+                                                    itemSize: 30.0,
+                                                    itemPadding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 2.0),
+                                                    itemBuilder: (context, _) =>
+                                                        Icon(
+                                                      Icons.star,
+                                                      color: Colors.amber,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        actions: [
+                                          MaterialButton(
+                                            elevation: 5,
+                                            child: Text("Gửi"),
+                                            onPressed: () {
+                                              if (comment.text.isEmpty) {
+                                                patientHistoryController
+                                                    .emptyComment.value = true;
+                                              } else {
+                                                Navigator.of(context).pop();
+                                              }
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    });
+                              },
+                              child: Container(
+                                width: 140,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(28),
+                                  border: Border.all(width: 1),
+                                  color: kWhiteColor,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "Đánh giá",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(child: Container()),
+                            InkWell(
+                              onTap: () => {
+                                patientHistoryController.index.value = index,
+                                Get.to(() => PatientDetailHistoryScreen(),
+                                    transition: Transition.rightToLeftWithFade,
+                                    duration: Duration(microseconds: 600)),
+                              },
+                              child: Container(
+                                width: 140,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(28),
+                                  color: Color(0xff85a7fa),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "Chi tiết",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : InkWell(
+                          onTap: () => {
+                            patientHistoryController.index.value = index,
+                            Get.to(() => PatientDetailHistoryScreen(),
+                                transition: Transition.rightToLeftWithFade,
+                                duration: Duration(microseconds: 600)),
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(28),
+                              color: Color(0xff85a7fa),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Chi tiết",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
                 ),
               ],
             ),

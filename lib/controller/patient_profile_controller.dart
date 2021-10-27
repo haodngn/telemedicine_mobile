@@ -97,6 +97,13 @@ class PatientProfileController extends GetxController {
     }
   }
 
+  getNearestHealthCheck() {
+    FetchAPI.fetchNearestHealthCheck(patientHistoryController.patientID.value)
+        .then((dataFromServer) {
+      nearestHealthCheck.value = dataFromServer;
+    });
+  }
+
   RxBool isMale = true.obs;
   RxString dob = "".obs;
   RxList<dynamic> listCity = [].obs;

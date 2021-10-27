@@ -63,9 +63,28 @@ class ListDoctorController extends GetxController {
     return false;
   }
 
+  RxBool slotAvailable = false.obs;
+
   getListDoctorSlot(int doctorID) {
+    bool flag = true;
     FetchAPI.fetchContentSlot(doctorID).then((dataFromServer) {
       listSlot.value = dataFromServer;
+      listSlot.map((element) {
+        if (element.healthCheckID < 1) {
+          slotAvailable.value = true;
+          flag = false;
+        }
+      }).toList();
+      if (flag) {
+        slotAvailable.value = false;
+      }
+    });
+  }
+
+  RxList<dynamic> listAllDoctor = [].obs;
+  getAllDoctor() {
+    FetchAPI.fetchContentAllDoctor().then((dataFromServer) {
+      listAllDoctor.value = dataFromServer;
     });
   }
 
@@ -76,20 +95,9 @@ class ListDoctorController extends GetxController {
   }
 
   getDoctorDetailByEmail(String emailDoctor) {
-    listDoctor.map((e) {
+    listAllDoctor.map((e) {
       if (e.email == emailDoctor) doctorDetail.value = e;
     }).toList();
-  }
-
-  bookHealthCheck(int height, int weight, Patient patient, Slot slot) {
-    HealthCheckPost healthCheckPost = new HealthCheckPost(
-        height: height,
-        weight: weight,
-        patientId: patient.id,
-        slotId: slot.id,
-        symptomHealthChecks: []);
-
-    FetchAPI.createNewHealthCheck(healthCheckPost);
   }
 
   Rx<Slot> slot = new Slot(
@@ -178,5 +186,17 @@ class ListDoctorController extends GetxController {
           healthCheckToken.value = value,
           Get.to(CallScreen()),
         });
+  }
+
+  bookHealthCheck(int height, int weight, Patient patient, Slot slotN) {
+    HealthCheckPost healthCheckPost = new HealthCheckPost(
+        height: height,
+        weight: weight,
+        patientId: patient.id,
+        slotId: slotN.id,
+        symptomHealthChecks: []);
+
+    FetchAPI.createNewHealthCheck(healthCheckPost)
+        .then((value) => getListDoctorSlot(slot.value.doctorId));
   }
 }
