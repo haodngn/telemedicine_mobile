@@ -18,9 +18,18 @@ class ScheduleCard extends StatelessWidget {
   var healthCheckID;
   var emailPatient;
   var slot;
+  var bookAllow;
 
-  ScheduleCard(this._title, this._description, this._date, this._month,
-      this._bgColor, this.healthCheckID, this.emailPatient, this.slot);
+  ScheduleCard(
+      this._title,
+      this._description,
+      this._date,
+      this._month,
+      this._bgColor,
+      this.healthCheckID,
+      this.emailPatient,
+      this.slot,
+      this.bookAllow);
 
   final patientProfileController = Get.put(PatientProfileController());
   final listDoctorController = Get.put(ListDoctorController());
@@ -66,7 +75,9 @@ class ScheduleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        healthCheckID > 0 ? null : chatBot(context);
+        if (bookAllow) {
+          healthCheckID > 0 ? null : chatBot(context);
+        }
       },
       child: DecoratedBox(
         decoration: BoxDecoration(
@@ -142,22 +153,6 @@ class ScheduleCard extends StatelessWidget {
                   ),
                 ),
               ),
-              emailPatient == accountController.account.value.email
-                  ? Padding(
-                      padding: const EdgeInsets.fromLTRB(280, 20, 0, 0),
-                      child: InkWell(
-                        onTap: () => {
-                          listDoctorController
-                              .getTokenHealthCheck(healthCheckID),
-                        },
-                        child: SvgPicture.asset(
-                          'assets/icons/phone.svg',
-                          width: 22,
-                          height: 22,
-                        ),
-                      ),
-                    )
-                  : Container(),
             ],
           ),
         ),

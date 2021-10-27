@@ -158,7 +158,7 @@ class HomeScreen extends StatelessWidget {
                         child: Text(
                         "Bạn chưa có lịch hẹn",
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
+                            fontSize: 18, fontWeight: FontWeight.w300),
                       ))
                     : Padding(
                         padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
@@ -194,8 +194,13 @@ class HomeScreen extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 80),
                                   child: Text(
-                                    patientProfileController.nearestHealthCheck
-                                        .value.slots[0].doctor.name,
+                                    "Bs. " +
+                                        patientProfileController
+                                            .nearestHealthCheck
+                                            .value
+                                            .slots[0]
+                                            .doctor
+                                            .name,
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 18,
@@ -211,6 +216,62 @@ class HomeScreen extends StatelessWidget {
                                         color: Colors.grey[300],
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400),
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(250, 0, 0, 0),
+                                  child: InkWell(
+                                    onTap: () => {
+                                      if (DateTime.now().compareTo(DateTime
+                                              .parse(DateFormat("yyyy-MM-dd")
+                                                      .format(DateTime.parse(
+                                                          patientProfileController
+                                                              .nearestHealthCheck
+                                                              .value
+                                                              .slots[0]
+                                                              .assignedDate)) +
+                                                  " " +
+                                                  patientProfileController
+                                                      .nearestHealthCheck
+                                                      .value
+                                                      .slots[0]
+                                                      .startTime)) ==
+                                          1)
+                                        {
+                                          listDoctorController
+                                              .getTokenHealthCheck(
+                                                  patientProfileController
+                                                      .nearestHealthCheck
+                                                      .value
+                                                      .id),
+                                        }
+                                      else
+                                        {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                  title: Text("Thông báo"),
+                                                  content: Text(
+                                                      "Chưa tới giờ tư vấn"),
+                                                  actions: [
+                                                    OutlineButton(
+                                                      onPressed: () =>
+                                                          Navigator.of(context)
+                                                              .pop(),
+                                                      child: Text("Đóng"),
+                                                    )
+                                                  ],
+                                                );
+                                              })
+                                        }
+                                    },
+                                    child: Icon(
+                                      Icons.phone,
+                                      size: 40,
+                                      color: Colors.greenAccent,
+                                    ),
                                   ),
                                 ),
                                 Padding(
@@ -233,29 +294,26 @@ class HomeScreen extends StatelessWidget {
                                           padding:
                                               const EdgeInsets.only(top: 5.0),
                                           child: Text(
-                                            DateFormat('EEE').format(
-                                                    DateTime.parse(
-                                                        patientProfileController
-                                                            .nearestHealthCheck
-                                                            .value
-                                                            .slots[0]
-                                                            .assignedDate)) +
+                                            DateFormat.E(Locale("vi", "VN").languageCode).format(
+                                                    DateTime.parse(patientProfileController
+                                                        .nearestHealthCheck
+                                                        .value
+                                                        .slots[0]
+                                                        .assignedDate)) +
                                                 ", " +
-                                                DateFormat('dd').format(
-                                                    DateTime.parse(
-                                                        patientProfileController
-                                                            .nearestHealthCheck
-                                                            .value
-                                                            .slots[0]
-                                                            .assignedDate)) +
+                                                DateFormat('dd').format(DateTime.parse(
+                                                    patientProfileController
+                                                        .nearestHealthCheck
+                                                        .value
+                                                        .slots[0]
+                                                        .assignedDate)) +
                                                 " tháng" +
-                                                DateFormat('MM').format(
-                                                    DateTime.parse(
-                                                        patientProfileController
-                                                            .nearestHealthCheck
-                                                            .value
-                                                            .slots[0]
-                                                            .assignedDate)),
+                                                DateFormat('MM').format(DateTime.parse(
+                                                    patientProfileController
+                                                        .nearestHealthCheck
+                                                        .value
+                                                        .slots[0]
+                                                        .assignedDate)),
                                             style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 14,
@@ -344,6 +402,8 @@ class HomeScreen extends StatelessWidget {
                               patientHistoryController.listTopDoctor[0].rating,
                               patientHistoryController
                                   .listTopDoctor[0].numberOfConsultants,
+                              patientHistoryController
+                                  .listTopDoctor[0].dateOfCertificate,
                             )),
                           },
                           child: Container(
@@ -371,8 +431,9 @@ class HomeScreen extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 90),
                                   child: Text(
-                                    patientHistoryController
-                                        .listTopDoctor[0].name,
+                                    "Bs. " +
+                                        patientHistoryController
+                                            .listTopDoctor[0].name,
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 18,
@@ -441,7 +502,7 @@ class HomeScreen extends StatelessWidget {
                                                   .listTopDoctor[0]
                                                   .numberOfConsultants
                                                   .toString() +
-                                              " Lượt đánh giá",
+                                              " đánh giá",
                                           style: TextStyle(
                                               color:
                                                   Colors.grey.withOpacity(0.75),
@@ -485,6 +546,8 @@ class HomeScreen extends StatelessWidget {
                               patientHistoryController.listTopDoctor[1].rating,
                               patientHistoryController
                                   .listTopDoctor[1].numberOfConsultants,
+                              patientHistoryController
+                                  .listTopDoctor[1].dateOfCertificate,
                             )),
                           },
                           child: Container(
@@ -512,8 +575,9 @@ class HomeScreen extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 90),
                                   child: Text(
-                                    patientHistoryController
-                                        .listTopDoctor[1].name,
+                                    "Bs. " +
+                                        patientHistoryController
+                                            .listTopDoctor[1].name,
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 18,
@@ -582,7 +646,7 @@ class HomeScreen extends StatelessWidget {
                                                   .listTopDoctor[1]
                                                   .numberOfConsultants
                                                   .toString() +
-                                              "Lượt đánh giá",
+                                              " đánh giá",
                                           style: TextStyle(
                                               color:
                                                   Colors.grey.withOpacity(0.75),
@@ -626,6 +690,8 @@ class HomeScreen extends StatelessWidget {
                               patientHistoryController.listTopDoctor[2].rating,
                               patientHistoryController
                                   .listTopDoctor[2].numberOfConsultants,
+                              patientHistoryController
+                                  .listTopDoctor[2].dateOfCertificate,
                             )),
                           },
                           child: Container(
@@ -653,8 +719,9 @@ class HomeScreen extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 90),
                                   child: Text(
-                                    patientHistoryController
-                                        .listTopDoctor[2].name,
+                                    "Bs. " +
+                                        patientHistoryController
+                                            .listTopDoctor[2].name,
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 18,
@@ -723,7 +790,7 @@ class HomeScreen extends StatelessWidget {
                                                   .listTopDoctor[0]
                                                   .numberOfConsultants
                                                   .toString() +
-                                              "Lượt đánh giá",
+                                              " đánh giá",
                                           style: TextStyle(
                                               color:
                                                   Colors.grey.withOpacity(0.75),
