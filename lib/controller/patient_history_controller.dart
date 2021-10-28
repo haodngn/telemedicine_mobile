@@ -59,6 +59,4 @@ class PatientHistoryController extends GetxController {
         symptomHealthChecks: healthCheck.symptomHealthChecks);
     FetchAPI.ratingHealthCheck(newHealthCheck).then((value) => getMyHistory());
   }
-
-  RxString sttDrug = "morning".obs;
 }
