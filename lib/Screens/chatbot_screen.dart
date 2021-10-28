@@ -19,6 +19,8 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
   TextEditingController textSendMessage = TextEditingController();
 
   final chatbotcontroller = Get.put(ChatBotController());
+  final patientProfileController = Get.put(PatientProfileController());
+  final listDoctorController = Get.put(ListDoctorController());
 
   @override
   void initState() {
@@ -284,6 +286,22 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                                 .isEmpty) {
                               chatbotcontroller.SendMessage();
                             }
+                            if (chatbotcontroller.listMessage.length ==
+                                chatbotcontroller.listChatbot.length) {
+                              listDoctorController.bookHealthCheck(
+                                  int.parse(chatbotcontroller
+                                      .listMessage[
+                                          chatbotcontroller.listMessage.length -
+                                              1]
+                                      .messagePatient),
+                                  int.parse(chatbotcontroller
+                                      .listMessage[
+                                          chatbotcontroller.listMessage.length -
+                                              2]
+                                      .messagePatient),
+                                  patientProfileController.patient.value,
+                                  listDoctorController.slot.value);
+                            }
                           }),
                     )
                   ],
@@ -506,10 +524,6 @@ class BoxChat extends StatelessWidget {
                                               patientProfileController
                                                   .patient.value,
                                               listDoctorController.slot.value),
-                                          listDoctorController
-                                              .getListDoctorSlot(
-                                                  listDoctorController
-                                                      .slot.value.doctorId)
                                         }
                                     },
                                     shape: RoundedRectangleBorder(

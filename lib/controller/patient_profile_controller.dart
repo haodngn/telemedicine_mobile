@@ -11,6 +11,7 @@ import 'package:telemedicine_mobile/api/fetch_address_api.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
 import 'package:telemedicine_mobile/models/Account.dart';
+import 'package:telemedicine_mobile/models/HealthCheck.dart';
 import 'package:telemedicine_mobile/models/Patient.dart';
 import 'package:telemedicine_mobile/models/Role.dart';
 
@@ -48,18 +49,59 @@ class PatientProfileController extends GetxController {
           role: new Role(id: 0, name: "", isActive: true))
       .obs;
 
+  Rx<HealthCheck> nearestHealthCheck = new HealthCheck(
+      id: 0,
+      height: 0,
+      weight: 0,
+      reasonCancel: "",
+      rating: 0,
+      comment: "",
+      advice: "",
+      token: "",
+      patientId: 0,
+      createdTime: "",
+      canceledTime: "",
+      status: "",
+      patient: new Patient(
+          id: 0,
+          email: "",
+          name: "",
+          avatar: "",
+          backgroundDisease: "",
+          allergy: "",
+          bloodGroup: "",
+          isActive: true,
+          healthChecks: []),
+      healthCheckDiseases: [],
+      prescriptions: [],
+      slots: [],
+      symptomHealthChecks: []).obs;
+
   getMyPatient() {
     String myEmail = accountController.account.value.email;
     if (myEmail.isEmpty) {
       Get.off(LoginScreen(),
           transition: Transition.leftToRightWithFade,
           duration: Duration(milliseconds: 500));
-    }else {
+    } else {
       FetchAPI.fetchMyPatient(myEmail).then((dataFromServer) {
         patient.value = dataFromServer;
         patientHistoryController.patientID.value = patient.value.id;
+        FetchAPI.fetchNearestHealthCheck(
+                patientHistoryController.patientID.value)
+            .then((dataFromServer) {
+          nearestHealthCheck.value = dataFromServer;
+        });
+        patientHistoryController.getMyHistory();
       });
     }
+  }
+
+  getNearestHealthCheck() {
+    FetchAPI.fetchNearestHealthCheck(patientHistoryController.patientID.value)
+        .then((dataFromServer) {
+      nearestHealthCheck.value = dataFromServer;
+    });
   }
 
   RxBool isMale = true.obs;
@@ -101,7 +143,6 @@ class PatientProfileController extends GetxController {
   }
 
   getMyAccount() {
-
     String myEmail = accountController.account.value.email;
     if (myEmail.isEmpty) {
       Get.offAll(LoginScreen(),

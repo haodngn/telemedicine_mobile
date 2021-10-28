@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:telemedicine_mobile/Screens/list_doctor_screen.dart';
-import 'package:telemedicine_mobile/Screens/patient_history_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
+import 'package:telemedicine_mobile/controller/bottom_navbar_controller.dart';
 
 class CategoryCard extends StatelessWidget {
   var _title;
@@ -11,15 +10,20 @@ class CategoryCard extends StatelessWidget {
   var click;
 
   CategoryCard(this._title, this._imageUrl, this._bgColor, this.click);
+  final bottomNavbarController = Get.put(BottomNavbarController());
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => {
         if (click == 1)
-          {Get.to(ListDoctorScreen())}
+          {
+            bottomNavbarController.currentIndex.value = 1,
+          }
         else if (click == 2)
-          {Get.to(PatientHistoryScreen())}
+          {
+            bottomNavbarController.currentIndex.value = 2,
+          }
         else
           {}
       },
@@ -27,7 +31,7 @@ class CategoryCard extends StatelessWidget {
         width: 130,
         height: 160,
         child: Stack(
-          children: <Widget>[
+          children: [
             Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
@@ -52,18 +56,15 @@ class CategoryCard extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-              child: Positioned(
-                right: 0,
-                child: Container(
-                  height: 84,
-                  width: 84,
-                  decoration: BoxDecoration(
-                    color: _bgColor,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Image.asset(
-                    _imageUrl,
-                  ),
+              child: Container(
+                height: 84,
+                width: 84,
+                decoration: BoxDecoration(
+                  color: _bgColor,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Image.asset(
+                  _imageUrl,
                 ),
               ),
             ),

@@ -24,6 +24,7 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
   @override
   void initState() {
     super.initState();
+    filterController.majorID.value = 0;
   }
 
   Future<bool> getDoctorData({bool isRefresh = false}) async {
@@ -47,6 +48,7 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
       minimum: const EdgeInsets.only(top: 10.0, bottom: 10.0),
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: Text("Danh sách bác sĩ"),
           backgroundColor: kBlueColor,
           automaticallyImplyLeading: false,
@@ -56,10 +58,7 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
                 Icons.search,
               ),
               onPressed: () {
-                Get.to(
-                    FilterScreen(
-                      filterController: filterController,
-                    ),
+                Get.to(FilterScreen(),
                     transition: Transition.downToUp,
                     duration: Duration(milliseconds: 600));
               },
@@ -68,43 +67,93 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
         ),
         backgroundColor: kBackgroundColor,
         body: Obx(
-          () => SmartRefresher(
-            controller: refreshController,
-            enablePullUp: true,
-            onRefresh: () async {
-              final result = await getDoctorData(isRefresh: true);
-              if (result) {
-                refreshController.refreshCompleted();
-              } else {
-                refreshController.refreshFailed();
-              }
-            },
-            onLoading: () async {
-              final result = await getDoctorData(isRefresh: false);
-              if (result) {
-                refreshController.loadComplete();
-              } else {
-                refreshController.loadFailed();
-              }
-            },
-            child: listDoctorController.listDoctor.length == 0 &&
-                    listDoctorController.isLoading.value != true
-                ? Center(
-                    child: Text(
-                      "Không tìm thấy bác sĩ phù hợp",
-                      style:
-                          TextStyle(fontSize: 19, fontWeight: FontWeight.w500),
-                    ),
-                  )
-                : ListView.builder(
-                    // physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: listDoctorController.listDoctor.length,
-                    itemBuilder: (BuildContext context, index) {
-                      return buildDoctorList(
-                          listDoctorController.listDoctor[index]);
-                    },
+          () => Stack(
+            children: [
+              Container(
+                padding: EdgeInsets.only(top: 50),
+                child: SmartRefresher(
+                  controller: refreshController,
+                  enablePullUp: true,
+                  onRefresh: () async {
+                    final result = await getDoctorData(isRefresh: true);
+                    if (result) {
+                      refreshController.refreshCompleted();
+                    } else {
+                      refreshController.refreshFailed();
+                    }
+                  },
+                  onLoading: () async {
+                    final result = await getDoctorData(isRefresh: false);
+                    if (result) {
+                      refreshController.loadComplete();
+                    } else {
+                      refreshController.loadFailed();
+                    }
+                  },
+                  child: listDoctorController.listDoctor.length == 0 &&
+                          listDoctorController.isLoading.value != true
+                      ? Center(
+                          child: Text(
+                            "Không tìm thấy bác sĩ phù hợp",
+                            style: TextStyle(
+                                fontSize: 19, fontWeight: FontWeight.w500),
+                          ),
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: listDoctorController.listDoctor.length,
+                          itemBuilder: (BuildContext context, index) {
+                            return buildDoctorList(
+                                listDoctorController.listDoctor[index]);
+                          },
+                        ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: filterController.listMajor2.map((e) {
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        child: InkWell(
+                          onTap: () {
+                            filterController.majorID.value = e.id;
+                            if (filterController.majorID.value == 0) {
+                              filterController.searchDoctorByCondition(2);
+                            } else {
+                              filterController.searchDoctorByCondition(3);
+                            }
+                          },
+                          child: Container(
+                            height: 40,
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: filterController.majorID == e.id
+                                  ? kBlueColor
+                                  : Color(0xffededed),
+                            ),
+                            child: Center(
+                              child: Text(
+                                e.name.toString().replaceAll("Bác sĩ", ""),
+                                style: TextStyle(
+                                  color: filterController.majorID == e.id
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
                   ),
+                ),
+              )
+            ],
           ),
         ),
       ),
@@ -112,7 +161,6 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
   }
 
   buildDoctorList(Doctor doctor) {
-    print(doctor);
     return Container(
       margin: EdgeInsets.only(top: 18),
       padding: EdgeInsets.symmetric(

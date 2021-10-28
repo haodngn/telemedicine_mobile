@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:telemedicine_mobile/Screens/login_screen.dart';
 import 'package:telemedicine_mobile/controller/account_controller.dart';
 import 'package:telemedicine_mobile/controller/google_login_controller.dart';
+import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 import 'package:telemedicine_mobile/models/Account.dart';
 import 'package:telemedicine_mobile/models/AccountPost.dart';
 import 'package:telemedicine_mobile/models/ContentDoctor.dart';
@@ -18,6 +19,7 @@ import 'package:telemedicine_mobile/models/ContentSymptom.dart';
 import 'package:telemedicine_mobile/models/ContentTimeFrame.dart';
 import 'package:telemedicine_mobile/models/Doctor.dart';
 import 'package:telemedicine_mobile/models/HealthCheck.dart';
+import 'package:telemedicine_mobile/models/HealthCheckChangeSTT.dart';
 import 'package:telemedicine_mobile/models/HealthCheckPost.dart';
 import 'package:telemedicine_mobile/models/Hospital.dart';
 import 'package:telemedicine_mobile/models/Major.dart';
@@ -87,6 +89,37 @@ class FetchAPI {
     }
   }
 
+  static Future<List<Doctor>> fetchContentAllDoctor() async {
+    final storage = new Storage.FlutterSecureStorage();
+    String token = await storage.read(key: "accessToken") ?? "";
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500));
+      throw Exception("Error: UnAuthentication");
+    } else {
+      final response = await http.get(
+        Uri.parse(
+            "https://binhtt.tech/api/v1/doctors?is-verify=1&limit=50&page-offset=1"),
+        headers: <String, String>{
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        var contentJSon = json.decode(utf8.decode(response.bodyBytes));
+        ContentDoctor contentDoctor = ContentDoctor.fromJson(contentJSon);
+        return contentDoctor.doctor;
+      } else if (response.statusCode == 404) {
+        throw Exception("Not found doctor");
+      } else if (response.statusCode == 401) {
+        throw Exception("Error: Unauthorized");
+      } else {
+        throw Exception("Internal server error");
+      }
+    }
+  }
+
   static Future<List<Doctor>> fetchContentTopDoctor() async {
     final storage = new Storage.FlutterSecureStorage();
     String token = await storage.read(key: "accessToken") ?? "";
@@ -98,7 +131,7 @@ class FetchAPI {
     } else {
       final response = await http.get(
         Uri.parse(
-            "https://binhtt.tech/api/v1/doctors?order-by=Rating&order-type=desc&is-verify=1&limit=8&page-offset=1"),
+            "https://binhtt.tech/api/v1/doctors?order-by=Rating&order-type=desc&is-verify=1&limit=3&page-offset=1"),
         headers: <String, String>{
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.authorizationHeader: 'Bearer $token',
@@ -119,6 +152,7 @@ class FetchAPI {
   }
 
   static Future<HealthCheck> fetchNearestHealthCheck(int patientID) async {
+    final patientProfileController = GetX.Get.put(PatientProfileController());
     final storage = new Storage.FlutterSecureStorage();
     String token = await storage.read(key: "accessToken") ?? "";
     if (token.isEmpty) {
@@ -142,6 +176,33 @@ class FetchAPI {
         HealthCheck healthCheck = HealthCheck.fromJson(contentJSon);
         return healthCheck;
       } else if (response.statusCode == 404) {
+        patientProfileController.nearestHealthCheck.value = new HealthCheck(
+            id: 0,
+            height: 0,
+            weight: 0,
+            reasonCancel: "",
+            rating: 0,
+            comment: "",
+            advice: "",
+            token: "",
+            patientId: 0,
+            createdTime: "",
+            canceledTime: "",
+            status: "",
+            patient: new Patient(
+                id: 0,
+                email: "",
+                name: "",
+                avatar: "",
+                backgroundDisease: "",
+                allergy: "",
+                bloodGroup: "",
+                isActive: true,
+                healthChecks: []),
+            healthCheckDiseases: [],
+            prescriptions: [],
+            slots: [],
+            symptomHealthChecks: []);
         throw Exception("Not found health checks");
       } else if (response.statusCode == 400) {
         throw Exception("Bad requests");
@@ -541,13 +602,9 @@ class FetchAPI {
             HttpHeaders.authorizationHeader: 'Bearer $token',
           });
       if (response.statusCode == 201) {
-        return "Created new health check successfull";
+        return "Update patient successfull";
       } else if (response.statusCode == 400) {
         return "Field is not matched";
-      } else if (response.statusCode == 401) {
-        return "Unauthorized";
-      } else if (response.statusCode == 403) {
-        return "Forbidden";
       } else if (response.statusCode == 404) {
         return "Not found";
       } else {
@@ -581,6 +638,62 @@ class FetchAPI {
         throw Exception("No health check found with the specified id");
       } else {
         throw Exception("Internal server error");
+      }
+    }
+  }
+
+  static Future<String> cancelHealthCheck(
+      HealthCheckChangeSTT healthCheckChangeSTT) async {
+    final storage = new Storage.FlutterSecureStorage();
+    String token = await storage.read(key: "accessToken") ?? "";
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500));
+      throw Exception("Error: UnAuthentication");
+    } else {
+      final response = await http.patch(
+          Uri.parse("https://binhtt.tech/api/v1/health-checks/" +
+              healthCheckChangeSTT.id.toString()),
+          body: jsonEncode(healthCheckChangeSTT.toJson()),
+          headers: <String, String>{
+            HttpHeaders.contentTypeHeader: 'application/json',
+            HttpHeaders.authorizationHeader: 'Bearer $token',
+          });
+      if (response.statusCode == 200) {
+        return "Cancel health check successfull";
+      } else if (response.statusCode == 404) {
+        return "Not found";
+      } else {
+        return "Failed to save request";
+      }
+    }
+  }
+
+  static Future<String> ratingHealthCheck(HealthCheck healthCheck) async {
+    final storage = new Storage.FlutterSecureStorage();
+    String token = await storage.read(key: "accessToken") ?? "";
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500));
+      throw Exception("Error: UnAuthentication");
+    } else {
+      final response = await http.put(
+          Uri.parse("https://binhtt.tech/api/v1/health-checks?mode=USERS"),
+          body: jsonEncode(healthCheck.toJson()),
+          headers: <String, String>{
+            HttpHeaders.contentTypeHeader: 'application/json',
+            HttpHeaders.authorizationHeader: 'Bearer $token',
+          });
+      if (response.statusCode == 200) {
+        return "Update patient successfull";
+      } else if (response.statusCode == 400) {
+        return "Field is not matched";
+      } else if (response.statusCode == 404) {
+        return "Not found";
+      } else {
+        return "Failed to save request";
       }
     }
   }

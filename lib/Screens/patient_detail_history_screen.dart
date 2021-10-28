@@ -68,25 +68,14 @@ class _PatientDetailHistoryScreenState
         .slots[0]
         .doctor
         .email);
-    symptom = new RichText(
-      text: new TextSpan(children: <TextSpan>[
-        new TextSpan(
-            text: 'Triệu chứng của bạn',
-            style: new TextStyle(fontWeight: FontWeight.bold)),
-        new TextSpan(
-          text: 'World',
-        ),
-      ]),
-    );
-    listDoctorController.getListDoctor();
-    print(patientHistoryController
-        .listHealthCheck[patientHistoryController.index.value].status);
+            listDoctorController.getAllDoctor();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text("Chi tiết cuộc hẹn"),
         backgroundColor: kBlueColor,
         elevation: 1,
@@ -258,25 +247,26 @@ class _PatientDetailHistoryScreenState
                                 patientProfileController.getMyPatient(),
                                 Get.to(
                                     () => DetailScreen(
-                                          listDoctorController
-                                              .doctorDetail.value.name,
-                                          listDoctorController.doctorDetail
-                                              .value.scopeOfPractice,
-                                          listDoctorController
-                                              .doctorDetail.value.description,
-                                          listDoctorController
-                                              .doctorDetail.value.avatar,
-                                          listDoctorController
-                                              .doctorDetail.value.majorDoctors,
-                                          listDoctorController.doctorDetail
-                                              .value.hospitalDoctors,
-                                          listDoctorController.doctorDetail
-                                              .value.certificationDoctors,
-                                          listDoctorController
-                                              .doctorDetail.value.rating,
-                                          listDoctorController.doctorDetail
-                                              .value.numberOfConsultants,
-                                        ),
+                                        listDoctorController
+                                            .doctorDetail.value.name,
+                                        listDoctorController
+                                            .doctorDetail.value.scopeOfPractice,
+                                        listDoctorController
+                                            .doctorDetail.value.description,
+                                        listDoctorController
+                                            .doctorDetail.value.avatar,
+                                        listDoctorController
+                                            .doctorDetail.value.majorDoctors,
+                                        listDoctorController
+                                            .doctorDetail.value.hospitalDoctors,
+                                        listDoctorController.doctorDetail.value
+                                            .certificationDoctors,
+                                        listDoctorController
+                                            .doctorDetail.value.rating,
+                                        listDoctorController.doctorDetail.value
+                                            .numberOfConsultants,
+                                        listDoctorController.doctorDetail.value
+                                            .dateOfCertificate),
                                     transition: Transition.rightToLeftWithFade,
                                     duration: Duration(microseconds: 600)),
                               },
@@ -484,43 +474,28 @@ class _PatientDetailHistoryScreenState
                                           patientHistoryController.index.value]
                                       .status ==
                                   "COMPLETED"
-                              ? Container(
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    color: kBlueColor,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  padding: EdgeInsets.fromLTRB(5, 0, 20, 0),
-                                  child: TextFormField(
-                                    readOnly: true,
-                                    onTap: () => Get.to(() => ViewDrugScreen(),
+                              ? InkWell(
+                                  onTap: () => {
+                                    Get.to(() => ViewDrugScreen(),
                                         transition:
                                             Transition.rightToLeftWithFade,
                                         duration: Duration(microseconds: 600)),
-                                    initialValue: "Đơn thuốc",
-                                    style: TextStyle(
-                                      letterSpacing: 2,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 22,
+                                  },
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(28),
+                                      color: kBlueColor,
                                     ),
-                                    decoration: InputDecoration(
-                                      prefixIcon: Icon(
-                                        Icons.medical_services,
-                                        color: Colors.white,
+                                    child: Center(
+                                      child: Text(
+                                        "Đơn thuốc",
+                                        style: TextStyle(
+                                            fontSize: 22,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
                                       ),
-                                      suffixIcon: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 20),
-                                        child: Icon(
-                                          Icons.arrow_forward_ios,
-                                          color: Colors.white,
-                                          size: 24,
-                                        ),
-                                      ),
-                                      fillColor: kBlueColor,
-                                      filled: true,
-                                      border: InputBorder.none,
                                     ),
                                   ),
                                 )
@@ -544,7 +519,18 @@ class _PatientDetailHistoryScreenState
                                         padding:
                                             const EdgeInsets.only(left: 60),
                                         child: Text(
-                                          "Có việc đột xuất",
+                                          patientHistoryController
+                                                      .listHealthCheck[
+                                                          patientHistoryController
+                                                              .index.value]
+                                                      .reasonCancel ==
+                                                  null
+                                              ? ""
+                                              : patientHistoryController
+                                                  .listHealthCheck[
+                                                      patientHistoryController
+                                                          .index.value]
+                                                  .reasonCancel,
                                           style: TextStyle(
                                             fontSize: 18,
                                           ),

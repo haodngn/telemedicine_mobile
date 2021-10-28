@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
+import 'package:telemedicine_mobile/models/Major.dart';
 
 class FilterController extends GetxController {
   RxBool searchByLocation = false.obs;
@@ -68,12 +69,16 @@ class FilterController extends GetxController {
   }
 
   RxList<dynamic> listMajor = [].obs;
+  RxList<dynamic> listMajor2 = [].obs;
   RxList<MultiSelectItem<dynamic>> listMajorItem =
       listNull.map((e) => MultiSelectItem(e, e.toString())).toList().obs;
 
+  RxInt majorID = 0.obs;
   getListMajor() {
+    listMajor2.add(new Major(id: 0, name: "Tất cả", description: ""));
     FetchAPI.fetchContentMajor().then((dataFromServer) {
       listMajor.value = dataFromServer;
+      listMajor2.addAll(dataFromServer);
       listMajorItem.value = listMajor
           .map((major) => MultiSelectItem(major.id, major.name))
           .toList();
@@ -99,7 +104,6 @@ class FilterController extends GetxController {
 
   setSearchMajor() {
     parseSearchMajor.value = "";
-    listResultMajor.value = listResultMajor.sublist(1);
     listResultMajor
         .map((element) =>
             parseSearchMajor.value += "majors=" + element.toString() + "&")
@@ -115,13 +119,13 @@ class FilterController extends GetxController {
         .toList();
   }
 
-  //TypeSearch: 1, search with condition, 2: search all
+  //TypeSearch: 1: search with condition, 2: search all, 3: search by 1 major
   searchDoctorByCondition(int typeSearch) {
     String condition = "";
     switch (typeSearch) {
       case 1:
         {
-          if (listResultMajor.length > 1) {
+          if (listResultMajor.length != 0) {
             setSearchMajor();
             condition += parseSearchMajor.value;
           }
@@ -147,6 +151,12 @@ class FilterController extends GetxController {
       case 2:
         {
           listDoctorController.condition.value = "";
+          break;
+        }
+      case 3:
+        {
+          listDoctorController.condition.value =
+              "majors=" + majorID.value.toString() + "&";
           break;
         }
     }

@@ -96,7 +96,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
         title: Text("Thông báo"),
         centerTitle: true,
         backgroundColor: kBlueColor,
-        automaticallyImplyLeading: false,
       ),
       body: SafeArea(
         child: Container(
