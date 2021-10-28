@@ -132,7 +132,7 @@ class FetchAPI {
     } else {
       final response = await http.get(
         Uri.parse(
-            "https://binhtt.tech/api/v1/doctors?order-by=Rating&order-type=desc&is-verify=1&limit=8&page-offset=1"),
+            "https://binhtt.tech/api/v1/doctors?order-by=Rating&order-type=desc&is-verify=1&limit=3&page-offset=1"),
         headers: <String, String>{
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.authorizationHeader: 'Bearer $token',
