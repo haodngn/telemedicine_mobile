@@ -16,17 +16,19 @@ class GoogleSignInController with ChangeNotifier {
     bool statusLogin = false;
     try {
       accountController.isLoading.value = true;
-      // final googleUser = await _googleSignIn.signIn();
-      // if (googleUser == null) return false;
-      // _user = googleUser;
-      // final googleAuth = await googleUser.authentication;
+      final googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) return false;
+      _user = googleUser;
+      final googleAuth = await googleUser.authentication;
 
-      // final credential = GoogleAuthProvider.credential(
-      //   accessToken: googleAuth.accessToken,
-      //   idToken: googleAuth.idToken,
-      // );
-      // var response = await FirebaseAuth.instance.signInWithCredential(credential);
-      await FetchAPI.loginWithToken("abc"); //await response.user!.getIdToken());
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      var response =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      await FetchAPI.loginWithToken(await response.user!
+          .getIdToken()); //await response.user!.getIdToken());
       notifyListeners();
       statusLogin = true;
     } catch (e) {

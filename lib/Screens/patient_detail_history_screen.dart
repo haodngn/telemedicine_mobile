@@ -79,6 +79,8 @@ class _PatientDetailHistoryScreenState
       ]),
     );
     listDoctorController.getListDoctor();
+    print(patientHistoryController
+        .listHealthCheck[patientHistoryController.index.value].status);
   }
 
   @override
@@ -256,24 +258,25 @@ class _PatientDetailHistoryScreenState
                                 patientProfileController.getMyPatient(),
                                 Get.to(
                                     () => DetailScreen(
-                                        listDoctorController
-                                            .doctorDetail.value.name,
-                                        listDoctorController
-                                            .doctorDetail.value.scopeOfPractice,
-                                        listDoctorController
-                                            .doctorDetail.value.description,
-                                        listDoctorController
-                                            .doctorDetail.value.avatar,
-                                        listDoctorController
-                                            .doctorDetail.value.majorDoctors,
-                                        listDoctorController
-                                            .doctorDetail.value.hospitalDoctors,
-                                        listDoctorController.doctorDetail.value
-                                            .certificationDoctors,
-                                        listDoctorController
-                                            .doctorDetail.value.rating,
-                                        listDoctorController.doctorDetail.value
-                                            .numberOfConsultants,),
+                                          listDoctorController
+                                              .doctorDetail.value.name,
+                                          listDoctorController.doctorDetail
+                                              .value.scopeOfPractice,
+                                          listDoctorController
+                                              .doctorDetail.value.description,
+                                          listDoctorController
+                                              .doctorDetail.value.avatar,
+                                          listDoctorController
+                                              .doctorDetail.value.majorDoctors,
+                                          listDoctorController.doctorDetail
+                                              .value.hospitalDoctors,
+                                          listDoctorController.doctorDetail
+                                              .value.certificationDoctors,
+                                          listDoctorController
+                                              .doctorDetail.value.rating,
+                                          listDoctorController.doctorDetail
+                                              .value.numberOfConsultants,
+                                        ),
                                     transition: Transition.rightToLeftWithFade,
                                     duration: Duration(microseconds: 600)),
                               },
