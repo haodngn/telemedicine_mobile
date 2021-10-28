@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/bottom_navbar_controller.dart';
+import 'package:telemedicine_mobile/controller/filter_controller.dart';
 
 class CategoryCard extends StatelessWidget {
   var _title;
@@ -11,6 +12,7 @@ class CategoryCard extends StatelessWidget {
 
   CategoryCard(this._title, this._imageUrl, this._bgColor, this.click);
   final bottomNavbarController = Get.put(BottomNavbarController());
+  final filterController = Get.put(FilterController());
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +20,7 @@ class CategoryCard extends StatelessWidget {
       onTap: () => {
         if (click == 1)
           {
+            filterController.getListMajor(),
             bottomNavbarController.currentIndex.value = 1,
           }
         else if (click == 2)

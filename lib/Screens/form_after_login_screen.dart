@@ -90,7 +90,6 @@ class _UserInformationState extends State<UserInformation> {
                       child: InkWell(
                         onTap: () => {_showOptions(context)},
                         child: Container(
-                          padding: EdgeInsets.all(10.0),
                           width: MediaQuery.of(context).size.width / 2,
                           height: MediaQuery.of(context).size.width / 2,
                           decoration: BoxDecoration(
@@ -112,6 +111,12 @@ class _UserInformationState extends State<UserInformation> {
                         ),
                       ),
                     ),
+                    formAfterLoginController.emptyImage.value ? Center(
+                      child: Text(
+                        "Vui lòng chọn ảnh đại diện",
+                        style: TextStyle(color: Colors.red, fontSize: 14),
+                      ),
+                    ) : Container(),
                     SizedBox(height: 20),
                     Stack(
                       children: [
@@ -673,8 +678,6 @@ class _UserInformationState extends State<UserInformation> {
                               textAllergyController.text,
                               textBloodGroupController.text,
                               textBackgroundDiseaseController.text),
-                          if (formAfterLoginController.done.value)
-                            Get.to(BottomNavScreen())
                         },
                         child: Text(
                           "Hoàn tất",

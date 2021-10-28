@@ -417,7 +417,7 @@ class BoxHistory extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 80),
+              padding: const EdgeInsets.only(top: 60),
               child: Container(
                 width: double.infinity,
                 height: 60,
@@ -471,7 +471,7 @@ class BoxHistory extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 170.0),
+              padding: const EdgeInsets.only(top: 130.0),
               child: Row(
                 children: [
                   InkWell(
@@ -676,7 +676,7 @@ class BoxHistoryPast extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 80),
+                  padding: const EdgeInsets.only(top: 60),
                   child: Container(
                     width: double.infinity,
                     height: 60,
@@ -723,7 +723,7 @@ class BoxHistoryPast extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 170.0),
+                  padding: const EdgeInsets.only(top: 130.0),
                   child: patientHistoryController.sttHistory.value == "complete"
                       ? Row(
                           children: [
