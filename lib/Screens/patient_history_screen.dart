@@ -6,6 +6,7 @@ import 'package:telemedicine_mobile/Screens/patient_detail_history_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
+import 'package:telemedicine_mobile/models/HealthCheck.dart';
 
 class PatientHistoryScreen extends StatefulWidget {
   const PatientHistoryScreen({Key? key}) : super(key: key);
@@ -224,6 +225,20 @@ class _PatientHistoryScreenState extends State<PatientHistoryScreen> {
                                         .toString()
                                         .replaceRange(5, 8, ""),
                                     index: index,
+                                    comment: patientHistoryController
+                                                .listHealthCheck[index]
+                                                .comment ==
+                                            null
+                                        ? TextEditingController()
+                                        : TextEditingController(
+                                            text: patientHistoryController
+                                                .listHealthCheck[index]
+                                                .comment),
+                                    rating: patientHistoryController
+                                        .listHealthCheck[index].rating == null ? 0 : patientHistoryController
+                                        .listHealthCheck[index].rating,
+                                    healthCheck: patientHistoryController
+                                        .listHealthCheck[index],
                                   )
                                 : patientHistoryController
                                                 .listHealthCheck[index]
@@ -272,6 +287,10 @@ class _PatientHistoryScreenState extends State<PatientHistoryScreen> {
                                             .toString()
                                             .replaceRange(5, 8, ""),
                                         index: index,
+                                        comment: TextEditingController(),
+                                        rating: 0,
+                                        healthCheck: patientHistoryController
+                                            .listHealthCheck[index],
                                       )
                                     : Container();
                       }),
@@ -580,7 +599,6 @@ class BoxHistory extends StatelessWidget {
 
 class BoxHistoryPast extends StatelessWidget {
   final patientHistoryController = Get.put(PatientHistoryController());
-  TextEditingController comment = TextEditingController();
 
   final String doctorImage;
   final String doctorName;
@@ -588,6 +606,9 @@ class BoxHistoryPast extends StatelessWidget {
   final String timeStart;
   final String timeEnd;
   final int index;
+  final TextEditingController comment;
+  late int rating;
+  final HealthCheck healthCheck;
 
   BoxHistoryPast({
     required this.doctorImage,
@@ -596,6 +617,9 @@ class BoxHistoryPast extends StatelessWidget {
     required this.timeStart,
     required this.timeEnd,
     required this.index,
+    required this.comment,
+    required this.rating,
+    required this.healthCheck,
   });
 
   @override
@@ -748,10 +772,14 @@ class BoxHistoryPast extends StatelessWidget {
                                                   padding: EdgeInsets.only(
                                                       top: 8, bottom: 8),
                                                   child: RatingBar.builder(
-                                                    onRatingUpdate: (rating) {},
-                                                    initialRating: 1,
+                                                    onRatingUpdate:
+                                                        (ratingValue) {
+                                                      rating =
+                                                          ratingValue.round();
+                                                    },
+                                                    initialRating: rating + 0,
                                                     direction: Axis.horizontal,
-                                                    allowHalfRating: true,
+                                                    allowHalfRating: false,
                                                     unratedColor: Colors.amber
                                                         .withAlpha(50),
                                                     itemSize: 30.0,
@@ -778,6 +806,9 @@ class BoxHistoryPast extends StatelessWidget {
                                                 patientHistoryController
                                                     .emptyComment.value = true;
                                               } else {
+                                                patientHistoryController
+                                                    .ratingHealthCheck(
+                                                        rating, comment.text, healthCheck);
                                                 Navigator.of(context).pop();
                                               }
                                             },

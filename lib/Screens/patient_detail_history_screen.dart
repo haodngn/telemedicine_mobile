@@ -68,7 +68,7 @@ class _PatientDetailHistoryScreenState
         .slots[0]
         .doctor
         .email);
-    listDoctorController.getListDoctor();
+            listDoctorController.getAllDoctor();
   }
 
   @override
@@ -474,43 +474,28 @@ class _PatientDetailHistoryScreenState
                                           patientHistoryController.index.value]
                                       .status ==
                                   "COMPLETED"
-                              ? Container(
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    color: kBlueColor,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  padding: EdgeInsets.fromLTRB(5, 0, 20, 0),
-                                  child: TextFormField(
-                                    readOnly: true,
-                                    onTap: () => Get.to(() => ViewDrugScreen(),
+                              ? InkWell(
+                                  onTap: () => {
+                                    Get.to(() => ViewDrugScreen(),
                                         transition:
                                             Transition.rightToLeftWithFade,
                                         duration: Duration(microseconds: 600)),
-                                    initialValue: "Đơn thuốc",
-                                    style: TextStyle(
-                                      letterSpacing: 2,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 22,
+                                  },
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(28),
+                                      color: kBlueColor,
                                     ),
-                                    decoration: InputDecoration(
-                                      prefixIcon: Icon(
-                                        Icons.medical_services,
-                                        color: Colors.white,
+                                    child: Center(
+                                      child: Text(
+                                        "Đơn thuốc",
+                                        style: TextStyle(
+                                            fontSize: 22,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
                                       ),
-                                      suffixIcon: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 20),
-                                        child: Icon(
-                                          Icons.arrow_forward_ios,
-                                          color: Colors.white,
-                                          size: 24,
-                                        ),
-                                      ),
-                                      fillColor: kBlueColor,
-                                      filled: true,
-                                      border: InputBorder.none,
                                     ),
                                   ),
                                 )
