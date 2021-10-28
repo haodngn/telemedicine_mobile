@@ -17,12 +17,14 @@ class _ViewDrugScreenState extends State<ViewDrugScreen> {
   @override
   void initState() {
     super.initState();
+    patientHistoryController.sttDrug.value = "morning";
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text("Đơn thuốc"),
         backgroundColor: kBlueColor,
         elevation: 1,
@@ -43,6 +45,7 @@ class _ViewDrugScreenState extends State<ViewDrugScreen> {
                       .length >
                   0
               ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(30.0),
@@ -58,27 +61,27 @@ class _ViewDrugScreenState extends State<ViewDrugScreen> {
                           children: [
                             InkWell(
                               onTap: () => {
-                                patientHistoryController.sttHistory.value =
-                                    "upcoming"
+                                patientHistoryController.sttDrug.value =
+                                    "morning"
                               },
                               child: Container(
                                 width: 104,
                                 height: double.infinity,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
-                                  color: patientHistoryController
-                                              .sttHistory.value ==
-                                          "upcoming"
-                                      ? kBlueColor
-                                      : Color(0xfff6f6f6),
+                                  color:
+                                      patientHistoryController.sttDrug.value ==
+                                              "morning"
+                                          ? kBlueColor
+                                          : Color(0xfff6f6f6),
                                 ),
                                 child: Center(
                                     child: Text(
                                   "Sáng",
                                   style: TextStyle(
                                     color: patientHistoryController
-                                                .sttHistory.value ==
-                                            "upcoming"
+                                                .sttDrug.value ==
+                                            "morning"
                                         ? Colors.white
                                         : Colors.black,
                                     fontSize: 18,
@@ -89,27 +92,27 @@ class _ViewDrugScreenState extends State<ViewDrugScreen> {
                             Expanded(child: Container()),
                             InkWell(
                               onTap: () => {
-                                patientHistoryController.sttHistory.value =
-                                    "complete"
+                                patientHistoryController.sttDrug.value =
+                                    "afternoon"
                               },
                               child: Container(
                                 width: 104,
                                 height: double.infinity,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
-                                  color: patientHistoryController
-                                              .sttHistory.value ==
-                                          "complete"
-                                      ? kBlueColor
-                                      : Color(0xfff6f6f6),
+                                  color:
+                                      patientHistoryController.sttDrug.value ==
+                                              "afternoon"
+                                          ? kBlueColor
+                                          : Color(0xfff6f6f6),
                                 ),
                                 child: Center(
                                     child: Text(
                                   "Trưa",
                                   style: TextStyle(
                                     color: patientHistoryController
-                                                .sttHistory.value ==
-                                            "complete"
+                                                .sttDrug.value ==
+                                            "afternoon"
                                         ? Colors.white
                                         : Colors.black,
                                     fontSize: 18,
@@ -120,27 +123,27 @@ class _ViewDrugScreenState extends State<ViewDrugScreen> {
                             Expanded(child: Container()),
                             InkWell(
                               onTap: () => {
-                                patientHistoryController.sttHistory.value =
-                                    "cancel"
+                                patientHistoryController.sttDrug.value =
+                                    "evening"
                               },
                               child: Container(
                                 width: 104,
                                 height: double.infinity,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
-                                  color: patientHistoryController
-                                              .sttHistory.value ==
-                                          "cancel"
-                                      ? kBlueColor
-                                      : Color(0xfff6f6f6),
+                                  color:
+                                      patientHistoryController.sttDrug.value ==
+                                              "evening"
+                                          ? kBlueColor
+                                          : Color(0xfff6f6f6),
                                 ),
                                 child: Center(
                                     child: Text(
                                   "Chiều",
                                   style: TextStyle(
                                     color: patientHistoryController
-                                                .sttHistory.value ==
-                                            "cancel"
+                                                .sttDrug.value ==
+                                            "evening"
                                         ? Colors.white
                                         : Colors.black,
                                     fontSize: 18,
@@ -152,264 +155,646 @@ class _ViewDrugScreenState extends State<ViewDrugScreen> {
                         ),
                       ),
                     ),
-
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Sáng",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 22),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Table(
-                              border: TableBorder.all(),
-                              defaultVerticalAlignment:
-                                  TableCellVerticalAlignment.middle,
-                              columnWidths: {
-                                0: FlexColumnWidth(1),
-                                1: FlexColumnWidth(1.5),
-                                2: FlexColumnWidth(.5)
-                              },
-                              children: [
-                                TableRow(children: [
-                                  Text(
-                                    "Tên thuốc",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
+                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                      child: ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: patientHistoryController
+                            .listHealthCheck[
+                                patientHistoryController.index.value]
+                            .prescriptions
+                            .length,
+                        itemBuilder: (BuildContext context, index) {
+                          return patientHistoryController.sttDrug.value ==
+                                      "morning" &&
+                                  patientHistoryController
+                                          .listHealthCheck[
+                                              patientHistoryController
+                                                  .index.value]
+                                          .prescriptions[index]
+                                          .morningQuantity >
+                                      0
+                              ? Padding(
+                                  padding: const EdgeInsets.only(bottom: 30),
+                                  child: Container(
+                                    padding:
+                                        EdgeInsets.fromLTRB(30, 20, 30, 20),
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: kWhiteColor,
+                                      boxShadow: [
+                                        BoxShadow(
+                                            blurRadius: 7,
+                                            spreadRadius: 5,
+                                            color: Colors.grey.withOpacity(0.5),
+                                            offset: Offset(7, 8)),
+                                      ],
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        RichText(
+                                          text: TextSpan(
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                  text: 'Tên thuốc: ',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.black)),
+                                              TextSpan(
+                                                  text: patientHistoryController
+                                                      .listHealthCheck[
+                                                          patientHistoryController
+                                                              .index.value]
+                                                      .prescriptions[index]
+                                                      .drug
+                                                      .name,
+                                                  style: TextStyle(
+                                                      color: Colors.black)),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        RichText(
+                                          text: TextSpan(
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                  text: 'Loại thuốc: ',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.black)),
+                                              TextSpan(
+                                                  text: patientHistoryController
+                                                      .listHealthCheck[
+                                                          patientHistoryController
+                                                              .index.value]
+                                                      .prescriptions[index]
+                                                      .drug
+                                                      .drugType
+                                                      .name,
+                                                  style: TextStyle(
+                                                      color: Colors.black)),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        RichText(
+                                          text: TextSpan(
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                  text: 'Dạng thuốc: ',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.black)),
+                                              TextSpan(
+                                                  text: patientHistoryController
+                                                      .listHealthCheck[
+                                                          patientHistoryController
+                                                              .index.value]
+                                                      .prescriptions[index]
+                                                      .drug
+                                                      .drugForm,
+                                                  style: TextStyle(
+                                                      color: Colors.black)),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        RichText(
+                                          text: TextSpan(
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                  text: 'Số lượng: ',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.black)),
+                                              TextSpan(
+                                                  text: patientHistoryController
+                                                          .listHealthCheck[
+                                                              patientHistoryController
+                                                                  .index.value]
+                                                          .prescriptions[index]
+                                                          .morningQuantity
+                                                          .toString() +
+                                                      " " +
+                                                      patientHistoryController
+                                                          .listHealthCheck[
+                                                              patientHistoryController
+                                                                  .index.value]
+                                                          .prescriptions[index]
+                                                          .drug
+                                                          .drugForm +
+                                                      "/buổi",
+                                                  style: TextStyle(
+                                                      color: Colors.black)),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        RichText(
+                                          text: TextSpan(
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                  text: 'Ngày: ',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.black)),
+                                              TextSpan(
+                                                  text: DateFormat("dd/MM/yyyy")
+                                                          .format(DateTime.parse(
+                                                              patientHistoryController
+                                                                  .listHealthCheck[
+                                                                      patientHistoryController
+                                                                          .index
+                                                                          .value]
+                                                                  .prescriptions[
+                                                                      index]
+                                                                  .startDate)) +
+                                                      " - " +
+                                                      DateFormat("dd/MM/yyyy")
+                                                          .format(DateTime.parse(
+                                                              patientHistoryController
+                                                                  .listHealthCheck[patientHistoryController.index.value]
+                                                                  .prescriptions[index]
+                                                                  .endDate)),
+                                                  style: TextStyle(color: Colors.black)),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  Text(
-                                    "Ngày",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Số lượng",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ]),
-                              ]),
-                          Table(
-                            border: TableBorder.all(),
-                            defaultVerticalAlignment:
-                                TableCellVerticalAlignment.middle,
-                            columnWidths: {
-                              0: FlexColumnWidth(1),
-                              1: FlexColumnWidth(1.5),
-                              2: FlexColumnWidth(.5)
-                            },
-                            children: patientHistoryController.listPrescriptions
-                                .map((pres) {
-                              return TableRow(children: [
-                                Text(
-                                  pres.drug.name,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Text(
-                                  DateFormat('dd/MM/yyyy').format(
-                                          DateTime.parse(pres.startDate)) +
-                                      "-" +
-                                      DateFormat('dd/MM/yyyy')
-                                          .format(DateTime.parse(pres.endDate)),
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Text(
-                                  pres.morningQuantity.toString(),
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ]);
-                            }).toList(),
+                                )
+                              : patientHistoryController.sttDrug.value ==
+                                          "afternoon" &&
+                                      patientHistoryController
+                                              .listHealthCheck[
+                                                  patientHistoryController
+                                                      .index.value]
+                                              .prescriptions[index]
+                                              .afternoonQuantity >
+                                          0
+                                  ? Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 30),
+                                      child: Container(
+                                        padding:
+                                            EdgeInsets.fromLTRB(30, 20, 30, 20),
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          color: kWhiteColor,
+                                          boxShadow: [
+                                            BoxShadow(
+                                                blurRadius: 7,
+                                                spreadRadius: 5,
+                                                color: Colors.grey
+                                                    .withOpacity(0.5),
+                                                offset: Offset(7, 8)),
+                                          ],
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            RichText(
+                                              text: TextSpan(
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                ),
+                                                children: [
+                                                  TextSpan(
+                                                      text: 'Tên thuốc: ',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.black)),
+                                                  TextSpan(
+                                                      text: patientHistoryController
+                                                          .listHealthCheck[
+                                                              patientHistoryController
+                                                                  .index.value]
+                                                          .prescriptions[index]
+                                                          .drug
+                                                          .name,
+                                                      style: TextStyle(
+                                                          color: Colors.black)),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            RichText(
+                                              text: TextSpan(
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                ),
+                                                children: [
+                                                  TextSpan(
+                                                      text: 'Loại thuốc: ',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.black)),
+                                                  TextSpan(
+                                                      text: patientHistoryController
+                                                          .listHealthCheck[
+                                                              patientHistoryController
+                                                                  .index.value]
+                                                          .prescriptions[index]
+                                                          .drug
+                                                          .drugType
+                                                          .name,
+                                                      style: TextStyle(
+                                                          color: Colors.black)),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            RichText(
+                                              text: TextSpan(
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                ),
+                                                children: [
+                                                  TextSpan(
+                                                      text: 'Dạng thuốc: ',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.black)),
+                                                  TextSpan(
+                                                      text: patientHistoryController
+                                                          .listHealthCheck[
+                                                              patientHistoryController
+                                                                  .index.value]
+                                                          .prescriptions[index]
+                                                          .drug
+                                                          .drugForm,
+                                                      style: TextStyle(
+                                                          color: Colors.black)),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            RichText(
+                                              text: TextSpan(
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                ),
+                                                children: [
+                                                  TextSpan(
+                                                      text: 'Số lượng: ',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.black)),
+                                                  TextSpan(
+                                                      text: patientHistoryController
+                                                              .listHealthCheck[
+                                                                  patientHistoryController
+                                                                      .index
+                                                                      .value]
+                                                              .prescriptions[
+                                                                  index]
+                                                              .afternoonQuantity
+                                                              .toString() +
+                                                          " " +
+                                                          patientHistoryController
+                                                              .listHealthCheck[
+                                                                  patientHistoryController
+                                                                      .index
+                                                                      .value]
+                                                              .prescriptions[
+                                                                  index]
+                                                              .drug
+                                                              .drugForm +
+                                                          "/buổi",
+                                                      style: TextStyle(
+                                                          color: Colors.black)),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            RichText(
+                                              text: TextSpan(
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                ),
+                                                children: [
+                                                  TextSpan(
+                                                      text: 'Ngày: ',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.black)),
+                                                  TextSpan(
+                                                      text: DateFormat("dd/MM/yyyy").format(DateTime.parse(
+                                                              patientHistoryController
+                                                                  .listHealthCheck[
+                                                                      patientHistoryController
+                                                                          .index
+                                                                          .value]
+                                                                  .prescriptions[
+                                                                      index]
+                                                                  .startDate)) +
+                                                          " - " +
+                                                          DateFormat("dd/MM/yyyy").format(DateTime.parse(
+                                                              patientHistoryController
+                                                                  .listHealthCheck[
+                                                                      patientHistoryController.index.value]
+                                                                  .prescriptions[index]
+                                                                  .endDate)),
+                                                      style: TextStyle(color: Colors.black)),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  : patientHistoryController.sttDrug.value ==
+                                              "evening" &&
+                                          patientHistoryController
+                                                  .listHealthCheck[
+                                                      patientHistoryController
+                                                          .index.value]
+                                                  .prescriptions[index]
+                                                  .eveningQuantity >
+                                              0
+                                      ? Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 30),
+                                          child: Container(
+                                            padding: EdgeInsets.fromLTRB(
+                                                30, 20, 30, 20),
+                                            width: double.infinity,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              color: kWhiteColor,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    blurRadius: 7,
+                                                    spreadRadius: 5,
+                                                    color: Colors.grey
+                                                        .withOpacity(0.5),
+                                                    offset: Offset(7, 8)),
+                                              ],
+                                            ),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                RichText(
+                                                  text: TextSpan(
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                    ),
+                                                    children: [
+                                                      TextSpan(
+                                                          text: 'Tên thuốc: ',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: Colors
+                                                                  .black)),
+                                                      TextSpan(
+                                                          text: patientHistoryController
+                                                              .listHealthCheck[
+                                                                  patientHistoryController
+                                                                      .index
+                                                                      .value]
+                                                              .prescriptions[
+                                                                  index]
+                                                              .drug
+                                                              .name,
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .black)),
+                                                    ],
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                RichText(
+                                                  text: TextSpan(
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                    ),
+                                                    children: [
+                                                      TextSpan(
+                                                          text: 'Loại thuốc: ',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: Colors
+                                                                  .black)),
+                                                      TextSpan(
+                                                          text: patientHistoryController
+                                                              .listHealthCheck[
+                                                                  patientHistoryController
+                                                                      .index
+                                                                      .value]
+                                                              .prescriptions[
+                                                                  index]
+                                                              .drug
+                                                              .drugType
+                                                              .name,
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .black)),
+                                                    ],
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                RichText(
+                                                  text: TextSpan(
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                    ),
+                                                    children: [
+                                                      TextSpan(
+                                                          text: 'Dạng thuốc: ',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: Colors
+                                                                  .black)),
+                                                      TextSpan(
+                                                          text: patientHistoryController
+                                                              .listHealthCheck[
+                                                                  patientHistoryController
+                                                                      .index
+                                                                      .value]
+                                                              .prescriptions[
+                                                                  index]
+                                                              .drug
+                                                              .drugForm,
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .black)),
+                                                    ],
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                RichText(
+                                                  text: TextSpan(
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                    ),
+                                                    children: [
+                                                      TextSpan(
+                                                          text: 'Số lượng: ',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: Colors
+                                                                  .black)),
+                                                      TextSpan(
+                                                          text: patientHistoryController
+                                                                  .listHealthCheck[
+                                                                      patientHistoryController
+                                                                          .index
+                                                                          .value]
+                                                                  .prescriptions[
+                                                                      index]
+                                                                  .eveningQuantity
+                                                                  .toString() +
+                                                              " " +
+                                                              patientHistoryController
+                                                                  .listHealthCheck[
+                                                                      patientHistoryController
+                                                                          .index
+                                                                          .value]
+                                                                  .prescriptions[
+                                                                      index]
+                                                                  .drug
+                                                                  .drugForm +
+                                                              "/buổi",
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .black)),
+                                                    ],
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                RichText(
+                                                  text: TextSpan(
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                    ),
+                                                    children: [
+                                                      TextSpan(
+                                                          text: 'Ngày: ',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: Colors
+                                                                  .black)),
+                                                      TextSpan(
+                                                          text: DateFormat("dd/MM/yyyy").format(DateTime.parse(patientHistoryController
+                                                                  .listHealthCheck[
+                                                                      patientHistoryController
+                                                                          .index
+                                                                          .value]
+                                                                  .prescriptions[
+                                                                      index]
+                                                                  .startDate)) +
+                                                              " - " +
+                                                              DateFormat("dd/MM/yyyy").format(DateTime.parse(patientHistoryController
+                                                                  .listHealthCheck[
+                                                                      patientHistoryController
+                                                                          .index
+                                                                          .value]
+                                                                  .prescriptions[index]
+                                                                  .endDate)),
+                                                          style: TextStyle(color: Colors.black)),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                      : Container();
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(30),
+                      child: RichText(
+                        text: TextSpan(
+                          style: TextStyle(
+                            fontSize: 22,
                           ),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          Text(
-                            "Trưa",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 22),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Table(
-                              border: TableBorder.all(),
-                              defaultVerticalAlignment:
-                                  TableCellVerticalAlignment.middle,
-                              columnWidths: {
-                                0: FlexColumnWidth(1),
-                                1: FlexColumnWidth(1.5),
-                                2: FlexColumnWidth(.5)
-                              },
-                              children: [
-                                TableRow(children: [
-                                  Text(
-                                    "Tên thuốc",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Ngày",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Số lượng",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ]),
-                              ]),
-                          Table(
-                            border: TableBorder.all(),
-                            defaultVerticalAlignment:
-                                TableCellVerticalAlignment.middle,
-                            columnWidths: {
-                              0: FlexColumnWidth(1),
-                              1: FlexColumnWidth(1.5),
-                              2: FlexColumnWidth(.5)
-                            },
-                            children: patientHistoryController.listPrescriptions
-                                .map((pres) {
-                              return TableRow(children: [
-                                Text(
-                                  pres.drug.name,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Text(
-                                  DateFormat('dd/MM/yyyy').format(
-                                          DateTime.parse(pres.startDate)) +
-                                      "-" +
-                                      DateFormat('dd/MM/yyyy')
-                                          .format(DateTime.parse(pres.endDate)),
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Text(
-                                  pres.afternoonQuantity.toString(),
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ]);
-                            }).toList(),
-                          ),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          Text(
-                            "Chiều",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 22),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Table(
-                              border: TableBorder.all(),
-                              defaultVerticalAlignment:
-                                  TableCellVerticalAlignment.middle,
-                              columnWidths: {
-                                0: FlexColumnWidth(1),
-                                1: FlexColumnWidth(1.5),
-                                2: FlexColumnWidth(.5)
-                              },
-                              children: [
-                                TableRow(children: [
-                                  Text(
-                                    "Tên thuốc",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Ngày",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Số lượng",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ]),
-                              ]),
-                          Table(
-                            border: TableBorder.all(),
-                            defaultVerticalAlignment:
-                                TableCellVerticalAlignment.middle,
-                            columnWidths: {
-                              0: FlexColumnWidth(1),
-                              1: FlexColumnWidth(1.5),
-                              2: FlexColumnWidth(.5)
-                            },
-                            children: patientHistoryController.listPrescriptions
-                                .map((pres) {
-                              return TableRow(children: [
-                                Text(
-                                  pres.drug.name,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Text(
-                                  DateFormat('dd/MM/yyyy').format(
-                                          DateTime.parse(pres.startDate)) +
-                                      "-" +
-                                      DateFormat('dd/MM/yyyy')
-                                          .format(DateTime.parse(pres.endDate)),
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Text(
-                                  pres.eveningQuantity.toString(),
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ]);
-                            }).toList(),
-                          ),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          Text(
-                            "Hướng dẫn:",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 22),
-                          ),
-                        ],
+                          children: [
+                            TextSpan(
+                                text: 'Hướng dẫn: ',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black)),
+                            TextSpan(
+                                text: patientHistoryController
+                                    .listHealthCheck[
+                                        patientHistoryController.index.value]
+                                    .prescriptions[0]
+                                    .description,
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 18)),
+                          ],
+                        ),
                       ),
                     ),
                   ],

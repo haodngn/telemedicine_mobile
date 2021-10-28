@@ -34,7 +34,7 @@ class FetchAPI {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     final storage = new Storage.FlutterSecureStorage();
     data['tokenId'] =
-        "eyJhbGciOiJSUzI1NiIsImtpZCI6IjE1MjU1NWEyMjM3MWYxMGY0ZTIyZjFhY2U3NjJmYzUwZmYzYmVlMGMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiVsSDbiBUw6JtIE5ndXnhu4VuIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FBVFhBSnlxZ3pjYVRhNjlJdWtxZVdkUFh4TC13dExzYnk2UmQ1TTBTOGc0PXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL3RlbGVtZWRpY2luZS1mYzBlZSIsImF1ZCI6InRlbGVtZWRpY2luZS1mYzBlZSIsImF1dGhfdGltZSI6MTYzNTM1MjUyNywidXNlcl9pZCI6IlYwY05VbER2OVZoY2tXTGw5RGxnV29HeTFyRjIiLCJzdWIiOiJWMGNOVWxEdjlWaGNrV0xsOURsZ1dvR3kxckYyIiwiaWF0IjoxNjM1MzUyNTI3LCJleHAiOjE2MzUzNTYxMjcsImVtYWlsIjoidmFudGFtMTQxN0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNjc5ODQ1NDM5NDI4ODgyNzAyOSJdLCJlbWFpbCI6WyJ2YW50YW0xNDE3QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.ZSJMPo5glAwZPeNq_8JvrjzIcuc_xPUePFnSTZG4xcF00-sWEDLFfwNC_e0mkUMazDQNoJA_6nVrAI_tViZSUT4BqhXXFeK_cxsmRBnu_hlaa_Xrm4HzPHy_ndnzZU5RsOGrKiYlcrxvRE-KX9xhItU-2YZ5jWIwy76m_guMUhNXMHcT9gVZcPhEf8c1S4dACj3-lFTM8ymNUZlR1EjisAB_fpaZVlrLIvnlTYkAWQTag6KEJgIuR-eU8ry6E50pFVGjiWsTcxpN87l12fRDsuJPBm7dDf9Uh55XK4NFzrfPqucK21saAupYRv0ibEdsFY9AK60ztDTXMzqLG-HFVQ";
+        "eyJhbGciOiJSUzI1NiIsImtpZCI6IjE1MjU1NWEyMjM3MWYxMGY0ZTIyZjFhY2U3NjJmYzUwZmYzYmVlMGMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiVsSDbiBUw6JtIE5ndXnhu4VuIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FBVFhBSnlxZ3pjYVRhNjlJdWtxZVdkUFh4TC13dExzYnk2UmQ1TTBTOGc0PXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL3RlbGVtZWRpY2luZS1mYzBlZSIsImF1ZCI6InRlbGVtZWRpY2luZS1mYzBlZSIsImF1dGhfdGltZSI6MTYzNTM4MTMzNiwidXNlcl9pZCI6IlYwY05VbER2OVZoY2tXTGw5RGxnV29HeTFyRjIiLCJzdWIiOiJWMGNOVWxEdjlWaGNrV0xsOURsZ1dvR3kxckYyIiwiaWF0IjoxNjM1MzgxMzM2LCJleHAiOjE2MzUzODQ5MzYsImVtYWlsIjoidmFudGFtMTQxN0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNjc5ODQ1NDM5NDI4ODgyNzAyOSJdLCJlbWFpbCI6WyJ2YW50YW0xNDE3QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.YM7J522IMvn9qQcwmNtUOVBJSg11VhLxBXPgqqdtTqMoB1aY3q2ZfPtwKJ1Qq5SrtYb56QHjh46-B3SG8QfMiJX8UqM1_nmGP5zQmCNYyLE4MSXUo3mK1GI2qGWBnRnG1unMYMGXbDWsRoy8rxeThXEkJJ0gLyPMlifpSwKIjlDW9rsKrr1Le0-AvF-n8_L6XwvmU5lm0E8k2AyrtHNYMk-QD-aB8uIMnJfHMB3Ft4ss3qopNijqm7aCebuHEeN81XjLt1oJUuNqeN15OXgAle1Fcc1zFDthiM1xWkSyEQ6Npg3fVJCFtJ0Mi8oKupzRoG1YPyWzhhR9EW9HprivdA";
     data['loginType'] = 3;
     final accountController = GetX.Get.put(AccountController());
     try {
@@ -663,6 +663,34 @@ class FetchAPI {
           });
       if (response.statusCode == 200) {
         return "Cancel health check successfull";
+      } else if (response.statusCode == 404) {
+        return "Not found";
+      } else {
+        return "Failed to save request";
+      }
+    }
+  }
+
+  static Future<String> ratingHealthCheck(HealthCheck healthCheck) async {
+    final storage = new Storage.FlutterSecureStorage();
+    String token = await storage.read(key: "accessToken") ?? "";
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500));
+      throw Exception("Error: UnAuthentication");
+    } else {
+      final response = await http.put(
+          Uri.parse("https://binhtt.tech/api/v1/health-checks?mode=USERS"),
+          body: jsonEncode(healthCheck.toJson()),
+          headers: <String, String>{
+            HttpHeaders.contentTypeHeader: 'application/json',
+            HttpHeaders.authorizationHeader: 'Bearer $token',
+          });
+      if (response.statusCode == 200) {
+        return "Update patient successfull";
+      } else if (response.statusCode == 400) {
+        return "Field is not matched";
       } else if (response.statusCode == 404) {
         return "Not found";
       } else {

@@ -1,3 +1,6 @@
+import 'package:telemedicine_mobile/models/Drug.dart';
+import 'package:telemedicine_mobile/models/DrugType.dart';
+
 class Prescription {
   late int id;
   late int healthCheckId;
@@ -9,7 +12,7 @@ class Prescription {
   late int eveningQuantity;
   late String description;
   late bool isActive;
-  late String drug;
+  late Drug drug;
 
   Prescription(
       {required this.id,
@@ -35,7 +38,20 @@ class Prescription {
     eveningQuantity = json['eveningQuantity'];
     description = json['description'];
     isActive = json['isActive'];
-    drug = json['drug'];
+    if (json['drug'] != null) {
+      drug = new Drug.fromJson(json['drug']);
+    } else {
+      drug = new Drug(
+          id: 0,
+          name: "",
+          producer: "",
+          drugOrigin: "",
+          drugForm: "",
+          isActive: true,
+          drugType:
+              new DrugType(id: 0, name: "", description: "", isActive: true),
+          drugTypeId: 0);
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -50,7 +66,9 @@ class Prescription {
     data['eveningQuantity'] = this.eveningQuantity;
     data['description'] = this.description;
     data['isActive'] = this.isActive;
-    data['drug'] = this.drug;
+    if (this.drug != null) {
+      data['drug'] = this.drug.toJson();
+    }
     return data;
   }
 }

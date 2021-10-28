@@ -28,11 +28,6 @@ class PatientHistoryController extends GetxController {
     });
   }
 
-  RxList<dynamic> listPrescriptions = [].obs;
-  getPrescription() {
-    listPrescriptions.value = listHealthCheck[index.value].prescriptions;
-  }
-
   RxBool emptyComment = false.obs;
   RxBool emptyReason = false.obs;
 
@@ -43,7 +38,27 @@ class PatientHistoryController extends GetxController {
         .then((value) => getMyHistory());
   }
 
-  ratingHealthCheck(int rating, String comment) {
-    
+  ratingHealthCheck(int rating, String comment, HealthCheck healthCheck) {
+    HealthCheck newHealthCheck = new HealthCheck(
+        id: healthCheck.id,
+        height: healthCheck.height,
+        weight: healthCheck.weight,
+        reasonCancel: healthCheck.reasonCancel,
+        rating: rating,
+        comment: comment,
+        advice: healthCheck.advice,
+        token: healthCheck.token,
+        patientId: healthCheck.patientId,
+        createdTime: healthCheck.createdTime,
+        canceledTime: healthCheck.canceledTime,
+        status: healthCheck.status,
+        patient: healthCheck.patient,
+        healthCheckDiseases: healthCheck.healthCheckDiseases,
+        prescriptions: healthCheck.prescriptions,
+        slots: healthCheck.slots,
+        symptomHealthChecks: healthCheck.symptomHealthChecks);
+    FetchAPI.ratingHealthCheck(newHealthCheck).then((value) => getMyHistory());
   }
+
+  RxString sttDrug = "morning".obs;
 }
