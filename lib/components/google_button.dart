@@ -43,7 +43,10 @@ class GoogleButton extends StatelessWidget {
           } else if (checkLogin == "Create Account") {
             Navigator.push(
                 context, MaterialPageRoute(builder: checkNewAccount));
-          } else {}
+          } else {
+            Fluttertoast.showToast(
+                msg: "Đăng nhập thất bại", fontSize: 18);
+          }
         },
       ),
     );
