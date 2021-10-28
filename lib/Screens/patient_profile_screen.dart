@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:telemedicine_mobile/Screens/call_screen/videocall_screen.dart';
 import 'package:telemedicine_mobile/Screens/edit_healthcheck_info_screen.dart';
 import 'package:telemedicine_mobile/Screens/edit_patient_profile_screen.dart';
 import 'package:telemedicine_mobile/Screens/login_screen.dart';
@@ -203,7 +204,7 @@ class _PatientProfileState extends State<PatientProfile> {
                                 Expanded(child: Container()),
                                 RawMaterialButton(
                                   onPressed: () => {
-                                    Get.to(() => EditHealthCheckInfoScreen(),
+                                    Get.to(() => CallScreen(),
                                         transition:
                                             Transition.rightToLeftWithFade,
                                         duration: Duration(milliseconds: 600))
