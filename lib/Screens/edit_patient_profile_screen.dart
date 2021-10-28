@@ -2,8 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
 import 'package:telemedicine_mobile/Screens/patient_profile_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
+import 'package:telemedicine_mobile/controller/bottom_navbar_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 
 class EditPatientProfile extends StatefulWidget {
@@ -15,6 +17,7 @@ class EditPatientProfile extends StatefulWidget {
 
 class _EditPatientProfileState extends State<EditPatientProfile> {
   final patientProfileController = Get.put(PatientProfileController());
+  final bottomNavbarController = Get.put(BottomNavbarController());
 
   TextEditingController textFirstNameController = TextEditingController();
   TextEditingController textLastNameController = TextEditingController();
@@ -610,7 +613,8 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                             textStreetController.text),
                         if (patientProfileController.done.value)
                           {
-                            Get.to(() => PatientProfile(),
+                            bottomNavbarController.currentIndex.value = 3,
+                            Get.to(() => BottomNavScreen(),
                                 transition: Transition.rightToLeftWithFade,
                                 duration: Duration(milliseconds: 600))
                           }

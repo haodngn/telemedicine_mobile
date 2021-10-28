@@ -204,7 +204,7 @@ class _PatientProfileState extends State<PatientProfile> {
                                 Expanded(child: Container()),
                                 RawMaterialButton(
                                   onPressed: () => {
-                                    Get.to(() => CallScreen(),
+                                    Get.to(() => EditHealthCheckInfoScreen(),
                                         transition:
                                             Transition.rightToLeftWithFade,
                                         duration: Duration(milliseconds: 600))

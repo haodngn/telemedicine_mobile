@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,8 +16,8 @@ import '../../constant.dart';
 //appID in Agora
 const appID = "834dec7fc5144086a2fe803cb3e51fff";
 //token to get in room of Agora
-const token =
-    "006834dec7fc5144086a2fe803cb3e51fffIABR16jJtM+hfS4WT9ZxVJqnzvzsApLRgvAZicdfUEJn4p/w5cEh39v0KADCh505agF6YQUAAQAAAAAAAgAAAAAAAwAAAAAABAAAAAAA6AMAAAAA";
+// const token =
+//     "006834dec7fc5144086a2fe803cb3e51fffIABR16jJtM+hfS4WT9ZxVJqnzvzsApLRgvAZicdfUEJn4p/w5cEh39v0KADCh505agF6YQUAAQAAAAAAAgAAAAAAAwAAAAAABAAAAAAA6AMAAAAA";
 
 class CallScreen extends StatefulWidget {
   @override
@@ -33,7 +34,9 @@ class _CallScreenState extends State<CallScreen> {
   void initState() {
     super.initState();
     initAgora();
+    print("object: " + listDoctorController.healthCheckToken.value.token);
   }
+
   @override
   void dispose() {
     // clear users
@@ -52,40 +55,47 @@ class _CallScreenState extends State<CallScreen> {
     addAgoraEventHandlers();
     await _engine.enableWebSdkInteroperability(true);
 
-    await _engine.joinChannel(listDoctorController.healthCheckToken.value.token,
+    await _engine.joinChannel(
+        listDoctorController.healthCheckToken.value.token,
         "SLOT_" +
             listDoctorController.healthCheckToken.value.slots[0].id.toString(),
         null,
         0);
+
+    _engine.enableLocalVideo(!disableCamera);
   }
 
   Future<void> initializeAgoraEngine() async {
-    _engine = await RtcEngine.create(appID);
+    _engine = await RtcEngine.createWithConfig(RtcEngineConfig(appID));
     await _engine.enableVideo();
     await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
   }
 
   void addAgoraEventHandlers() {
-    _engine.setEventHandler(RtcEngineEventHandler(error: (code) {
-
-    }, joinChannelSuccess: (channel, uid, elapsed) {
-
-    }, leaveChannel: (stats) {
-      setState(() {
-        _users.clear();
-      });
-    }, userJoined: (uid, elapsed) {
-      print(uid);
-      setState(() {
-        if(!_users.contains(uid)) {
-          _users.add(uid);
-        }
-      });
-    }, userOffline: (uid, elapsed) {
-      setState(() {
-        _users.remove(uid);
-      });
-    },),);
+    _engine.setEventHandler(
+      RtcEngineEventHandler(
+        error: (code) {},
+        joinChannelSuccess: (channel, uid, elapsed) {},
+        leaveChannel: (stats) {
+          setState(() {
+            _users.clear();
+          });
+        },
+        userJoined: (uid, elapsed) {
+          print(uid);
+          setState(() {
+            if (!_users.contains(uid)) {
+              _users.add(uid);
+            }
+          });
+        },
+        userOffline: (uid, elapsed) {
+          setState(() {
+            _users.remove(uid);
+          });
+        },
+      ),
+    );
   }
 
   List<Widget> _getRenderViews() {
@@ -136,40 +146,43 @@ class _CallScreenState extends State<CallScreen> {
     print(views);
     switch (views.length) {
       case 1:
-        return
-          Container(
-            child:
-              Stack(
-                children: [
-                  Column(
-                    children: <Widget>[_expandedVideoRow([views[0]])],
-                  ),
-                  Positioned.fill(
-                    top: 10,
-                    child: Align(
-                      alignment: !disableCamera ? Alignment.center : Alignment.topCenter,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        child: Text(
-                          'Đang kết nối với bác sĩ tư vấn của bạn...',
-                          softWrap: true,
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white70,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                  )
+        return Container(
+          child: Stack(
+            children: [
+              Column(
+                children: <Widget>[
+                  _expandedVideoRow([views[0]])
                 ],
               ),
+              Positioned.fill(
+                top: 10,
+                child: Align(
+                  alignment:
+                      !disableCamera ? Alignment.center : Alignment.topCenter,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: Text(
+                      'Đang kết nối với bác sĩ tư vấn của bạn...',
+                      softWrap: true,
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white70,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
         );
       case 2:
         return Container(
           child: Column(
-            children: <Widget>[_expandedVideoRow([views[0]]),
-              _expandedVideoRow([views[1]])],
+            children: <Widget>[
+              _expandedVideoRow([views[0]]),
+              _expandedVideoRow([views[1]])
+            ],
           ),
         );
       case 3:
@@ -191,22 +204,22 @@ class _CallScreenState extends State<CallScreen> {
       case 5:
         return Container(
             child: Column(
-              children: <Widget>[
-                _expandedVideoRow(views.sublist(0, 2)),
-                _expandedVideoRow(views.sublist(2, 4)),
-                _expandedVideoRow(views.sublist(4, 5)),
-              ],
-            ));
+          children: <Widget>[
+            _expandedVideoRow(views.sublist(0, 2)),
+            _expandedVideoRow(views.sublist(2, 4)),
+            _expandedVideoRow(views.sublist(4, 5)),
+          ],
+        ));
       case 6:
         return Container(
             child: Column(
-              children: <Widget>[
-                _expandedVideoRow(views.sublist(0, 2)),
-                _expandedVideoRow(views.sublist(2, 4)),
-                _expandedVideoRow(views.sublist(4, 5)),
-                _expandedVideoRow(views.sublist(4, 6)),
-              ],
-            ));
+          children: <Widget>[
+            _expandedVideoRow(views.sublist(0, 2)),
+            _expandedVideoRow(views.sublist(2, 4)),
+            _expandedVideoRow(views.sublist(4, 5)),
+            _expandedVideoRow(views.sublist(4, 6)),
+          ],
+        ));
       default:
     }
     return Container();
@@ -234,7 +247,9 @@ class _CallScreenState extends State<CallScreen> {
           RawMaterialButton(
             onPressed: _onToggleCamera,
             child: Icon(
-              !disableCamera ? Icons.videocam_outlined : Icons.videocam_off_outlined,
+              !disableCamera
+                  ? Icons.videocam_outlined
+                  : Icons.videocam_off_outlined,
               color: disableCamera ? Colors.white : Colors.blueAccent,
               size: 20.0,
             ),

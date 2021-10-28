@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
 import 'package:telemedicine_mobile/Screens/patient_profile_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
+import 'package:telemedicine_mobile/controller/bottom_navbar_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 
 class EditHealthCheckInfoScreen extends StatefulWidget {
@@ -14,6 +16,7 @@ class EditHealthCheckInfoScreen extends StatefulWidget {
 
 class _EditHealthCheckInfoScreenState extends State<EditHealthCheckInfoScreen> {
   final patientProfileController = Get.put(PatientProfileController());
+  final bottomNavbarController = Get.put(BottomNavbarController());
 
   TextEditingController textHeightController = TextEditingController();
   TextEditingController textWeightController = TextEditingController();
@@ -173,7 +176,8 @@ class _EditHealthCheckInfoScreenState extends State<EditHealthCheckInfoScreen> {
                               textBackgroundDiseaseController.text,
                               textAllergyController.text,
                               textBloodTypeController.text),
-                          Get.to(() => PatientProfile(),
+                          bottomNavbarController.currentIndex.value = 3,
+                          Get.to(() => BottomNavScreen(),
                               transition: Transition.rightToLeftWithFade,
                               duration: Duration(milliseconds: 600))
                         },

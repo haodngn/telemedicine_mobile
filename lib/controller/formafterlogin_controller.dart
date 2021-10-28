@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_address_api.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
@@ -87,6 +88,7 @@ class FormAfterLoginController extends GetxController {
   RxBool emptyDistrict = false.obs;
   RxBool emptyWard = false.obs;
   RxBool emptyStreet = false.obs;
+  RxBool emptyImage = false.obs;
 
   RxBool done = false.obs;
 
@@ -111,6 +113,11 @@ class FormAfterLoginController extends GetxController {
       String allergy,
       String bloodGroup,
       String backgroundDisease) {
+    if (image.value.path.isEmpty) {
+      emptyImage.value = true;
+    } else {
+      emptyImage.value = false;
+    }
     if (fName.isEmpty) {
       emptyFName.value = true;
     } else {
@@ -193,11 +200,12 @@ class FormAfterLoginController extends GetxController {
           healthChecks: []);
       FetchAPI.createNewAccount(newAccount, image.value.path).then((value) {
         if (value == 201) {
-          FetchAPI.createNewPatient(newPatient);
+          FetchAPI.createNewPatient(newPatient).then((value) {
+            done.value = true;
+            Get.to(BottomNavScreen());
+          });
         }
       });
-
-      done.value = true;
     }
   }
 }
