@@ -184,12 +184,14 @@ class HomeScreen extends StatelessWidget {
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                   ),
-                                  child: Image.network(patientProfileController
-                                      .nearestHealthCheck
-                                      .value
-                                      .slots[0]
-                                      .doctor
-                                      .avatar),
+                                  child: Image.network(
+                                    patientProfileController.nearestHealthCheck
+                                        .value.slots[0].doctor.avatar,
+                                    errorBuilder: (context, error,
+                                            stackTrace) =>
+                                        Image.asset(
+                                            "assets/images/default_avatar.png"),
+                                  ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 80),
@@ -425,8 +427,14 @@ class HomeScreen extends StatelessWidget {
                                 Container(
                                   width: 80,
                                   height: 90,
-                                  child: Image.network(patientHistoryController
-                                      .listTopDoctor[0].avatar),
+                                  child: Image.network(
+                                    patientHistoryController
+                                        .listTopDoctor[0].avatar,
+                                    errorBuilder: (context, error,
+                                            stackTrace) =>
+                                        Image.asset(
+                                            "assets/images/default_avatar.png"),
+                                  ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 90),
@@ -569,8 +577,14 @@ class HomeScreen extends StatelessWidget {
                                 Container(
                                   width: 80,
                                   height: 90,
-                                  child: Image.network(patientHistoryController
-                                      .listTopDoctor[1].avatar),
+                                  child: Image.network(
+                                    patientHistoryController
+                                        .listTopDoctor[1].avatar,
+                                    errorBuilder: (context, error,
+                                            stackTrace) =>
+                                        Image.asset(
+                                            "assets/images/default_avatar.png"),
+                                  ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 90),
@@ -713,8 +727,14 @@ class HomeScreen extends StatelessWidget {
                                 Container(
                                   width: 80,
                                   height: 90,
-                                  child: Image.network(patientHistoryController
-                                      .listTopDoctor[2].avatar),
+                                  child: Image.network(
+                                    patientHistoryController
+                                        .listTopDoctor[2].avatar,
+                                    errorBuilder: (context, error,
+                                            stackTrace) =>
+                                        Image.asset(
+                                            "assets/images/default_avatar.png"),
+                                  ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 90),

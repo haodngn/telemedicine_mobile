@@ -25,6 +25,7 @@ class PatientHistoryController extends GetxController {
   getTopDoctor() {
     FetchAPI.fetchContentTopDoctor().then((dataFromServer) {
       listTopDoctor.value = dataFromServer;
+      print("SSSSSSS: " + listTopDoctor.length.toString());
     });
   }
 
