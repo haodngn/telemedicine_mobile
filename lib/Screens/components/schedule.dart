@@ -126,7 +126,7 @@ class ScheduleCard extends StatelessWidget {
                     color: kTitleTextColor,
                   ),
                 ),
-                subtitle: RichText(
+                subtitle: bookAllow ? Text(_description) : RichText(
                   text: TextSpan(
                     children: [
                       TextSpan(
