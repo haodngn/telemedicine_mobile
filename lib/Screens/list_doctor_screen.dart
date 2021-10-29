@@ -45,7 +45,6 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      minimum: const EdgeInsets.only(top: 10.0, bottom: 10.0),
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -137,7 +136,15 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
                             ),
                             child: Center(
                               child: Text(
-                                e.name.toString().replaceAll("Bác sĩ ", "").substring(0, 1).toUpperCase() + e.name.toString().replaceAll("Bác sĩ ", "").substring(1),
+                                e.name
+                                        .toString()
+                                        .replaceAll("Bác sĩ ", "")
+                                        .substring(0, 1)
+                                        .toUpperCase() +
+                                    e.name
+                                        .toString()
+                                        .replaceAll("Bác sĩ ", "")
+                                        .substring(1),
                                 style: TextStyle(
                                   color: filterController.majorID == e.id
                                       ? Colors.white

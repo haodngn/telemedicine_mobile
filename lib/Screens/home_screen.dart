@@ -161,7 +161,7 @@ class HomeScreen extends StatelessWidget {
                             fontSize: 18, fontWeight: FontWeight.w300),
                       ))
                     : Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                         child: InkWell(
                           onTap: () => {
                             patientHistoryController.index.value = 0,
@@ -225,22 +225,21 @@ class HomeScreen extends StatelessWidget {
                                       const EdgeInsets.fromLTRB(250, 0, 0, 0),
                                   child: InkWell(
                                     onTap: () => {
-                                      // DateTime.now().compareTo(DateTime
-                                      //         .parse(DateFormat("yyyy-MM-dd")
-                                      //                 .format(DateTime.parse(
-                                      //                     patientProfileController
-                                      //                         .nearestHealthCheck
-                                      //                         .value
-                                      //                         .slots[0]
-                                      //                         .assignedDate)) +
-                                      //             " " +
-                                      //             patientProfileController
-                                      //                 .nearestHealthCheck
-                                      //                 .value
-                                      //                 .slots[0]
-                                      //                 .startTime)) ==
-                                      //     1
-                                      if (true)
+                                      if (DateTime.now().compareTo(DateTime
+                                              .parse(DateFormat("yyyy-MM-dd")
+                                                      .format(DateTime.parse(
+                                                          patientProfileController
+                                                              .nearestHealthCheck
+                                                              .value
+                                                              .slots[0]
+                                                              .assignedDate)) +
+                                                  " " +
+                                                  patientProfileController
+                                                      .nearestHealthCheck
+                                                      .value
+                                                      .slots[0]
+                                                      .startTime)) ==
+                                          1)
                                         {
                                           listDoctorController
                                               .getTokenHealthCheck(
