@@ -34,7 +34,7 @@ class FetchAPI {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     final storage = new Storage.FlutterSecureStorage();
     data['tokenId'] =
-        "eyJhbGciOiJSUzI1NiIsImtpZCI6IjE1MjU1NWEyMjM3MWYxMGY0ZTIyZjFhY2U3NjJmYzUwZmYzYmVlMGMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiVsSDbiBUw6JtIE5ndXnhu4VuIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FBVFhBSnlxZ3pjYVRhNjlJdWtxZVdkUFh4TC13dExzYnk2UmQ1TTBTOGc0PXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL3RlbGVtZWRpY2luZS1mYzBlZSIsImF1ZCI6InRlbGVtZWRpY2luZS1mYzBlZSIsImF1dGhfdGltZSI6MTYzNTQ2NDY2OSwidXNlcl9pZCI6IlYwY05VbER2OVZoY2tXTGw5RGxnV29HeTFyRjIiLCJzdWIiOiJWMGNOVWxEdjlWaGNrV0xsOURsZ1dvR3kxckYyIiwiaWF0IjoxNjM1NDY0NjY5LCJleHAiOjE2MzU0NjgyNjksImVtYWlsIjoidmFudGFtMTQxN0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNjc5ODQ1NDM5NDI4ODgyNzAyOSJdLCJlbWFpbCI6WyJ2YW50YW0xNDE3QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.SZStUIKpEOWmMs4w1vwI-Xfe_feBPQR6vKQIB7ZiL00bS-AwO_OaWO-iwQVi1hjOWR0MU5zkZftyikxE1_mZQhIFdEvLwcebYK7LXUCgtOt2N67fyb4NsIJQWKrKCA7d3o93T9_Ug5ZOaex5-tzYhX4E9zlH8B7CpSHRfj2FXaTpo_AKQpePvIRccu319pqoVLcCyQs56jmPjZOAGmu3pKJYwmj62qEAArCYghGpnimEI-L4A9njnPg1-DBKaEYNqIitssYNVvu8ohZbxG3lrB7rhNx1vsUNCj25WL1k2crfBFo4Z6Emt4EUJPF0dh_t-3-lt5ODiQvQmsKUdGd6_Q";
+        tokenId;
     data['loginType'] = 3;
     final accountController = GetX.Get.put(AccountController());
     try {
@@ -97,7 +97,7 @@ class FetchAPI {
       final response = await http.get(
         Uri.parse("https://binhtt.tech/api/v1/doctors?" +
             condition +
-            "limit=8&page-offset=$currentPage"),
+            "is-verify=1&limit=8&page-offset=$currentPage"),
         headers: <String, String>{
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.authorizationHeader: 'Bearer $token',
@@ -106,6 +106,8 @@ class FetchAPI {
       if (response.statusCode == 200) {
         var contentJSon = json.decode(utf8.decode(response.bodyBytes));
         ContentDoctor contentDoctor = ContentDoctor.fromJson(contentJSon);
+        
+
         return contentDoctor;
       } else if (response.statusCode == 404) {
         throw Exception("Not found doctor");
@@ -445,7 +447,6 @@ class FetchAPI {
   static Future<List<Slot>> fetchContentSlot(int doctorID) async {
     final storage = new Storage.FlutterSecureStorage();
     String assignedDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
-    String startTime = DateFormat("HH").format(DateTime.now());
 
     String token = await storage.read(key: "accessToken") ?? "";
     if (token.isEmpty) {
@@ -459,9 +460,7 @@ class FetchAPI {
               assignedDate +
               "&doctor-id=" +
               doctorID.toString() +
-              "&start-time=" +
-              startTime +
-              "%3A00%3A00&end-time=00%3A00%3A00&page-offset=1&limit=50"),
+              "&page-offset=1&limit=50"),
           headers: <String, String>{
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: 'Bearer $token',
