@@ -230,7 +230,7 @@ class _PatientDetailHistoryScreenState
                               color: kBlueColor,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            padding: EdgeInsets.fromLTRB(5, 0, 20, 0),
+                            padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
                             child: TextFormField(
                               readOnly: true,
                               onTap: () => {
