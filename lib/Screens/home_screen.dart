@@ -224,21 +224,22 @@ class HomeScreen extends StatelessWidget {
                                       const EdgeInsets.fromLTRB(250, 0, 0, 0),
                                   child: InkWell(
                                     onTap: () => {
-                                      if (DateTime.now().compareTo(DateTime
-                                              .parse(DateFormat("yyyy-MM-dd")
-                                                      .format(DateTime.parse(
-                                                          patientProfileController
-                                                              .nearestHealthCheck
-                                                              .value
-                                                              .slots[0]
-                                                              .assignedDate)) +
-                                                  " " +
-                                                  patientProfileController
-                                                      .nearestHealthCheck
-                                                      .value
-                                                      .slots[0]
-                                                      .startTime)) ==
-                                          1)
+                                      // DateTime.now().compareTo(DateTime
+                                      //         .parse(DateFormat("yyyy-MM-dd")
+                                      //                 .format(DateTime.parse(
+                                      //                     patientProfileController
+                                      //                         .nearestHealthCheck
+                                      //                         .value
+                                      //                         .slots[0]
+                                      //                         .assignedDate)) +
+                                      //             " " +
+                                      //             patientProfileController
+                                      //                 .nearestHealthCheck
+                                      //                 .value
+                                      //                 .slots[0]
+                                      //                 .startTime)) ==
+                                      //     1
+                                      if (true)
                                         {
                                           listDoctorController
                                               .getTokenHealthCheck(

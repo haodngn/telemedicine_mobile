@@ -1,12 +1,11 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as Storage;
 import 'package:get/get.dart' as GetX;
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:telemedicine_mobile/Screens/login_screen.dart';
 import 'package:telemedicine_mobile/controller/account_controller.dart';
-import 'package:telemedicine_mobile/controller/google_login_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 import 'package:telemedicine_mobile/models/Account.dart';
 import 'package:telemedicine_mobile/models/AccountPost.dart';
@@ -24,16 +23,18 @@ import 'package:telemedicine_mobile/models/HealthCheckPost.dart';
 import 'package:telemedicine_mobile/models/Hospital.dart';
 import 'package:telemedicine_mobile/models/Major.dart';
 import 'package:telemedicine_mobile/models/Patient.dart';
+import 'package:telemedicine_mobile/models/Role.dart';
 import 'package:telemedicine_mobile/models/Slot.dart';
 import 'package:telemedicine_mobile/models/Symptom.dart';
 import 'package:telemedicine_mobile/models/TimeFrame.dart';
 import 'package:dio/dio.dart';
 
 class FetchAPI {
-  static Future<void> loginWithToken(String tokenId) async {
+  static Future<String> loginWithToken(String tokenId) async {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     final storage = new Storage.FlutterSecureStorage();
-    data['tokenId'] = tokenId;
+    data['tokenId'] =
+        "eyJhbGciOiJSUzI1NiIsImtpZCI6IjE1MjU1NWEyMjM3MWYxMGY0ZTIyZjFhY2U3NjJmYzUwZmYzYmVlMGMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiVsSDbiBUw6JtIE5ndXnhu4VuIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FBVFhBSnlxZ3pjYVRhNjlJdWtxZVdkUFh4TC13dExzYnk2UmQ1TTBTOGc0PXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL3RlbGVtZWRpY2luZS1mYzBlZSIsImF1ZCI6InRlbGVtZWRpY2luZS1mYzBlZSIsImF1dGhfdGltZSI6MTYzNTQ2NDY2OSwidXNlcl9pZCI6IlYwY05VbER2OVZoY2tXTGw5RGxnV29HeTFyRjIiLCJzdWIiOiJWMGNOVWxEdjlWaGNrV0xsOURsZ1dvR3kxckYyIiwiaWF0IjoxNjM1NDY0NjY5LCJleHAiOjE2MzU0NjgyNjksImVtYWlsIjoidmFudGFtMTQxN0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNjc5ODQ1NDM5NDI4ODgyNzAyOSJdLCJlbWFpbCI6WyJ2YW50YW0xNDE3QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.SZStUIKpEOWmMs4w1vwI-Xfe_feBPQR6vKQIB7ZiL00bS-AwO_OaWO-iwQVi1hjOWR0MU5zkZftyikxE1_mZQhIFdEvLwcebYK7LXUCgtOt2N67fyb4NsIJQWKrKCA7d3o93T9_Ug5ZOaex5-tzYhX4E9zlH8B7CpSHRfj2FXaTpo_AKQpePvIRccu319pqoVLcCyQs56jmPjZOAGmu3pKJYwmj62qEAArCYghGpnimEI-L4A9njnPg1-DBKaEYNqIitssYNVvu8ohZbxG3lrB7rhNx1vsUNCj25WL1k2crfBFo4Z6Emt4EUJPF0dh_t-3-lt5ODiQvQmsKUdGd6_Q";
     data['loginType'] = 3;
     final accountController = GetX.Get.put(AccountController());
     try {
@@ -43,16 +44,43 @@ class FetchAPI {
                 HttpHeaders.contentTypeHeader: 'application/json',
               },
               body: jsonEncode(data));
+      Map bodyJson = json.decode(utf8.decode(response.bodyBytes));
+      String message = "Login Success";
+      if (bodyJson.length == 1) {
+        bodyJson.values.forEach((value) {
+          message = value;
+        });
+      }
       if (response.statusCode == 200) {
+        if (bodyJson.length == 1) {
+          accountController.account.value = new Account(
+              id: 0,
+              email: message,
+              firstName: "",
+              lastName: "",
+              ward: "",
+              streetAddress: "",
+              locality: "",
+              city: "",
+              postalCode: "",
+              phone: "",
+              avatar: "",
+              dob: "",
+              active: true,
+              isMale: true,
+              role: new Role(id: 0, name: "", isActive: true));
+          return "Create Account";
+        }
         var accountJson = json.decode(utf8.decode(response.bodyBytes));
         Account account = Account.fromJson(accountJson['account']);
         storage.write(key: "accessToken", value: accountJson['accessToken']);
         accountController.account.value = account;
+        return message;
       } else {
-        throw Exception("Internal server error");
+        return message;
       }
     } catch (e) {
-      print(e);
+      return "";
     }
   }
 
@@ -69,7 +97,7 @@ class FetchAPI {
       final response = await http.get(
         Uri.parse("https://binhtt.tech/api/v1/doctors?" +
             condition +
-            "is-verify=1&limit=8&page-offset=$currentPage"),
+            "limit=8&page-offset=$currentPage"),
         headers: <String, String>{
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.authorizationHeader: 'Bearer $token',
@@ -416,6 +444,9 @@ class FetchAPI {
 
   static Future<List<Slot>> fetchContentSlot(int doctorID) async {
     final storage = new Storage.FlutterSecureStorage();
+    String assignedDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
+    String startTime = DateFormat("HH").format(DateTime.now());
+
     String token = await storage.read(key: "accessToken") ?? "";
     if (token.isEmpty) {
       GetX.Get.offAll(LoginScreen(),
@@ -424,9 +455,13 @@ class FetchAPI {
       throw Exception("Error: UnAuthentication");
     } else {
       final response = await http.get(
-          Uri.parse("https://binhtt.tech/api/v1/slots?doctor-id=" +
+          Uri.parse("https://binhtt.tech/api/v1/slots?start-assigned-date=" +
+              assignedDate +
+              "&doctor-id=" +
               doctorID.toString() +
-              "&start-time=00%3A00%3A00&end-time=00%3A00%3A00&page-offset=1&limit=50"),
+              "&start-time=" +
+              startTime +
+              "%3A00%3A00&end-time=00%3A00%3A00&page-offset=1&limit=50"),
           headers: <String, String>{
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: 'Bearer $token',

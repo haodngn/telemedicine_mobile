@@ -356,8 +356,8 @@ class DetailScreen extends StatelessWidget {
                                             const EdgeInsets.only(bottom: 20),
                                         child: ScheduleCard(
                                           'Buổi tư vấn',
-                                          DateFormat('EEEE').format(
-                                                  DateTime.parse(
+                                          DateFormat.EEEE(Locale("vi", "VN").languageCode).format(
+                                                    DateTime.parse(
                                                       listDoctorController
                                                           .listSlot[index]
                                                           .assignedDate)) +

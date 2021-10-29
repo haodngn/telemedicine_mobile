@@ -137,7 +137,7 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
                             ),
                             child: Center(
                               child: Text(
-                                e.name.toString().replaceAll("Bác sĩ", ""),
+                                e.name.toString().replaceAll("Bác sĩ ", "").substring(0, 1).toUpperCase() + e.name.toString().replaceAll("Bác sĩ ", "").substring(1),
                                 style: TextStyle(
                                   color: filterController.majorID == e.id
                                       ? Colors.white

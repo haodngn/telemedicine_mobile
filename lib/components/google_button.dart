@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
+import 'package:telemedicine_mobile/Screens/form_after_login_screen.dart';
 import 'package:telemedicine_mobile/controller/google_login_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
 
@@ -25,12 +27,25 @@ class GoogleButton extends StatelessWidget {
         ),
         onTap: () async {
           patientHistoryController.getTopDoctor();
-          bool checkLogin =
+          String checkLogin =
               await Provider.of<GoogleSignInController>(context, listen: false)
                   .googleLogin();
-          if (checkLogin) {
+          if (checkLogin == "LoginType is incorrect!") {
+            Fluttertoast.showToast(
+                msg: "Tài khoản đã được dùng trong hệ thống với vai trò khác",
+                fontSize: 18);
+          } else if (checkLogin == "Account is ban!") {
+            Fluttertoast.showToast(
+                msg: "Tài khoản của bạn đã bị khóa", fontSize: 18);
+          } else if (checkLogin == "Login Success") {
             Navigator.push(
                 context, MaterialPageRoute(builder: checkLoginGoogle));
+          } else if (checkLogin == "Create Account") {
+            Navigator.push(
+                context, MaterialPageRoute(builder: checkNewAccount));
+          } else {
+            Fluttertoast.showToast(
+                msg: "Đăng nhập thất bại", fontSize: 18);
           }
         },
       ),
@@ -38,9 +53,10 @@ class GoogleButton extends StatelessWidget {
   }
 
   Widget checkLoginGoogle(BuildContext context) {
-    // if (true)
-    //   return UserInformation();
-    // else
     return BottomNavScreen();
+  }
+
+  Widget checkNewAccount(BuildContext context) {
+    return UserInformation();
   }
 }
