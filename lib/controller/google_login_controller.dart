@@ -37,6 +37,7 @@ class GoogleSignInController with ChangeNotifier {
       notifyListeners();
       statusLogin = true;
     } catch (e) {
+      print("lỗi");
       print(e);
       statusLogin = false;
     } finally {

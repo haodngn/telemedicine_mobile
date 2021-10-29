@@ -436,7 +436,11 @@ class DetailScreen extends StatelessWidget {
                                   title: Text("Thông báo"),
                                   content: Text("Bác sĩ chưa có lịch tư vấn"),
                                   actions: [
-                                    OutlineButton(onPressed: () => Navigator.of(context).pop(), child: Text("Đóng"),)
+                                    OutlineButton(
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(),
+                                      child: Text("Đóng"),
+                                    )
                                   ],
                                 );
                               })

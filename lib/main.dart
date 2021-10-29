@@ -18,7 +18,6 @@ Future main() async {
 }
 
 class MyApp extends StatelessWidget {
-  
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -38,7 +37,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         debugShowCheckedModeBanner: false,
-        home: LoginScreen(),
+        home: SafeArea(child: LoginScreen()),
         localizationsDelegates: [
           GlobalWidgetsLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -46,7 +45,6 @@ class MyApp extends StatelessWidget {
         ],
         supportedLocales: [Locale('en', 'US')],
       ),
-
     );
   }
 }

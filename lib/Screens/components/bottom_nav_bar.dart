@@ -36,8 +36,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   ];
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: Obx(() => SafeArea(
-            child: screens[bottomNavbarController.currentIndex.value])),
+        body: Obx(() => screens[bottomNavbarController.currentIndex.value]),
         bottomNavigationBar: Obx(
           () => BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
