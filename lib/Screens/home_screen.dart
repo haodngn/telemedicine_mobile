@@ -140,26 +140,34 @@ class _HomeScreenState extends State<HomeScreen> {
                     IconButton(
                       icon: const Icon(
                         Icons.notifications_none_outlined,
-                        size: 30,
+                        size: 35,
                       ),
                       onPressed: () {
                         Get.to(NotificationScreen());
                       },
                     ),
                     Positioned(
-                      top: 9,
-                      right: 11,
-                      child: CircleAvatar(
-                        radius: 11,
-                        backgroundColor: Colors.redAccent,
-                        child: Text(accountController
-                            .countNotificationUnread.value > 10 ? "+10" :
-                        accountController
-                            .countNotificationUnread.value.toString(),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                        ),),
+                      top: 7,
+                      right: 7,
+                      child: Container(
+                        width: 24,
+                        height: 24,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 1),
+                          color: Colors.redAccent,
+                        ),
+                        child: Center(
+                          child: Text(accountController
+                              .countNotificationUnread.value > 10 ? "+10" :
+                          accountController
+                              .countNotificationUnread.value.toString(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                          ),),
+                        ),
                       ),
                     ),
                   ],
