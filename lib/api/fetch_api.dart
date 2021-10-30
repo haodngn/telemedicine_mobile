@@ -110,6 +110,27 @@ class FetchAPI {
     return false;
   }
 
+  static Future<void> getCountUnreadNotification() async {
+    final storage = new Storage.FlutterSecureStorage();
+    final accountController = GetX.Get.put(AccountController());
+    String token = await storage.read(key: "accessToken") ?? "";
+    int userId = accountController.account.value.id;
+    if (userId != 0 && token != "") {
+      final response = await http.get(
+        Uri.parse("https://binhtt.tech/api/v1/notifications/users/$userId"),
+        headers: <String, String>{
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        var contentJSon = json.decode(utf8.decode(response.bodyBytes));
+        int numberUnread = contentJSon['countOfUnRead'];
+        accountController.countNotificationUnread.value = numberUnread;
+      }
+    }
+  }
+
   static Future<ContentDoctor> fetchContentDoctorWithCondition(
       String condition, int currentPage) async {
     final storage = new Storage.FlutterSecureStorage();
