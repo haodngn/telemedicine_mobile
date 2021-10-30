@@ -345,14 +345,7 @@ class BoxHistory extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: kWhiteColor,
-          boxShadow: [
-            BoxShadow(
-                blurRadius: 7,
-                spreadRadius: 5,
-                color: Colors.grey.withOpacity(0.5),
-                offset: Offset(7, 8)),
-          ],
+          color: kBlueLightColor.withOpacity(0.6),
         ),
         child: Stack(
           children: [
@@ -391,7 +384,7 @@ class BoxHistory extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: kTitleTextColor.withOpacity(0.7),
-                  fontSize: 15,
+                  fontSize: 16,
                 ),
               ),
             ),
@@ -648,14 +641,7 @@ class BoxHistoryPast extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: kWhiteColor,
-          boxShadow: [
-            BoxShadow(
-                blurRadius: 7,
-                spreadRadius: 5,
-                color: Colors.grey.withOpacity(0.5),
-                offset: Offset(7, 8)),
-          ],
+          color: kBlueLightColor.withOpacity(0.6),
         ),
         child: Column(
           children: [

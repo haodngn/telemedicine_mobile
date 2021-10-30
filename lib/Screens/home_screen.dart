@@ -1,4 +1,7 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -12,6 +15,7 @@ import 'package:telemedicine_mobile/Screens/detail_screen.dart';
 import 'package:telemedicine_mobile/Screens/list_doctor_screen.dart';
 import 'package:telemedicine_mobile/Screens/notification_screen.dart';
 import 'package:telemedicine_mobile/Screens/patient_detail_history_screen.dart';
+import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/bottom_navbar_controller.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
@@ -19,12 +23,81 @@ import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+  String? _token;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final storage = new FlutterSecureStorage();
+  @override
+  void initState() {
+    super.initState();
+    _fireBaseConfig();
+  }
+
+  void _fireBaseConfig() {
+    _firebaseMessaging.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+    _firebaseMessaging.subscribeToTopic('all');
+    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+      print("message recieved");
+      print(event);
+      print(event.notification!.title);
+      print(event.notification!.body);
+      showNotification(event.notification!.title ?? "", event.notification!.body ?? "");
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      print('Message clicked!');
+    });
+    _firebaseMessaging.getToken().then((token) {
+      printWrapped('Token FCM : $token');
+      storage.write(key: "tokenFCM", value: token);
+    }).then((value) => {
+      FetchAPI.makeConnection()
+    });
+  }
+
+  void printWrapped(String text) {
+    final pattern = new RegExp('.{1,800}'); // 800 is the size of each chunk
+    pattern.allMatches(text).forEach((match) => print(match.group(0)));
+  }
+
+  void showNotification(String title, String body) async {
+    await _demoNotification(title, body);
+  }
+
+  Future<void> _demoNotification(String title, String body) async {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'channel_ID', 'channel name',
+        importance: Importance.max,
+        playSound: true,
+        showProgress: true,
+        priority: Priority.high,
+        ticker: 'test ticker');
+    var iOSChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,iOS: iOSChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin
+        .show(0, title, body, platformChannelSpecifics, payload: 'test');
+  }
   final patientProfileController = Get.put(PatientProfileController());
+
   final listDoctorController = Get.put(ListDoctorController());
+
   final RefreshController refreshController =
       RefreshController(initialRefresh: true);
+
   final patientHistoryController = Get.put(PatientHistoryController());
+
   final bottomNavbarController = Get.put(BottomNavbarController());
 
   Future<bool> getDoctorData({bool isRefresh = false}) async {
