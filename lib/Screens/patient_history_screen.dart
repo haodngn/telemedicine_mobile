@@ -355,10 +355,13 @@ class BoxHistory extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
               ),
-              child: Image.network(doctorImage,
-                  errorBuilder: (context, error, stackTrace) => Image.asset(
-                        "assets/images/default_avatar.png",
-                      )),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(14.0),
+                child: Image.network(doctorImage,
+                    errorBuilder: (context, error, stackTrace) => Image.asset(
+                          "assets/images/default_avatar.png",
+                        )),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 80),
@@ -427,7 +430,7 @@ class BoxHistory extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 60),
+              padding: const EdgeInsets.only(top: 64),
               child: Container(
                 width: double.infinity,
                 height: 60,
