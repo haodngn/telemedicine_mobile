@@ -42,8 +42,7 @@ class GoogleButton extends StatelessWidget {
             Navigator.push(
                 context, MaterialPageRoute(builder: checkNewAccount));
           } else {
-            Fluttertoast.showToast(
-                msg: "Đăng nhập thất bại", fontSize: 18);
+            Fluttertoast.showToast(msg: "Đăng nhập thất bại", fontSize: 18);
           }
         },
       ),

@@ -1,11 +1,11 @@
-import 'package:telemedicine_mobile/models/SymptomHealthCheck.dart';
+import 'package:telemedicine_mobile/models/SymptomHealthCheckPost.dart';
 
 class HealthCheckPost {
   late int height;
   late int weight;
   late int patientId;
   late int slotId;
-  late List<SymptomHealthCheck> symptomHealthChecks = [];
+  late List<SymptomHealthCheckPost> symptomHealthChecks = [];
 
   HealthCheckPost(
       {required this.height,
@@ -21,7 +21,7 @@ class HealthCheckPost {
     slotId = json['slotId'];
     if (json['symptomHealthChecks'] != null) {
       json['symptomHealthChecks'].forEach((v) {
-        symptomHealthChecks.add(new SymptomHealthCheck.fromJson(v));
+        symptomHealthChecks.add(new SymptomHealthCheckPost.fromJson(v));
       });
     }
   }
@@ -32,10 +32,9 @@ class HealthCheckPost {
     data['weight'] = this.weight;
     data['patientId'] = this.patientId;
     data['slotId'] = this.slotId;
-    if (this.symptomHealthChecks != null) {
-      data['symptomHealthChecks'] =
-          this.symptomHealthChecks.map((v) => v.toJson()).toList();
-    }
+    data['symptomHealthChecks'] =
+        this.symptomHealthChecks.map((v) => v.toJson()).toList();
+
     return data;
   }
 }

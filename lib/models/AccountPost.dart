@@ -1,5 +1,3 @@
-import 'package:telemedicine_mobile/models/Role.dart';
-
 class AccountPost {
   late String email;
   late String firstName;

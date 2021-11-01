@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:telemedicine_mobile/Screens/patient_detail_history_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
+import 'package:telemedicine_mobile/controller/chatbot_controller.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
 import 'package:telemedicine_mobile/models/HealthCheck.dart';
@@ -315,6 +317,7 @@ class _PatientHistoryScreenState extends State<PatientHistoryScreen> {
 
 class BoxHistory extends StatelessWidget {
   final patientHistoryController = Get.put(PatientHistoryController());
+  final chatbotcontroller = Get.put(ChatBotController());
   final listDoctorController = Get.put(ListDoctorController());
   TextEditingController reason = TextEditingController();
 
@@ -543,6 +546,9 @@ class BoxHistory extends StatelessWidget {
                                                             healthCheckID,
                                                             reason.text);
                                                     Navigator.of(context).pop();
+                                                    Fluttertoast.showToast(
+                                                        msg: "Đã hủy cuộc hẹn",
+                                                        fontSize: 18);
                                                   }
                                                 },
                                               ),
@@ -577,6 +583,7 @@ class BoxHistory extends StatelessWidget {
                   Expanded(child: Container()),
                   InkWell(
                     onTap: () => {
+                      chatbotcontroller.getListSymptom(),
                       patientHistoryController.index.value = index,
                       Get.to(() => PatientDetailHistoryScreen(),
                           transition: Transition.rightToLeftWithFade,
@@ -813,11 +820,17 @@ class BoxHistoryPast extends StatelessWidget {
                                                     .emptyComment.value = true;
                                               } else {
                                                 patientHistoryController
-                                                    .ratingHealthCheck(
+                                                    .editHealthCheckInfo(
                                                         rating,
                                                         comment.text,
-                                                        healthCheck);
+                                                        healthCheck,
+                                                        0,
+                                                        0);
                                                 Navigator.of(context).pop();
+                                                Fluttertoast.showToast(
+                                                    msg:
+                                                        "Đánh giá của bạn đã được gửi",
+                                                    fontSize: 18);
                                               }
                                             },
                                           ),

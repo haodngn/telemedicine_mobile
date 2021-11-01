@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
@@ -606,6 +607,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                             textStreetController.text),
                         if (patientProfileController.done.value)
                           {
+                            Fluttertoast.showToast(msg: "Đã lưu", fontSize: 18),
                             bottomNavbarController.currentIndex.value = 3,
                             Get.to(() => BottomNavScreen(),
                                 transition: Transition.rightToLeftWithFade,

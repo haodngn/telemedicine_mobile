@@ -89,7 +89,6 @@ Future<void> _demoNotification(String title, String body) async {
 }
 
 class MyApp extends StatelessWidget {
-  
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -117,7 +116,6 @@ class MyApp extends StatelessWidget {
         ],
         supportedLocales: [Locale('en', 'US')],
       ),
-
     );
   }
 }

@@ -241,6 +241,34 @@ class _HomeScreenState extends State<HomeScreen> {
                             fontSize: 18,
                           ),
                         ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                patientProfileController.nearestHealthCheck.value.id == 0
+                    ? Center(
+                        child: Text(
+                        "Bạn chưa có lịch hẹn",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w300),
+                      ))
+                    : Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                        child: InkWell(
+                          onTap: () => {
+                            patientHistoryController.index.value = 0,
+                            Get.to(() => PatientDetailHistoryScreen(),
+                                transition: Transition.rightToLeftWithFade,
+                                duration: Duration(microseconds: 600)),
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(15),
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
                         Expanded(child: Container()),
                         InkWell(
                           onTap: () =>
