@@ -448,40 +448,40 @@ class BoxHistory extends StatelessWidget {
                       Icons.date_range,
                       color: Colors.black,
                     ),
-                   Padding(
-                        padding: const EdgeInsets.only(top: 5.0),
-                        child: Text(
-                          DateFormat.E(Locale("vi", "VN").languageCode)
-                                  .format(DateTime.parse(date)) +
-                              ", " +
-                              DateFormat('dd').format(DateTime.parse(date)) +
-                              " tháng" +
-                              DateFormat('MM').format(DateTime.parse(date)),
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5.0),
+                      child: Text(
+                        DateFormat.E(Locale("vi", "VN").languageCode)
+                                .format(DateTime.parse(date)) +
+                            ", " +
+                            DateFormat('dd').format(DateTime.parse(date)) +
+                            " tháng" +
+                            DateFormat('MM').format(DateTime.parse(date)),
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
+                    ),
                     Expanded(child: Container()),
                     Icon(
                       Icons.watch_later_outlined,
                       color: Colors.black,
                     ),
                     Padding(
-                        padding: const EdgeInsets.only(top: 5.0),
-                        child: Text(
-                          timeStart.toString().replaceRange(5, 8, "") +
-                              " - " +
-                              timeEnd.toString().replaceRange(5, 8, ""),
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      padding: const EdgeInsets.only(top: 5.0),
+                      child: Text(
+                        timeStart.toString().replaceRange(5, 8, "") +
+                            " - " +
+                            timeEnd.toString().replaceRange(5, 8, ""),
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
+                    ),
                   ],
                 ),
               ),
@@ -663,10 +663,15 @@ class BoxHistoryPast extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                   ),
-                  child: Image.network(doctorImage,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(14.0),
+                    child: Image.network(
+                      doctorImage,
                       errorBuilder: (context, error, stackTrace) => Image.asset(
-                            "assets/images/default_avatar.png",
-                          )),
+                        "assets/images/default_avatar.png",
+                      ),
+                    ),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 80),
@@ -689,7 +694,7 @@ class BoxHistoryPast extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 60),
+                  padding: const EdgeInsets.only(top: 64),
                   child: Container(
                     width: double.infinity,
                     height: 60,
