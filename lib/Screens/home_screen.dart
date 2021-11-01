@@ -140,18 +140,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     IconButton(
                       icon: const Icon(
                         Icons.notifications_none_outlined,
-                        size: 35,
+                        size: 34,
                       ),
                       onPressed: () {
                         Get.to(NotificationScreen());
                       },
                     ),
                     Positioned(
-                      top: 7,
-                      right: 7,
+                      top: 8,
+                      right: 9,
                       child: Container(
-                        width: 24,
-                        height: 24,
+                        width: 23,
+                        height: 23,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(color: Colors.white, width: 1),
@@ -165,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w500,
-                            fontSize: 12,
+                            fontSize: 11,
                           ),),
                         ),
                       ),
