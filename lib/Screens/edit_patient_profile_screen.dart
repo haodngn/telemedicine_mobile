@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
-import 'package:telemedicine_mobile/Screens/patient_profile_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/bottom_navbar_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
@@ -396,9 +395,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                               patientProfileController.ward.value = "";
                               patientProfileController.listWard.value = [];
                             },
-                            value: patientProfileController.city.value ==
-                                        null ||
-                                    patientProfileController.city.value == ""
+                            value: patientProfileController.city.value == ""
                                 ? null
                                 : patientProfileController.city.value,
                             isExpanded: true,
@@ -456,8 +453,6 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                               patientProfileController.setListWard(newValue);
                             },
                             value: patientProfileController.district.value ==
-                                        null ||
-                                    patientProfileController.district.value ==
                                         ""
                                 ? null
                                 : patientProfileController.district.value,
@@ -525,9 +520,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                               patientProfileController.ward.value =
                                   newValue.toString();
                             },
-                            value: patientProfileController.ward.value ==
-                                        null ||
-                                    patientProfileController.ward.value == ""
+                            value: patientProfileController.ward.value == ""
                                 ? null
                                 : patientProfileController.ward.value,
                             isExpanded: true,

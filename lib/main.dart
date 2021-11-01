@@ -58,15 +58,6 @@ Future main() async {
       sound: true,
     );
     FirebaseMessaging.onBackgroundMessage(_messageHandler);
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: true,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
   }
 
   runApp(MyApp());
@@ -82,14 +73,6 @@ void showNotification(String title, String body) async {
 }
 
 Future<void> _demoNotification(String title, String body) async {
-  // var initializationSettingAndroid = AndroidInitializationSettings("ic_launcher");
-  // var initializationSettingIOS = IOSInitializationSettings(
-  //   requestAlertPermission: true,
-  //   requestBadgePermission: true,
-  //   requestSoundPermission: true,
-  //   onDidReceiveLocalNotification: (int id, String? title, String? body, String? payload) {}
-  // );
-  // var initializationSettings = InitializationSettings(android: initializationSettingAndroid, iOS: initializationSettingIOS);
   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'channel_ID', 'channel name',
       importance: Importance.max,

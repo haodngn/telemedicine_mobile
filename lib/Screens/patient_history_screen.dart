@@ -413,7 +413,7 @@ class BoxHistory extends StatelessWidget {
                               title: Text("Thông báo"),
                               content: Text("Chưa tới giờ tư vấn"),
                               actions: [
-                                OutlineButton(
+                                OutlinedButton(
                                   onPressed: () => Navigator.of(context).pop(),
                                   child: Text("Đóng"),
                                 )

@@ -10,10 +10,8 @@ import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_address_api.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
-import 'package:telemedicine_mobile/models/Account.dart';
 import 'package:telemedicine_mobile/models/AccountPost.dart';
 import 'package:telemedicine_mobile/models/Patient.dart';
-import 'package:telemedicine_mobile/models/Role.dart';
 
 import 'account_controller.dart';
 

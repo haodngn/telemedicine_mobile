@@ -26,7 +26,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
   void initState() {
     super.initState();
     if (chatbotcontroller.listChatbot[0].listAnswer.isEmpty) {
-      chatbotcontroller.SendMessage();
+      chatbotcontroller.sendMessage();
     }
     chatbotcontroller.startChatBot();
     chatbotcontroller.bubbleAppear();
@@ -155,7 +155,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                                                           .isEmpty)
                                                     {
                                                       chatbotcontroller
-                                                          .SendMessage()
+                                                          .sendMessage()
                                                     },
                                                   chatbotcontroller.listMessage.insert(
                                                       0,
@@ -278,13 +278,13 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                             }
                             textSendMessage.clear();
                             FocusScope.of(context).unfocus();
-                            chatbotcontroller.SendMessageSuccess();
+                            chatbotcontroller.sendMessageSuccess();
                             if (chatbotcontroller
                                 .listChatbot[
                                     chatbotcontroller.listMessage.length]
                                 .listAnswer
                                 .isEmpty) {
-                              chatbotcontroller.SendMessage();
+                              chatbotcontroller.sendMessage();
                             }
                             if (chatbotcontroller.listMessage.length ==
                                 chatbotcontroller.listChatbot.length) {
@@ -498,7 +498,7 @@ class BoxChat extends StatelessWidget {
                                               .listAnswer
                                               .isEmpty)
                                         {
-                                          chatbotcontroller.SendMessage(),
+                                          chatbotcontroller.sendMessage(),
                                         },
                                       chatbotcontroller.listMessage.insert(
                                           0,
