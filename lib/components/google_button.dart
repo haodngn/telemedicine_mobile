@@ -17,7 +17,6 @@ class GoogleButton extends StatelessWidget {
   final patientHistoryController = Get.put(PatientHistoryController());
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Container(
       child: GestureDetector(
         child: Image.asset(

@@ -16,8 +16,6 @@ class FilterScreen extends StatefulWidget {
 
 class _FilterScreenState extends State<FilterScreen> {
   GlobalKey<FormState> _oFormKey = GlobalKey<FormState>();
-  late TextEditingController _controller1;
-  late TextEditingController _controller2;
   late TextEditingController _controller3;
   late TextEditingController _controller4;
   TextEditingController textNameDoctorController = TextEditingController();

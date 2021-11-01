@@ -62,11 +62,11 @@ class ChatBotController extends GetxController {
         0, Message(messageBot: messageBot, messagePatient: messagePatient));
   }
 
-  void SendMessage() {
+  void sendMessage() {
     new Future.delayed(const Duration(seconds: 2), () => isSend.value = false);
   }
 
-  void SendMessageSuccess() {
+  void sendMessageSuccess() {
     isSend.value = true;
   }
 

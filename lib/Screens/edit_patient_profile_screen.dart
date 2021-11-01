@@ -396,9 +396,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                               patientProfileController.ward.value = "";
                               patientProfileController.listWard.value = [];
                             },
-                            value: patientProfileController.city.value ==
-                                        null ||
-                                    patientProfileController.city.value == ""
+                            value: patientProfileController.city.value == ""
                                 ? null
                                 : patientProfileController.city.value,
                             isExpanded: true,
@@ -456,8 +454,6 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                               patientProfileController.setListWard(newValue);
                             },
                             value: patientProfileController.district.value ==
-                                        null ||
-                                    patientProfileController.district.value ==
                                         ""
                                 ? null
                                 : patientProfileController.district.value,
@@ -525,9 +521,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                               patientProfileController.ward.value =
                                   newValue.toString();
                             },
-                            value: patientProfileController.ward.value ==
-                                        null ||
-                                    patientProfileController.ward.value == ""
+                            value: patientProfileController.ward.value == ""
                                 ? null
                                 : patientProfileController.ward.value,
                             isExpanded: true,

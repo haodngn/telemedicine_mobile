@@ -81,6 +81,7 @@ dependencies {
     implementation "com.android.support:multidex:1.0.3"
     implementation platform('com.google.firebase:firebase-bom:28.4.1')
     implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-messaging:17.3.3'
 }
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'

@@ -75,9 +75,6 @@ class _EditHealthCheckInfoScreenState extends State<EditHealthCheckInfoScreen> {
                           controller: textAllergyController,
                           decoration: InputDecoration(
                             hintText: patientProfileController
-                                            .patient.value.allergy ==
-                                        null ||
-                                    patientProfileController
                                         .patient.value.allergy.isEmpty
                                 ? "Không bị dị ứng"
                                 : patientProfileController
@@ -111,9 +108,6 @@ class _EditHealthCheckInfoScreenState extends State<EditHealthCheckInfoScreen> {
                           controller: textBloodTypeController,
                           decoration: InputDecoration(
                             hintText: patientProfileController
-                                            .patient.value.bloodGroup ==
-                                        null ||
-                                    patientProfileController
                                         .patient.value.bloodGroup.isEmpty
                                 ? "Chưa xác định"
                                 : patientProfileController
@@ -145,9 +139,6 @@ class _EditHealthCheckInfoScreenState extends State<EditHealthCheckInfoScreen> {
                       controller: textBackgroundDiseaseController,
                       decoration: InputDecoration(
                         hintText: patientProfileController
-                                        .patient.value.backgroundDisease ==
-                                    null ||
-                                patientProfileController
                                     .patient.value.backgroundDisease.isEmpty
                             ? "Không có bệnh nền"
                             : patientProfileController

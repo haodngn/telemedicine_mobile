@@ -66,7 +66,6 @@ class _CallScreenState extends State<CallScreen> {
   Future<void> initializeAgoraEngine() async {
     _engine = await RtcEngine.createWithConfig(RtcEngineConfig(appID));
     await _engine.enableVideo();
-    await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
   }
 
   void addAgoraEventHandlers() {

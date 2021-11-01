@@ -11,8 +11,6 @@ class DoctorCard extends StatelessWidget {
   var image;
   var _bgColor;
 
-  IconData? _selectedIcon;
-
   DoctorCard(this.doctor, this.image, this._bgColor);
   final listDoctorController = Get.put(ListDoctorController());
   final patientProfileController = Get.put(PatientProfileController());

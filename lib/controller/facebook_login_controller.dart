@@ -11,9 +11,9 @@ class FacebookSignInController with ChangeNotifier {
     );
 
     if (result.status == LoginStatus.success) {
-      final requestData = await FacebookAuth.i.getUserData(
-        fields: "email, name, picture",
-      );
+      // final requestData = await FacebookAuth.i.getUserData(
+      //   fields: "email, name, picture",
+      // );
     }
   }
 
