@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:telemedicine_mobile/models/Account.dart';
 import 'package:telemedicine_mobile/models/Role.dart';
@@ -21,6 +20,6 @@ class AccountController extends GetxController
       active: false,
       isMale: false,
       role: new Role(id: 0, name: "", isActive: true)).obs;
-
+  RxInt countNotificationUnread = 0.obs;
   RxBool isLoading = false.obs;
 }

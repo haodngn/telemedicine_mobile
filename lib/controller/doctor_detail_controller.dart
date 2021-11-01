@@ -1,10 +1,6 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/models/Account.dart';
-import 'package:telemedicine_mobile/models/Doctor.dart';
 import 'package:telemedicine_mobile/models/Role.dart';
 
 class DoctorDetailController extends GetxController {

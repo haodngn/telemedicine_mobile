@@ -45,7 +45,7 @@ class _PatientHistoryScreenState extends State<PatientHistoryScreen> {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(30.0),
+                  padding: const EdgeInsets.fromLTRB(27, 20, 27, 20),
                   child: Container(
                     width: double.infinity,
                     height: 60,
@@ -56,95 +56,100 @@ class _PatientHistoryScreenState extends State<PatientHistoryScreen> {
                     ),
                     child: Row(
                       children: [
-                        InkWell(
-                          onTap: () => {
-                            patientHistoryController.sttHistory.value =
-                                "upcoming"
-                          },
-                          child: Container(
-                            width: 104,
-                            height: double.infinity,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color:
-                                  patientHistoryController.sttHistory.value ==
-                                          "upcoming"
-                                      ? kBlueColor
-                                      : Color(0xfff6f6f6),
-                            ),
-                            child: Center(
-                                child: Text(
-                              "Sắp tới",
-                              style: TextStyle(
+                        Expanded(
+                          child: InkWell(
+                            onTap: () => {
+                              patientHistoryController.sttHistory.value =
+                                  "upcoming"
+                            },
+                            child: Container(
+                              width: 104,
+                              height: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
                                 color:
                                     patientHistoryController.sttHistory.value ==
                                             "upcoming"
-                                        ? Colors.white
-                                        : Colors.black,
-                                fontSize: 18,
+                                        ? kBlueColor
+                                        : Color(0xfff6f6f6),
                               ),
-                            )),
+                              child: Center(
+                                  child: Text(
+                                "Sắp tới",
+                                style: TextStyle(
+                                  color: patientHistoryController
+                                              .sttHistory.value ==
+                                          "upcoming"
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 18,
+                                ),
+                              )),
+                            ),
                           ),
                         ),
-                        Expanded(child: Container()),
-                        InkWell(
-                          onTap: () => {
-                            patientHistoryController.sttHistory.value =
-                                "complete"
-                          },
-                          child: Container(
-                            width: 104,
-                            height: double.infinity,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color:
-                                  patientHistoryController.sttHistory.value ==
-                                          "complete"
-                                      ? kBlueColor
-                                      : Color(0xfff6f6f6),
-                            ),
-                            child: Center(
-                                child: Text(
-                              "Hoàn thành",
-                              style: TextStyle(
+                        Expanded(
+                          child: InkWell(
+                            onTap: () => {
+                              patientHistoryController.sttHistory.value =
+                                  "complete"
+                            },
+                            child: Container(
+                              width: 104,
+                              height: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
                                 color:
                                     patientHistoryController.sttHistory.value ==
                                             "complete"
-                                        ? Colors.white
-                                        : Colors.black,
-                                fontSize: 18,
+                                        ? kBlueColor
+                                        : Color(0xfff6f6f6),
                               ),
-                            )),
+                              child: Center(
+                                  child: Text(
+                                "Hoàn thành",
+                                style: TextStyle(
+                                  color: patientHistoryController
+                                              .sttHistory.value ==
+                                          "complete"
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 18,
+                                ),
+                              )),
+                            ),
                           ),
                         ),
-                        Expanded(child: Container()),
-                        InkWell(
-                          onTap: () => {
-                            patientHistoryController.sttHistory.value = "cancel"
-                          },
-                          child: Container(
-                            width: 104,
-                            height: double.infinity,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color:
-                                  patientHistoryController.sttHistory.value ==
-                                          "cancel"
-                                      ? kBlueColor
-                                      : Color(0xfff6f6f6),
-                            ),
-                            child: Center(
-                                child: Text(
-                              "Đã hủy",
-                              style: TextStyle(
+                        Expanded(
+                          child: InkWell(
+                            onTap: () => {
+                              patientHistoryController.sttHistory.value =
+                                  "cancel"
+                            },
+                            child: Container(
+                              width: 104,
+                              height: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
                                 color:
                                     patientHistoryController.sttHistory.value ==
                                             "cancel"
-                                        ? Colors.white
-                                        : Colors.black,
-                                fontSize: 18,
+                                        ? kBlueColor
+                                        : Color(0xfff6f6f6),
                               ),
-                            )),
+                              child: Center(
+                                  child: Text(
+                                "Đã hủy",
+                                style: TextStyle(
+                                  color: patientHistoryController
+                                              .sttHistory.value ==
+                                          "cancel"
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 18,
+                                ),
+                              )),
+                            ),
                           ),
                         ),
                       ],
@@ -235,8 +240,12 @@ class _PatientHistoryScreenState extends State<PatientHistoryScreen> {
                                                 .listHealthCheck[index]
                                                 .comment),
                                     rating: patientHistoryController
-                                        .listHealthCheck[index].rating == null ? 0 : patientHistoryController
-                                        .listHealthCheck[index].rating,
+                                                .listHealthCheck[index]
+                                                .rating ==
+                                            null
+                                        ? 0
+                                        : patientHistoryController
+                                            .listHealthCheck[index].rating,
                                     healthCheck: patientHistoryController
                                         .listHealthCheck[index],
                                   )
@@ -330,20 +339,13 @@ class BoxHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(30, 0, 30, 30),
+      padding: const EdgeInsets.fromLTRB(27, 15, 27, 15),
       child: Container(
         padding: EdgeInsets.all(15),
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: kWhiteColor,
-          boxShadow: [
-            BoxShadow(
-                blurRadius: 7,
-                spreadRadius: 5,
-                color: Colors.grey.withOpacity(0.5),
-                offset: Offset(7, 8)),
-          ],
+          color: kBlueLightColor.withOpacity(0.6),
         ),
         child: Stack(
           children: [
@@ -353,33 +355,44 @@ class BoxHistory extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
               ),
-              child: Image.network(doctorImage,
-                  errorBuilder: (context, error, stackTrace) => Image.asset(
-                        "assets/images/default_avatar.png",
-                      )),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(14.0),
+                child: Image.network(doctorImage,
+                    errorBuilder: (context, error, stackTrace) => Image.asset(
+                          "assets/images/default_avatar.png",
+                        )),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 80),
               child: Text(
-                "Bs. " + doctorName,
+                "Bs." + doctorName,
+                softWrap: false,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold),
+                  color: kTitleTextColor,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  wordSpacing: 2.2,
+                ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(80, 30, 0, 0),
               child: Text(
                 "Chuyên khoa",
+                softWrap: true,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                    color: Colors.grey[400],
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500),
+                  color: kTitleTextColor.withOpacity(0.7),
+                  fontSize: 16,
+                ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(250, 0, 0, 0),
+              padding: const EdgeInsets.fromLTRB(242, 0, 0, 0),
               child: InkWell(
                 onTap: () => {
                   if (DateTime.now().compareTo(DateTime.parse(
@@ -400,7 +413,7 @@ class BoxHistory extends StatelessWidget {
                               title: Text("Thông báo"),
                               content: Text("Chưa tới giờ tư vấn"),
                               actions: [
-                                OutlineButton(
+                                OutlinedButton(
                                   onPressed: () => Navigator.of(context).pop(),
                                   child: Text("Đóng"),
                                 )
@@ -417,11 +430,11 @@ class BoxHistory extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 60),
+              padding: const EdgeInsets.only(top: 64),
               child: Container(
                 width: double.infinity,
                 height: 60,
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.symmetric(horizontal: 14),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: Color(0xffededed),
@@ -432,40 +445,40 @@ class BoxHistory extends StatelessWidget {
                       Icons.date_range,
                       color: Colors.black,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 5.0),
-                      child: Text(
-                        DateFormat.E(Locale("vi", "VN").languageCode)
-                                .format(DateTime.parse(date)) +
-                            ", " +
-                            DateFormat('dd').format(DateTime.parse(date)) +
-                            " tháng" +
-                            DateFormat('MM').format(DateTime.parse(date)),
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
+                   Padding(
+                        padding: const EdgeInsets.only(top: 5.0),
+                        child: Text(
+                          DateFormat.E(Locale("vi", "VN").languageCode)
+                                  .format(DateTime.parse(date)) +
+                              ", " +
+                              DateFormat('dd').format(DateTime.parse(date)) +
+                              " tháng" +
+                              DateFormat('MM').format(DateTime.parse(date)),
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
                     Expanded(child: Container()),
                     Icon(
                       Icons.watch_later_outlined,
                       color: Colors.black,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 5.0),
-                      child: Text(
-                        timeStart.toString().replaceRange(5, 8, "") +
-                            " - " +
-                            timeEnd.toString().replaceRange(5, 8, ""),
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
+                        padding: const EdgeInsets.only(top: 5.0),
+                        child: Text(
+                          timeStart.toString().replaceRange(5, 8, "") +
+                              " - " +
+                              timeEnd.toString().replaceRange(5, 8, ""),
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
                   ],
                 ),
               ),
@@ -543,7 +556,7 @@ class BoxHistory extends StatelessWidget {
                           }),
                     },
                     child: Container(
-                      width: 140,
+                      width: 130,
                       height: 50,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(28),
@@ -570,7 +583,7 @@ class BoxHistory extends StatelessWidget {
                           duration: Duration(microseconds: 600)),
                     },
                     child: Container(
-                      width: 140,
+                      width: 130,
                       height: 50,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(28),
@@ -631,14 +644,7 @@ class BoxHistoryPast extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: kWhiteColor,
-          boxShadow: [
-            BoxShadow(
-                blurRadius: 7,
-                spreadRadius: 5,
-                color: Colors.grey.withOpacity(0.5),
-                offset: Offset(7, 8)),
-          ],
+          color: kBlueLightColor.withOpacity(0.6),
         ),
         child: Column(
           children: [
@@ -808,7 +814,9 @@ class BoxHistoryPast extends StatelessWidget {
                                               } else {
                                                 patientHistoryController
                                                     .ratingHealthCheck(
-                                                        rating, comment.text, healthCheck);
+                                                        rating,
+                                                        comment.text,
+                                                        healthCheck);
                                                 Navigator.of(context).pop();
                                               }
                                             },

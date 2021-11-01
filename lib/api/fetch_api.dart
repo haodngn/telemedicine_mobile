@@ -33,8 +33,7 @@ class FetchAPI {
   static Future<String> loginWithToken(String tokenId) async {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     final storage = new Storage.FlutterSecureStorage();
-    data['tokenId'] =
-        tokenId;
+    data['tokenId'] = tokenId;
     data['loginType'] = 3;
     final accountController = GetX.Get.put(AccountController());
     try {
@@ -84,6 +83,54 @@ class FetchAPI {
     }
   }
 
+  static Future<bool> makeConnection() async {
+    final storage = new Storage.FlutterSecureStorage();
+    final accountController = GetX.Get.put(AccountController());
+    String tokenFcm = await storage.read(key: "tokenFCM") ?? "";
+    String token = await storage.read(key: "accessToken") ?? "";
+    String email = accountController.account.value.email;
+    if (tokenFcm != "" && email.isNotEmpty && token != "") {
+      final Map<String, String> data = new Map<String, String>();
+      data['token'] = tokenFcm;
+      data['email'] = email.toLowerCase();
+      final response = await http.post(
+        Uri.parse("https://binhtt.tech/api/v1/notifications/connection"),
+        headers: <String, String>{
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        },
+        body: jsonEncode(data),
+      );
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return false;
+  }
+
+  static Future<void> getCountUnreadNotification() async {
+    final storage = new Storage.FlutterSecureStorage();
+    final accountController = GetX.Get.put(AccountController());
+    String token = await storage.read(key: "accessToken") ?? "";
+    int userId = accountController.account.value.id;
+    if (userId != 0 && token != "") {
+      final response = await http.get(
+        Uri.parse("https://binhtt.tech/api/v1/notifications/users/$userId"),
+        headers: <String, String>{
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        var contentJSon = json.decode(utf8.decode(response.bodyBytes));
+        int numberUnread = contentJSon['countOfUnRead'];
+        accountController.countNotificationUnread.value = numberUnread;
+      }
+    }
+  }
+
   static Future<ContentDoctor> fetchContentDoctorWithCondition(
       String condition, int currentPage) async {
     final storage = new Storage.FlutterSecureStorage();
@@ -106,7 +153,6 @@ class FetchAPI {
       if (response.statusCode == 200) {
         var contentJSon = json.decode(utf8.decode(response.bodyBytes));
         ContentDoctor contentDoctor = ContentDoctor.fromJson(contentJSon);
-        
 
         return contentDoctor;
       } else if (response.statusCode == 404) {

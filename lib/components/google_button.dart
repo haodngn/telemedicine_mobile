@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -18,7 +17,6 @@ class GoogleButton extends StatelessWidget {
   final patientHistoryController = Get.put(PatientHistoryController());
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Container(
       child: GestureDetector(
         child: Image.asset(
