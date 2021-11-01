@@ -1,4 +1,3 @@
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/Screens/detail_screen.dart';

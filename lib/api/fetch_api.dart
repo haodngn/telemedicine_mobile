@@ -13,6 +13,7 @@ import 'package:telemedicine_mobile/models/ContentDoctor.dart';
 import 'package:telemedicine_mobile/models/ContentHealthCheck.dart';
 import 'package:telemedicine_mobile/models/ContentHospital.dart';
 import 'package:telemedicine_mobile/models/ContentMajor.dart';
+import 'package:telemedicine_mobile/models/ContentNotification.dart';
 import 'package:telemedicine_mobile/models/ContentSlot.dart';
 import 'package:telemedicine_mobile/models/ContentSymptom.dart';
 import 'package:telemedicine_mobile/models/ContentTimeFrame.dart';
@@ -22,6 +23,7 @@ import 'package:telemedicine_mobile/models/HealthCheckChangeSTT.dart';
 import 'package:telemedicine_mobile/models/HealthCheckPost.dart';
 import 'package:telemedicine_mobile/models/Hospital.dart';
 import 'package:telemedicine_mobile/models/Major.dart';
+import 'package:telemedicine_mobile/models/Notification.dart';
 import 'package:telemedicine_mobile/models/Patient.dart';
 import 'package:telemedicine_mobile/models/Role.dart';
 import 'package:telemedicine_mobile/models/Slot.dart';
@@ -34,7 +36,8 @@ class FetchAPI {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     final storage = new Storage.FlutterSecureStorage();
     data['tokenId'] =
-        tokenId;
+        "eyJhbGciOiJSUzI1NiIsImtpZCI6IjE1MjU1NWEyMjM3MWYxMGY0ZTIyZjFhY2U3NjJmYzUwZmYzYmVlMGMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiVsSDbiBUw6JtIE5ndXnhu4VuIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FBVFhBSnlxZ3pjYVRhNjlJdWtxZVdkUFh4TC13dExzYnk2UmQ1TTBTOGc0PXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL3RlbGVtZWRpY2luZS1mYzBlZSIsImF1ZCI6InRlbGVtZWRpY2luZS1mYzBlZSIsImF1dGhfdGltZSI6MTYzNTc0NTI0OSwidXNlcl9pZCI6IlYwY05VbER2OVZoY2tXTGw5RGxnV29HeTFyRjIiLCJzdWIiOiJWMGNOVWxEdjlWaGNrV0xsOURsZ1dvR3kxckYyIiwiaWF0IjoxNjM1NzQ1MjQ5LCJleHAiOjE2MzU3NDg4NDksImVtYWlsIjoidmFudGFtMTQxN0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNjc5ODQ1NDM5NDI4ODgyNzAyOSJdLCJlbWFpbCI6WyJ2YW50YW0xNDE3QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.khevzCzfCaH8Y1ZJaRNTzqtNEE3RghKVOBQg204HNcMgrpFu9p8LlYrp6UKvr_VeUTsiZKauASBKzzigbvUqxvtejwR60iDH3bCqDn3tWJmqi5Q5xVCbgDS0l99gM_IGJGQzDoH2fSAlpLFDRCSgsdDOmmDHEY8WDuY5akfsqSn6aj84guJwOVV76lwt28-gwF7Vsi_UFWBiseX0gnsK65iE1gtv51Od9GiKZOkvlE3bs_CsqnOIDEPBWU8Z_8KzF3n_Arz1pmDt4JJWtLKD7Nby69Zb4o_QugskLSxuQcJN-Mag7ZbJJyeKPQ_mDnO9Eg38ld48cQrAUtIbC4aNVw";
+    // tokenId;
     data['loginType'] = 3;
     final accountController = GetX.Get.put(AccountController());
     try {
@@ -106,7 +109,6 @@ class FetchAPI {
       if (response.statusCode == 200) {
         var contentJSon = json.decode(utf8.decode(response.bodyBytes));
         ContentDoctor contentDoctor = ContentDoctor.fromJson(contentJSon);
-        
 
         return contentDoctor;
       } else if (response.statusCode == 404) {
@@ -704,7 +706,7 @@ class FetchAPI {
     }
   }
 
-  static Future<String> ratingHealthCheck(HealthCheck healthCheck) async {
+  static Future<String> editHealthCheck(HealthCheck healthCheck) async {
     final storage = new Storage.FlutterSecureStorage();
     String token = await storage.read(key: "accessToken") ?? "";
     if (token.isEmpty) {
@@ -722,6 +724,95 @@ class FetchAPI {
           });
       if (response.statusCode == 200) {
         return "Update patient successfull";
+      } else if (response.statusCode == 400) {
+        return "Field is not matched";
+      } else if (response.statusCode == 404) {
+        return "Not found";
+      } else {
+        return "Failed to save request";
+      }
+    }
+  }
+
+  static Future<List<NotificationPatient>> fetchContentNotification(
+      int userID) async {
+    final storage = new Storage.FlutterSecureStorage();
+    String token = await storage.read(key: "accessToken") ?? "";
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500));
+      throw Exception("Error: UnAuthentication");
+    } else {
+      final response = await http.get(
+          Uri.parse("https://binhtt.tech/api/v1/notifications?user-id=33"+
+              "&page-offset=1&limit=20"),
+          headers: <String, String>{
+            HttpHeaders.contentTypeHeader: 'application/json',
+            HttpHeaders.authorizationHeader: 'Bearer $token',
+          });
+      if (response.statusCode == 200) {
+        var contentJSon = json.decode(utf8.decode(response.bodyBytes));
+        ContentNotification contentNotification =
+            ContentNotification.fromJson(contentJSon);
+        return contentNotification.notify;
+      } else if (response.statusCode == 404) {
+        throw Exception("Not found notifications");
+      } else {
+        throw Exception("Internal server error");
+      }
+    }
+  }
+
+  static Future<int> unReadNotification(int userID) async {
+    final storage = new Storage.FlutterSecureStorage();
+    String token = await storage.read(key: "accessToken") ?? "";
+    int countUnread = 0;
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500));
+      throw Exception("Error: UnAuthentication");
+    } else {
+      final response = await http.get(
+          Uri.parse("https://binhtt.tech/api/v1/notifications/users/33"),
+          headers: <String, String>{
+            HttpHeaders.contentTypeHeader: 'application/json',
+            HttpHeaders.authorizationHeader: 'Bearer $token',
+          });
+      if (response.statusCode == 200) {
+        Map contentJSon = json.decode(utf8.decode(response.bodyBytes));
+        contentJSon.values.forEach((value) {
+          countUnread = value;
+        });
+        return countUnread;
+      } else if (response.statusCode == 404) {
+        return countUnread;
+      } else {
+        return countUnread;
+      }
+    }
+  }
+
+  static Future<String> readNotification(
+      NotificationPatient notificationPatient) async {
+    final storage = new Storage.FlutterSecureStorage();
+    String token = await storage.read(key: "accessToken") ?? "";
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500));
+      throw Exception("Error: UnAuthentication");
+    } else {
+      final response = await http.put(
+          Uri.parse("https://binhtt.tech/api/v1/notifications"),
+          body: jsonEncode(notificationPatient.toJson()),
+          headers: <String, String>{
+            HttpHeaders.contentTypeHeader: 'application/json',
+            HttpHeaders.authorizationHeader: 'Bearer $token',
+          });
+      if (response.statusCode == 200) {
+        return "Update notification successfull";
       } else if (response.statusCode == 400) {
         return "Field is not matched";
       } else if (response.statusCode == 404) {

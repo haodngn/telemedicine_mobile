@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
-import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:telemedicine_mobile/Screens/components/category.dart';
 import 'package:telemedicine_mobile/Screens/detail_screen.dart';
-import 'package:telemedicine_mobile/Screens/list_doctor_screen.dart';
 import 'package:telemedicine_mobile/Screens/notification_screen.dart';
 import 'package:telemedicine_mobile/Screens/patient_detail_history_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
@@ -52,14 +49,38 @@ class HomeScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         backgroundColor: kBlueColor,
         actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.notifications,
-              size: 30,
+          Obx(
+            () => Center(
+              child: Stack(
+                children: [
+                  IconButton(
+                    icon: const Icon(
+                      Icons.notifications,
+                      size: 30,
+                    ),
+                    onPressed: () {
+                      patientProfileController.getListNotification();
+                      Get.to(NotificationScreen());
+                    },
+                  ),
+                  patientProfileController.countUnread.value > 0
+                      ? Container(
+                          width: 15,
+                          height: 20,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.red, width: 1),
+                            shape: BoxShape.circle,
+                            color: Colors.red,
+                          ),
+                          child: Center(
+                              child: Text(patientProfileController
+                                  .countUnread.value
+                                  .toString())),
+                        )
+                      : Container(),
+                ],
+              ),
             ),
-            onPressed: () {
-              Get.to(NotificationScreen());
-            },
           )
         ],
       ),
@@ -161,7 +182,7 @@ class HomeScreen extends StatelessWidget {
                             fontSize: 18, fontWeight: FontWeight.w300),
                       ))
                     : Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                         child: InkWell(
                           onTap: () => {
                             patientHistoryController.index.value = 0,

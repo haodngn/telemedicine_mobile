@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:telemedicine_mobile/Screens/detail_screen.dart';
 import 'package:telemedicine_mobile/Screens/view_drug_screen.dart';
@@ -170,7 +169,7 @@ class _PatientDetailHistoryScreenState
                               color: kBlueColor,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            padding: EdgeInsets.fromLTRB(5, 0, 20, 0),
+                            padding: EdgeInsets.fromLTRB(5, 0, 12, 0),
                             child: TextFormField(
                               readOnly: true,
                               onTap: () => {},

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:telemedicine_mobile/controller/chatbot_controller.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
@@ -7,6 +8,7 @@ import 'package:telemedicine_mobile/models/Chatbot.dart';
 import 'package:bubble/bubble.dart';
 import 'package:telemedicine_mobile/models/Message.dart';
 import 'package:progress_indicators/progress_indicators.dart';
+import 'package:telemedicine_mobile/models/SymptomHealthCheckPost.dart';
 
 class ChatBotScreen extends StatefulWidget {
   const ChatBotScreen({Key? key}) : super(key: key);
@@ -30,6 +32,9 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
     }
     chatbotcontroller.startChatBot();
     chatbotcontroller.bubbleAppear();
+    chatbotcontroller.getListSymptom();
+    chatbotcontroller.delayTks.value = false;
+    chatbotcontroller.multiSelect.value = true;
   }
 
   @override
@@ -132,55 +137,120 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                                 SizedBox(
                                   height: 20,
                                 ),
-                                Column(
-                                    children: chatbotcontroller
-                                        .listChatbot[chatbotcontroller
-                                            .indexQuestion.value]
-                                        .listAnswer
-                                        .map(
-                                          (ans) => Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                100, 0, 100, 0),
-                                            child: SizedBox(
-                                              width: double.infinity,
-                                              child: RaisedButton(
-                                                onPressed: () => {
-                                                  if (chatbotcontroller
-                                                              .listChatbot
-                                                              .length >
-                                                          1 &&
-                                                      chatbotcontroller
-                                                          .listChatbot[1]
-                                                          .listAnswer
-                                                          .isEmpty)
-                                                    {
-                                                      chatbotcontroller
-                                                          .SendMessage()
-                                                    },
-                                                  chatbotcontroller.listMessage.insert(
-                                                      0,
-                                                      Message(
-                                                          messageBot: chatbotcontroller
-                                                              .listChatbot[
-                                                                  chatbotcontroller
-                                                                      .indexQuestion
-                                                                      .value]
-                                                              .question,
-                                                          messagePatient: ans)),
-                                                  chatbotcontroller
-                                                      .nextQuestion(),
-                                                },
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                8))),
-                                                child: Text(ans),
-                                              ),
+                                chatbotcontroller
+                                                .listChatbot[chatbotcontroller
+                                                    .indexQuestion.value]
+                                                .listAnswer
+                                                .length ==
+                                            1 &&
+                                        chatbotcontroller.multiSelect.value
+                                    ? Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            50, 0, 50, 0),
+                                        child: MultiSelectDialogField(
+                                          items:
+                                              chatbotcontroller.listSymptomItem,
+                                          title: Text("Triệu chứng"),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(6),
+                                            border: Border.all(
+                                                color: Colors.grey, width: 1),
+                                          ),
+                                          selectedColor: Colors.blue,
+                                          buttonText: Text(
+                                            "Chọn triệu chứng",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                        )
-                                        .toList()),
+                                          onConfirm: (results) {
+                                            chatbotcontroller.listResultSymptom
+                                                .value = results;
+                                            chatbotcontroller.multiSelectDone();
+                                            if (chatbotcontroller
+                                                        .listChatbot.length >
+                                                    1 &&
+                                                chatbotcontroller.listChatbot[1]
+                                                    .listAnswer.isEmpty) {
+                                              chatbotcontroller.SendMessage();
+                                            }
+                                            chatbotcontroller.listMessage.insert(
+                                                0,
+                                                Message(
+                                                    messageBot: chatbotcontroller
+                                                        .listChatbot[
+                                                            chatbotcontroller
+                                                                .indexQuestion
+                                                                .value]
+                                                        .question,
+                                                    messagePatient: chatbotcontroller
+                                                                .listResultSymptom
+                                                                .length >
+                                                            0
+                                                        ? chatbotcontroller
+                                                            .ansMultiSelect
+                                                            .value
+                                                        : "Không có triệu chứng"));
+
+                                            chatbotcontroller.nextQuestion();
+                                          },
+                                        ),
+                                      )
+                                    : Column(
+                                        children: chatbotcontroller
+                                            .listChatbot[chatbotcontroller
+                                                .indexQuestion.value]
+                                            .listAnswer
+                                            .map(
+                                              (ans) => Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        100, 0, 100, 0),
+                                                child: SizedBox(
+                                                  width: double.infinity,
+                                                  child: RaisedButton(
+                                                    onPressed: () => {
+                                                      if (chatbotcontroller
+                                                                  .listChatbot
+                                                                  .length >
+                                                              1 &&
+                                                          chatbotcontroller
+                                                              .listChatbot[1]
+                                                              .listAnswer
+                                                              .isEmpty)
+                                                        {
+                                                          chatbotcontroller
+                                                              .SendMessage()
+                                                        },
+                                                      chatbotcontroller.listMessage.insert(
+                                                          0,
+                                                          Message(
+                                                              messageBot: chatbotcontroller
+                                                                  .listChatbot[
+                                                                      chatbotcontroller
+                                                                          .indexQuestion
+                                                                          .value]
+                                                                  .question,
+                                                              messagePatient:
+                                                                  ans)),
+                                                      chatbotcontroller
+                                                          .nextQuestion(),
+                                                    },
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    8))),
+                                                    child: Text(ans),
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                            .toList()),
                               ],
                             ),
                           )
@@ -288,6 +358,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                             }
                             if (chatbotcontroller.listMessage.length ==
                                 chatbotcontroller.listChatbot.length) {
+                              chatbotcontroller.delayThank();
                               listDoctorController.bookHealthCheck(
                                   int.parse(chatbotcontroller
                                       .listMessage[
@@ -300,7 +371,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                                               2]
                                       .messagePatient),
                                   patientProfileController.patient.value,
-                                  listDoctorController.slot.value);
+                                  listDoctorController.slot.value, chatbotcontroller.listSymptomHealthCheckPost.cast<SymptomHealthCheckPost>());
                             }
                           }),
                     )
@@ -336,239 +407,325 @@ class BoxChat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(15.0, 0, 15, 15),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          chatbotcontroller.listMessage.length - 1 == indexQuestion
-              ? Padding(
-                  padding: const EdgeInsets.only(right: 120),
-                  child: Bubble(
-                    radius: Radius.circular(15.0),
-                    color: Colors.grey.shade200,
-                    alignment: Alignment.bottomLeft,
-                    child: Padding(
-                      padding: EdgeInsets.all(5.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Flexible(
-                            child: Text(
-                              "Chào bạn, bạn vui lòng trả lời các câu hỏi sau để hoàn thành đăng ký?",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                )
-              : Container(),
-          chatbotcontroller.listMessage.length - 1 == indexQuestion
-              ? SizedBox(
-                  height: 20,
-                )
-              : SizedBox(
-                  height: 0,
-                ),
-          Padding(
-            padding: const EdgeInsets.only(right: 120),
-            child: Bubble(
-              radius: Radius.circular(15.0),
-              color: Colors.grey.shade200,
-              alignment: Alignment.bottomLeft,
-              child: Padding(
-                padding: EdgeInsets.all(5.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Flexible(
-                      child: Text(
-                        messageBot,
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(120, 0, 0, 0),
-            child: Bubble(
-              radius: Radius.circular(15.0),
-              color: Colors.blue,
-              alignment: Alignment.bottomRight,
-              child: Padding(
-                padding: EdgeInsets.all(5.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Flexible(
-                      child: Text(
-                        messagePatient,
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          indexQuestion < 1 &&
-                  chatbotcontroller.listMessage.length >
-                      chatbotcontroller.indexQuestion.value &&
-                  chatbotcontroller.listChatbot.length - 1 >
-                      chatbotcontroller.indexQuestion.value
-              ? Bubble(
-                  radius: Radius.circular(15.0),
-                  color: Colors.grey.shade200,
-                  alignment: Alignment.bottomLeft,
-                  child: Container(
-                    width: 45,
-                    height: 30,
-                    child: JumpingDotsProgressIndicator(
-                      fontSize: 24.0,
-                      dotSpacing: 3,
-                    ),
-                  ))
-              : Container(),
-          indexQuestion < 1 &&
-                  chatbotcontroller.listMessage.length <
-                      chatbotcontroller.listChatbot.length &&
-                  chatbotcontroller.listMessage.length ==
-                      chatbotcontroller.indexQuestion.value
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 120),
-                      child: Bubble(
-                        radius: Radius.circular(15.0),
-                        color: Colors.grey.shade200,
-                        alignment: Alignment.bottomLeft,
-                        child: Padding(
-                          padding: EdgeInsets.all(5.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Flexible(
-                                child: Text(
-                                  chatbot.question,
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
-                                ),
+    return Obx(
+      () => Padding(
+        padding: const EdgeInsets.fromLTRB(15.0, 0, 15, 15),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            chatbotcontroller.listMessage.length - 1 == indexQuestion
+                ? Padding(
+                    padding: const EdgeInsets.only(right: 120),
+                    child: Bubble(
+                      radius: Radius.circular(15.0),
+                      color: Colors.grey.shade200,
+                      alignment: Alignment.bottomLeft,
+                      child: Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Flexible(
+                              child: Text(
+                                "Chào bạn, bạn vui lòng trả lời các câu hỏi sau để hoàn thành đăng ký?",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Column(
-                        children: chatbot.listAnswer
-                            .map(
-                              (ans) => Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(100, 0, 100, 0),
-                                child: SizedBox(
-                                  width: double.infinity,
-                                  child: RaisedButton(
-                                    onPressed: () => {
-                                      if (chatbotcontroller
-                                                  .indexQuestion.value <
-                                              chatbotcontroller
-                                                      .listChatbot.length -
-                                                  1 &&
-                                          chatbotcontroller
-                                              .listChatbot[chatbotcontroller
-                                                      .indexQuestion.value +
-                                                  1]
-                                              .listAnswer
-                                              .isEmpty)
-                                        {
-                                          chatbotcontroller.SendMessage(),
-                                        },
-                                      chatbotcontroller.listMessage.insert(
-                                          0,
-                                          Message(
-                                              messageBot: chatbot.question,
-                                              messagePatient: ans)),
-                                      chatbotcontroller.nextQuestion(),
-                                      if (chatbotcontroller
-                                              .listMessage.length ==
-                                          chatbotcontroller.listChatbot.length)
-                                        {
-                                          listDoctorController.bookHealthCheck(
-                                              int.parse(chatbotcontroller
-                                                  .listMessage[chatbotcontroller
-                                                          .listMessage.length -
-                                                      1]
-                                                  .messagePatient),
-                                              int.parse(chatbotcontroller
-                                                  .listMessage[chatbotcontroller
-                                                          .listMessage.length -
-                                                      2]
-                                                  .messagePatient),
-                                              patientProfileController
-                                                  .patient.value,
-                                              listDoctorController.slot.value),
-                                        }
-                                    },
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8))),
-                                    child: Text(ans),
-                                  ),
-                                ),
-                              ),
-                            )
-                            .toList()),
-                  ],
-                )
-              : Container(),
-          indexQuestion < 1 &&
-                  chatbotcontroller.listMessage.length ==
-                      chatbotcontroller.listChatbot.length &&
-                  chatbotcontroller.listChatbot.length - 1 ==
-                      chatbotcontroller.indexQuestion.value
-              ? Padding(
-                  padding: const EdgeInsets.only(right: 120),
-                  child: Bubble(
+                  )
+                : Container(),
+            chatbotcontroller.listMessage.length - 1 == indexQuestion
+                ? SizedBox(
+                    height: 20,
+                  )
+                : SizedBox(
+                    height: 0,
+                  ),
+            Padding(
+              padding: const EdgeInsets.only(right: 120),
+              child: Bubble(
+                radius: Radius.circular(15.0),
+                color: Colors.grey.shade200,
+                alignment: Alignment.bottomLeft,
+                child: Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Flexible(
+                        child: Text(
+                          messageBot,
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(120, 0, 0, 0),
+              child: Bubble(
+                radius: Radius.circular(15.0),
+                color: Colors.blue,
+                alignment: Alignment.bottomRight,
+                child: Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Flexible(
+                        child: Text(
+                          messagePatient,
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            indexQuestion < 1 &&
+                    chatbotcontroller.listMessage.length >
+                        chatbotcontroller.indexQuestion.value &&
+                    chatbotcontroller.listChatbot.length - 1 >
+                        chatbotcontroller.indexQuestion.value
+                ? Bubble(
                     radius: Radius.circular(15.0),
                     color: Colors.grey.shade200,
                     alignment: Alignment.bottomLeft,
-                    child: Padding(
-                      padding: EdgeInsets.all(5.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Flexible(
-                            child: Text(
-                              "Cảm ơn bạn đã trả lời các câu hỏi. Đăng ký tư vấn thành công.",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
+                    child: Container(
+                      width: 45,
+                      height: 30,
+                      child: JumpingDotsProgressIndicator(
+                        fontSize: 24.0,
+                        dotSpacing: 3,
+                      ),
+                    ))
+                : Container(),
+            indexQuestion < 1 &&
+                    chatbotcontroller.listMessage.length <
+                        chatbotcontroller.listChatbot.length &&
+                    chatbotcontroller.listMessage.length ==
+                        chatbotcontroller.indexQuestion.value
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 120),
+                        child: Bubble(
+                          radius: Radius.circular(15.0),
+                          color: Colors.grey.shade200,
+                          alignment: Alignment.bottomLeft,
+                          child: Padding(
+                            padding: EdgeInsets.all(5.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Flexible(
+                                  child: Text(
+                                    chatbot.question,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      chatbot.listAnswer.length == 1 &&
+                              chatbotcontroller.multiSelect.value
+                          ? Padding(
+                              padding: const EdgeInsets.fromLTRB(50, 0, 50, 0),
+                              child: MultiSelectDialogField(
+                                items: chatbotcontroller.listSymptomItem,
+                                title: Text("Triệu chứng"),
+                                selectedColor: Colors.blue,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(6),
+                                  border:
+                                      Border.all(color: Colors.grey, width: 1),
+                                ),
+                                buttonText: Text(
+                                  "Chọn triệu chứng",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                onConfirm: (results) {
+                                  chatbotcontroller.listResultSymptom.value =
+                                      results;
+                                  chatbotcontroller.multiSelectDone();
+                                  if (chatbotcontroller.indexQuestion.value <
+                                          chatbotcontroller.listChatbot.length -
+                                              1 &&
+                                      chatbotcontroller
+                                          .listChatbot[chatbotcontroller
+                                                  .indexQuestion.value +
+                                              1]
+                                          .listAnswer
+                                          .isEmpty) {
+                                    chatbotcontroller.SendMessage();
+                                  }
+                                  chatbotcontroller.listMessage.insert(
+                                      0,
+                                      Message(
+                                          messageBot: chatbot.question,
+                                          messagePatient: chatbotcontroller
+                                                      .listResultSymptom
+                                                      .length >
+                                                  0
+                                              ? chatbotcontroller
+                                                  .ansMultiSelect.value
+                                              : "Không có triệu chứng"));
+                                  chatbotcontroller.nextQuestion();
+                                },
+                              ),
+                            )
+                          : Column(
+                              children: chatbot.listAnswer
+                                  .map(
+                                    (ans) => Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          100, 0, 100, 0),
+                                      child: SizedBox(
+                                        width: double.infinity,
+                                        child: RaisedButton(
+                                          onPressed: () => {
+                                            if (chatbotcontroller
+                                                        .indexQuestion.value <
+                                                    chatbotcontroller
+                                                            .listChatbot
+                                                            .length -
+                                                        1 &&
+                                                chatbotcontroller
+                                                    .listChatbot[
+                                                        chatbotcontroller
+                                                                .indexQuestion
+                                                                .value +
+                                                            1]
+                                                    .listAnswer
+                                                    .isEmpty)
+                                              {
+                                                chatbotcontroller.SendMessage(),
+                                              },
+                                            chatbotcontroller.listMessage
+                                                .insert(
+                                                    0,
+                                                    Message(
+                                                        messageBot:
+                                                            chatbot.question,
+                                                        messagePatient: ans)),
+                                            chatbotcontroller.nextQuestion(),
+                                            if (chatbotcontroller
+                                                    .listMessage.length ==
+                                                chatbotcontroller
+                                                    .listChatbot.length)
+                                              {
+                                                chatbotcontroller.delayThank(),
+                                                listDoctorController.bookHealthCheck(
+                                                    int.parse(chatbotcontroller
+                                                        .listMessage[
+                                                            chatbotcontroller
+                                                                    .listMessage
+                                                                    .length -
+                                                                1]
+                                                        .messagePatient),
+                                                    int.parse(chatbotcontroller
+                                                        .listMessage[
+                                                            chatbotcontroller
+                                                                    .listMessage
+                                                                    .length -
+                                                                2]
+                                                        .messagePatient),
+                                                    patientProfileController
+                                                        .patient.value,
+                                                    listDoctorController
+                                                        .slot.value, chatbotcontroller.listSymptomHealthCheckPost.cast<SymptomHealthCheckPost>()),
+                                              },
+                                          },
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(8))),
+                                          child: Text(ans),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                  .toList()),
+                    ],
+                  )
+                : Container(),
+            indexQuestion < 1 &&
+                    chatbotcontroller.listMessage.length ==
+                        chatbotcontroller.listChatbot.length &&
+                    chatbotcontroller.listChatbot.length - 1 ==
+                        chatbotcontroller.indexQuestion.value &&
+                    !chatbotcontroller.delayTks.value
+                ? Bubble(
+                    radius: Radius.circular(15.0),
+                    color: Colors.grey.shade200,
+                    alignment: Alignment.bottomLeft,
+                    child: Container(
+                      width: 45,
+                      height: 30,
+                      child: JumpingDotsProgressIndicator(
+                        fontSize: 24.0,
+                        dotSpacing: 3,
+                      ),
+                    ))
+                : Container(),
+            indexQuestion < 1 &&
+                    chatbotcontroller.listMessage.length ==
+                        chatbotcontroller.listChatbot.length &&
+                    chatbotcontroller.listChatbot.length - 1 ==
+                        chatbotcontroller.indexQuestion.value &&
+                    chatbotcontroller.delayTks.value
+                ? Padding(
+                    padding: const EdgeInsets.only(right: 120),
+                    child: Bubble(
+                      radius: Radius.circular(15.0),
+                      color: Colors.grey.shade200,
+                      alignment: Alignment.bottomLeft,
+                      child: Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Flexible(
+                              child: Text(
+                                "Cảm ơn bạn đã trả lời các câu hỏi. Đăng ký tư vấn thành công.",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                )
-              : Container()
-        ],
+                  )
+                : Container(),
+          ],
+        ),
       ),
     );
   }

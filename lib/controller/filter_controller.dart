@@ -50,24 +50,6 @@ class FilterController extends GetxController {
 
   static List listNull = [];
 
-  RxList<dynamic> listSymptom = [].obs;
-  RxList<MultiSelectItem<dynamic>> listSymptomItem =
-      listNull.map((e) => MultiSelectItem(e, e.toString())).toList().obs;
-
-  getListSymptom() {
-    FetchAPI.fetchContentSymptom().then((dataFromServer) {
-      listSymptom.value = dataFromServer;
-    });
-
-    new Future.delayed(
-        const Duration(seconds: 2),
-        () => {
-              listSymptomItem.value = listSymptom
-                  .map((symptom) => MultiSelectItem(symptom, symptom.name))
-                  .toList()
-            });
-  }
-
   RxList<dynamic> listMajor = [].obs;
   RxList<dynamic> listMajor2 = [].obs;
   RxList<MultiSelectItem<dynamic>> listMajorItem =
@@ -75,6 +57,7 @@ class FilterController extends GetxController {
 
   RxInt majorID = 0.obs;
   getListMajor() {
+    listMajor2.clear();
     listMajor2.add(new Major(id: 0, name: "Tất cả", description: ""));
     FetchAPI.fetchContentMajor().then((dataFromServer) {
       listMajor.value = dataFromServer;

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -87,11 +86,8 @@ class PatientProfileController extends GetxController {
       FetchAPI.fetchMyPatient(myEmail).then((dataFromServer) {
         patient.value = dataFromServer;
         patientHistoryController.patientID.value = patient.value.id;
-        FetchAPI.fetchNearestHealthCheck(
-                patientHistoryController.patientID.value)
-            .then((dataFromServer) {
-          nearestHealthCheck.value = dataFromServer;
-        });
+        getNearestHealthCheck();
+        getCountUnread();
         patientHistoryController.getMyHistory();
       });
     }
@@ -281,4 +277,24 @@ class PatientProfileController extends GetxController {
       done.value = true;
     }
   }
+
+  RxList<dynamic> listNotify = [].obs;
+
+  getListNotification() {
+    FetchAPI.fetchContentNotification(accountController.account.value.id)
+        .then((dataFromServer) {
+      listNotify.value = dataFromServer;
+    });
+  }
+
+  RxInt countUnread = 0.obs;
+
+  getCountUnread() {
+    FetchAPI.unReadNotification(accountController.account.value.id)
+        .then((dataFromServer) {
+      countUnread.value = dataFromServer;
+    });
+  }
+
+  readNotification() {}
 }

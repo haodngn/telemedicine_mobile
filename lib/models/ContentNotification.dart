@@ -1,24 +1,24 @@
-import 'package:telemedicine_mobile/models/Hospital.dart';
+import 'package:telemedicine_mobile/models/Notification.dart';
 
-class ContentHospital {
+class ContentNotification {
   late int totalCount;
   late int pageSize;
   late int totalPage;
   late int currentPage;
   late int nextPage;
   late int? previousPage;
-  late List<Hospital> hospital = [];
+  late List<NotificationPatient> notify = [];
 
-  ContentHospital(
+  ContentNotification(
       {required this.totalCount,
-        required this.pageSize,
-        required this.totalPage,
-        required this.currentPage,
-        required this.nextPage,
-        required this.previousPage,
-        required this.hospital});
+      required this.pageSize,
+      required this.totalPage,
+      required this.currentPage,
+      required this.nextPage,
+      required this.previousPage,
+      required this.notify});
 
-  ContentHospital.fromJson(Map<String, dynamic> json) {
+  ContentNotification.fromJson(Map<String, dynamic> json) {
     totalCount = json['totalCount'];
     pageSize = json['pageSize'];
     totalPage = json['totalPage'];
@@ -27,7 +27,7 @@ class ContentHospital {
     previousPage = json['previousPage'];
     if (json['content'] != null) {
       json['content'].forEach((v) {
-        hospital.add(new Hospital.fromJson(v));
+        notify.add(new NotificationPatient.fromJson(v));
       });
     }
   }
@@ -40,8 +40,8 @@ class ContentHospital {
     data['currentPage'] = this.currentPage;
     data['nextPage'] = this.nextPage;
     data['previousPage'] = this.previousPage;
-    if (this.hospital != null) {
-      data['content'] = this.hospital.map((v) => v.toJson()).toList();
+    if (this.notify != null) {
+      data['content'] = this.notify.map((v) => v.toJson()).toList();
     }
     return data;
   }

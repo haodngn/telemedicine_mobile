@@ -2,10 +2,8 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/date_symbol_data_file.dart';
 import 'package:intl/intl.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-import 'package:telemedicine_mobile/Screens/list_doctor_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/filter_controller.dart';
 

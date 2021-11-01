@@ -8,7 +8,6 @@ import 'package:telemedicine_mobile/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
-import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 
 class DetailScreen extends StatelessWidget {
   var _name;

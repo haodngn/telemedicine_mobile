@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:telemedicine_mobile/Screens/call_screen/videocall_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/models/Doctor.dart';
@@ -6,6 +7,7 @@ import 'package:telemedicine_mobile/models/HealthCheck.dart';
 import 'package:telemedicine_mobile/models/HealthCheckPost.dart';
 import 'package:telemedicine_mobile/models/Patient.dart';
 import 'package:telemedicine_mobile/models/Slot.dart';
+import 'package:telemedicine_mobile/models/SymptomHealthCheckPost.dart';
 
 class ListDoctorController extends GetxController {
   RxList<dynamic> listDoctor = [].obs;
@@ -68,7 +70,23 @@ class ListDoctorController extends GetxController {
   getListDoctorSlot(int doctorID) {
     bool flag = true;
     FetchAPI.fetchContentSlot(doctorID).then((dataFromServer) {
-      listSlot.value = dataFromServer;
+      listSlot.clear();
+      dataFromServer.map((data) {
+        if (DateTime.parse(DateFormat("yyyy-MM-dd").format(DateTime.now()))
+                .compareTo(DateTime.parse(data.assignedDate)) <
+            0) {
+          listSlot.add(data);
+        }
+        if (DateTime.parse(DateFormat("yyyy-MM-dd").format(DateTime.now()))
+                    .compareTo(DateTime.parse(data.assignedDate)) ==
+                0 &&
+            DateFormat("HH").format(DateTime.now()).compareTo(DateFormat("HH")
+                    .format(DateTime.parse("0000-00-00 " + data.startTime))) <=
+                0) {
+          listSlot.add(data);
+        }
+      }).toList();
+
       listSlot.map((element) {
         if (element.healthCheckID < 1) {
           slotAvailable.value = true;
@@ -188,13 +206,14 @@ class ListDoctorController extends GetxController {
         });
   }
 
-  bookHealthCheck(int height, int weight, Patient patient, Slot slotN) {
+  bookHealthCheck(int height, int weight, Patient patient, Slot slotN,
+      List<SymptomHealthCheckPost> symp) {
     HealthCheckPost healthCheckPost = new HealthCheckPost(
         height: height,
         weight: weight,
         patientId: patient.id,
         slotId: slotN.id,
-        symptomHealthChecks: []);
+        symptomHealthChecks: symp);
 
     FetchAPI.createNewHealthCheck(healthCheckPost)
         .then((value) => getListDoctorSlot(slot.value.doctorId));

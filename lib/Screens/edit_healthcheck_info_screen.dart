@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
-import 'package:telemedicine_mobile/Screens/patient_profile_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/bottom_navbar_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
@@ -18,8 +18,6 @@ class _EditHealthCheckInfoScreenState extends State<EditHealthCheckInfoScreen> {
   final patientProfileController = Get.put(PatientProfileController());
   final bottomNavbarController = Get.put(BottomNavbarController());
 
-  TextEditingController textHeightController = TextEditingController();
-  TextEditingController textWeightController = TextEditingController();
   TextEditingController textAllergyController = TextEditingController();
   TextEditingController textBloodTypeController = TextEditingController();
   TextEditingController textBackgroundDiseaseController =
@@ -172,6 +170,7 @@ class _EditHealthCheckInfoScreenState extends State<EditHealthCheckInfoScreen> {
                           borderRadius: BorderRadius.all(Radius.circular(24)),
                         ),
                         onPressed: () => {
+                          Fluttertoast.showToast(msg: "Đã lưu", fontSize: 18),
                           patientProfileController.updatePatientInfo(
                               textBackgroundDiseaseController.text,
                               textAllergyController.text,

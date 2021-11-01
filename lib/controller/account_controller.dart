@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:telemedicine_mobile/models/Account.dart';
 import 'package:telemedicine_mobile/models/Role.dart';
