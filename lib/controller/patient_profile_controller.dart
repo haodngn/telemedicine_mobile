@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -148,18 +149,13 @@ class PatientProfileController extends GetxController {
     }
     FetchAPI.fetchAccountDetail(myEmail).then((dataFromServer) {
       account.value = dataFromServer;
+      isMale.value = account.value.isMale;
+      dob.value =
+          DateFormat('yyyy-MM-dd').format(DateTime.parse(account.value.dob));
+      city.value = account.value.city;
+      district.value = account.value.locality;
+      ward.value = account.value.ward;
     });
-
-    new Future.delayed(
-        const Duration(seconds: 2),
-        () => {
-              isMale.value = account.value.isMale,
-              dob.value = DateFormat('yyyy-MM-dd')
-                  .format(DateTime.parse(account.value.dob)),
-              city.value = account.value.city,
-              district.value = account.value.locality,
-              ward.value = account.value.ward,
-            });
   }
 
   Future pickDate(BuildContext context) async {
@@ -219,6 +215,7 @@ class PatientProfileController extends GetxController {
   RxBool emptyDistrict = false.obs;
   RxBool emptyWard = false.obs;
 
+  RxBool isLoading = false.obs;
   updateAccountInfo(
       String fName, String lName, String phoneNumber, String street) {
     if (fName.isEmpty) {
@@ -273,7 +270,10 @@ class PatientProfileController extends GetxController {
 
     account.value = newAccount;
     if (emptyDistrict.isFalse && emptyWard.isFalse) {
-      FetchAPI.updateMyAccountInfo(account.value, image.value.path);
+      isLoading.value = true;
+      FetchAPI.updateMyAccountInfo(account.value, image.value.path).then(
+          (value) => new Future.delayed(
+              const Duration(seconds: 2), () => {isLoading.value = false}));
       done.value = true;
     }
   }
@@ -297,4 +297,12 @@ class PatientProfileController extends GetxController {
   }
 
   readNotification() {}
+
+  logout() {
+    FetchAPI.userLogout().then((value) {
+      if (value)
+        Get.offAll(() => LoginScreen(), duration: Duration(microseconds: 600));
+      Fluttertoast.showToast(msg: "Đăng xuất thành công", fontSize: 18);
+    });
+  }
 }

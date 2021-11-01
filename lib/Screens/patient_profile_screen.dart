@@ -287,8 +287,7 @@ class _PatientProfileState extends State<PatientProfile> {
                             hintText: 'Đăng xuất',
                             icon: Icons.logout,
                             onTap: () => {
-                              Get.offAll(() => LoginScreen(),
-                                  duration: Duration(microseconds: 600))
+                              patientProfileController.logout(),
                             },
                           ),
                         ],

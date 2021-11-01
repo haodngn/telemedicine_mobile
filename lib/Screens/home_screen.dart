@@ -16,6 +16,7 @@ import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/account_controller.dart';
 import 'package:telemedicine_mobile/controller/bottom_navbar_controller.dart';
+import 'package:telemedicine_mobile/controller/filter_controller.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
@@ -51,7 +52,8 @@ class _HomeScreenState extends State<HomeScreen> {
       print(event);
       print(event.notification!.title);
       print(event.notification!.body);
-      accountController.countNotificationUnread.value = accountController.countNotificationUnread.value + 1;
+      accountController.countNotificationUnread.value =
+          accountController.countNotificationUnread.value + 1;
       showNotification(
           event.notification!.title ?? "", event.notification!.body ?? "");
     });
@@ -103,6 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final patientHistoryController = Get.put(PatientHistoryController());
 
   final bottomNavbarController = Get.put(BottomNavbarController());
+  final filterController = Get.put(FilterController());
 
   Future<bool> getDoctorData({bool isRefresh = false}) async {
     if (!isRefresh) {
@@ -141,30 +144,38 @@ class _HomeScreenState extends State<HomeScreen> {
                         Get.to(NotificationScreen());
                       },
                     ),
-                    Positioned(
-                      top: 8,
-                      right: 9,
-                      child: Container(
-                        width: 23,
-                        height: 23,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 1),
-                          color: Colors.redAccent,
-                        ),
-                        child: Center(
-                          child: Text(accountController
-                              .countNotificationUnread.value > 10 ? "+10" :
-                          accountController
-                              .countNotificationUnread.value.toString(),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 11,
-                          ),),
-                        ),
-                      ),
-                    ),
+                    accountController.countNotificationUnread.value == 0
+                        ? Container()
+                        : Positioned(
+                            top: 8,
+                            right: 9,
+                            child: Container(
+                              width: 23,
+                              height: 23,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border:
+                                    Border.all(color: Colors.white, width: 1),
+                                color: Colors.redAccent,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  accountController
+                                              .countNotificationUnread.value >
+                                          10
+                                      ? "+10"
+                                      : accountController
+                                          .countNotificationUnread.value
+                                          .toString(),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 11,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                   ],
                 ),
               )
@@ -194,13 +205,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
-                      child: Container(
-                        width: double.infinity,
-                        height: 46,
-                        child: OutlinedButton(
-                          onPressed: () => {
-                            bottomNavbarController.currentIndex.value = 1,
-                          },
+                      child: InkWell(
+                        onTap: () {
+                          filterController.getListMajor();
+                          bottomNavbarController.currentIndex.value = 1;
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          height: 46,
+                          padding: EdgeInsets.only(left: 20),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(50)),
                           child: Row(children: [
                             Icon(
                               Icons.search,
@@ -241,34 +257,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             fontSize: 18,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                patientProfileController.nearestHealthCheck.value.id == 0
-                    ? Center(
-                        child: Text(
-                        "Bạn chưa có lịch hẹn",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w300),
-                      ))
-                    : Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                        child: InkWell(
-                          onTap: () => {
-                            patientHistoryController.index.value = 0,
-                            Get.to(() => PatientDetailHistoryScreen(),
-                                transition: Transition.rightToLeftWithFade,
-                                duration: Duration(microseconds: 600)),
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(15),
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
                         Expanded(child: Container()),
                         InkWell(
                           onTap: () =>

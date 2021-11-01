@@ -176,7 +176,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                                                     1 &&
                                                 chatbotcontroller.listChatbot[1]
                                                     .listAnswer.isEmpty) {
-                                              chatbotcontroller.SendMessage();
+                                              chatbotcontroller.sendMessage();
                                             }
                                             chatbotcontroller.listMessage.insert(
                                                 0,
@@ -224,7 +224,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                                                               .isEmpty)
                                                         {
                                                           chatbotcontroller
-                                                              .SendMessage()
+                                                              .sendMessage()
                                                         },
                                                       chatbotcontroller.listMessage.insert(
                                                           0,
@@ -237,7 +237,8 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                                                                   .question,
                                                               messagePatient:
                                                                   ans)),
-                                                      chatbotcontroller.nextQuestion(),
+                                                      chatbotcontroller
+                                                          .nextQuestion(),
                                                     },
                                                     shape: RoundedRectangleBorder(
                                                         borderRadius:
@@ -370,7 +371,9 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                                               2]
                                       .messagePatient),
                                   patientProfileController.patient.value,
-                                  listDoctorController.slot.value, chatbotcontroller.listSymptomHealthCheckPost.cast<SymptomHealthCheckPost>());
+                                  listDoctorController.slot.value,
+                                  chatbotcontroller.listSymptomHealthCheckPost
+                                      .cast<SymptomHealthCheckPost>());
                             }
                           }),
                     )
@@ -582,7 +585,7 @@ class BoxChat extends StatelessWidget {
                                               1]
                                           .listAnswer
                                           .isEmpty) {
-                                    chatbotcontroller.SendMessage();
+                                    chatbotcontroller.sendMessage();
                                   }
                                   chatbotcontroller.listMessage.insert(
                                       0,
@@ -624,7 +627,7 @@ class BoxChat extends StatelessWidget {
                                                     .listAnswer
                                                     .isEmpty)
                                               {
-                                                chatbotcontroller.SendMessage(),
+                                                chatbotcontroller.sendMessage(),
                                               },
                                             chatbotcontroller.listMessage
                                                 .insert(
@@ -658,7 +661,11 @@ class BoxChat extends StatelessWidget {
                                                     patientProfileController
                                                         .patient.value,
                                                     listDoctorController
-                                                        .slot.value, chatbotcontroller.listSymptomHealthCheckPost.cast<SymptomHealthCheckPost>()),
+                                                        .slot.value,
+                                                    chatbotcontroller
+                                                        .listSymptomHealthCheckPost
+                                                        .cast<
+                                                            SymptomHealthCheckPost>()),
                                               },
                                           },
                                           shape: RoundedRectangleBorder(
