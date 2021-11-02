@@ -76,7 +76,7 @@ class PatientProfileController extends GetxController {
       prescriptions: [],
       slots: [],
       symptomHealthChecks: []).obs;
-
+  RxString statusCovid = "VietNam".obs;
   getMyPatient() {
     String myEmail = accountController.account.value.email;
     if (myEmail.isEmpty) {
