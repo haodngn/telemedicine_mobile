@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
+import 'package:telemedicine_mobile/Screens/feedback_screen.dart';
 import 'package:telemedicine_mobile/controller/account_controller.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
@@ -59,6 +60,8 @@ class _CallScreenState extends State<CallScreen> {
           users = event.data()!;
           print(users.toString());
         });
+      } else {
+        _onCallEnd(context, true);
       }
     });
   }
@@ -291,7 +294,7 @@ class _CallScreenState extends State<CallScreen> {
             padding: const EdgeInsets.all(12.0),
           ),
           RawMaterialButton(
-            onPressed: () => _onCallEnd(context),
+            onPressed: () => _onCallEnd(context, false),
             child: Icon(
               Icons.call_end,
               color: Colors.white,
@@ -319,10 +322,15 @@ class _CallScreenState extends State<CallScreen> {
     );
   }
 
-  void _onCallEnd(BuildContext context) {
+  void _onCallEnd(BuildContext context, bool finish) {
     // destroy sdk
+    final listDoctorController = Get.put(ListDoctorController());
     _engine.leaveChannel();
     Navigator.pop(context);
+    if (finish) {
+      Get.to(
+          FeedbackScreen(id: listDoctorController.healthCheckToken.value.id));
+    }
   }
 
   void _onToggleMute() {

@@ -1,38 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
 import 'package:telemedicine_mobile/Screens/components/rounded_input_field.dart';
+import 'package:telemedicine_mobile/api/fetch_api.dart';
+import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
+import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
 
 class FeedbackScreen extends StatefulWidget {
   const FeedbackScreen({
     Key? key,
     this.id,
   }) : super(key: key);
-  final String? id;
+  final int? id;
   @override
   _FeedbackState createState() => _FeedbackState();
 }
 
 class _FeedbackState extends State<FeedbackScreen> {
   final TextEditingController FeddbackTextEditingController =
-  TextEditingController();
-  String star = '';
+      TextEditingController();
+  int star = 3;
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Mức độ hài lòng của bạn"),
       ),
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             ClipRRect(
               borderRadius: BorderRadius.circular(25),
               child: Container(
-                width: size.width * 0.8,
                 color: const Color(0xFFCFE9F1),
                 // color: Colors.blueGrey,
                 child: Column(
@@ -47,21 +50,19 @@ class _FeedbackState extends State<FeedbackScreen> {
                         initialRating: 3,
                         minRating: 1,
                         direction: Axis.horizontal,
-                        allowHalfRating: true,
                         itemCount: 5,
                         itemPadding:
-                        const EdgeInsets.symmetric(horizontal: 4.0),
+                            const EdgeInsets.symmetric(horizontal: 4.0),
                         itemBuilder: (context, _) => const Icon(
                           Icons.star,
                           color: Colors.amber,
                         ),
                         onRatingUpdate: (rating) {
-                          print(rating);
+                          print(rating.toString());
 
                           setState(() {
-                            star = rating.toString();
+                            star = rating.round();
                           });
-                          print("star: " + star);
                         },
                       ),
                     ),
@@ -78,11 +79,17 @@ class _FeedbackState extends State<FeedbackScreen> {
                     ),
                     FlatButton(
                       onPressed: () {
-                        // reqRef.child(widget.id!).update({
-                        //   'rating': star,
-                        //   'feedback': FeddbackTextEditingController.text,
-                        //   'status': 'Đã xử lí xong'
-                        // });
+                        PatientHistoryController patientHistoryController =
+                            Get.put(PatientHistoryController());
+                        ListDoctorController listDoctorController =
+                            Get.put(ListDoctorController());
+                        print(star.toString());
+                        patientHistoryController.editHealthCheckInfo(
+                            star,
+                            FeddbackTextEditingController.text.toString(),
+                            listDoctorController.healthCheckToken.value,
+                            0,
+                            0);
                         displayToastMessage("Đánh giá thành công", context);
                         Navigator.push(
                             context,
