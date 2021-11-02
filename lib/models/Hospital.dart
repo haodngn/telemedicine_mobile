@@ -9,12 +9,12 @@ class Hospital {
 
   Hospital(
       {required this.id,
-        required this.hospitalCode,
-        required this.name,
-        required this.address,
-        required this.description,
-        required this.lat,
-        required this.long});
+      required this.hospitalCode,
+      required this.name,
+      required this.address,
+      required this.description,
+      required this.lat,
+      required this.long});
 
   Hospital.fromJson(Map<String, dynamic> json) {
     id = json['id'];

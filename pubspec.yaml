@@ -69,6 +69,10 @@ dependencies:
   permission_handler:
   flutter_secure_storage: ^4.2.1
 
+  #google map
+  google_maps_flutter: ^2.0.8
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

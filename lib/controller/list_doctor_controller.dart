@@ -200,9 +200,13 @@ class ListDoctorController extends GetxController {
       symptomHealthChecks: []).obs;
 
   getTokenHealthCheck(int healthCheckID) {
-    FetchAPI.getTokenHealthCheck(healthCheckID).then((value) => {
-          healthCheckToken.value = value,
-          Get.to(CallScreen()),
+    FetchAPI.joinCall(healthCheckID).then((valueJoinCall) => {
+          FetchAPI.getTokenHealthCheck(healthCheckID).then((value) => {
+                healthCheckToken.value = value,
+                Get.to(CallScreen(
+                  uid: valueJoinCall.uid,
+                )),
+              })
         });
   }
 

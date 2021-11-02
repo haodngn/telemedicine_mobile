@@ -24,7 +24,6 @@ class GoogleButton extends StatelessWidget {
           width: 250,
         ),
         onTap: () async {
-          patientHistoryController.getTopDoctor();
           String checkLogin =
               await Provider.of<GoogleSignInController>(context, listen: false)
                   .googleLogin();
@@ -36,8 +35,8 @@ class GoogleButton extends StatelessWidget {
             Fluttertoast.showToast(
                 msg: "Tài khoản của bạn đã bị khóa", fontSize: 18);
           } else if (checkLogin == "Login Success") {
-            Navigator.push(
-                context, MaterialPageRoute(builder: checkLoginGoogle));
+            patientHistoryController.getTopDoctor();
+            Get.to(checkLoginGoogle(context));
           } else if (checkLogin == "Create Account") {
             Navigator.push(
                 context, MaterialPageRoute(builder: checkNewAccount));

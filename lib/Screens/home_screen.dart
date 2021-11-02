@@ -194,7 +194,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 30),
                     child: Text(
-                      'Xin chào ' + patientProfileController.patient.value.name,
+                      'Xin chào!',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: kTitleTextColor,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 30),
+                    child: Text(
+                      patientProfileController.patient.value.name,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
@@ -1042,10 +1053,10 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 10,
           ),
           CategoryCard(
-            'Teeth\nSymptoms',
+            'Bệnh viện\nGần đây',
             'assets/icons/dental_surgeon.png',
             kBlueColor,
-            3,
+            4,
           ),
           SizedBox(
             width: 10,

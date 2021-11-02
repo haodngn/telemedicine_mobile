@@ -8,6 +8,7 @@ import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 import 'package:telemedicine_mobile/controller/account_controller.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
+import 'package:telemedicine_mobile/firestore/firestore_service.dart';
 
 import '../../constant.dart';
 
@@ -18,6 +19,9 @@ const appID = "834dec7fc5144086a2fe803cb3e51fff";
 //     "006834dec7fc5144086a2fe803cb3e51fffIABR16jJtM+hfS4WT9ZxVJqnzvzsApLRgvAZicdfUEJn4p/w5cEh39v0KADCh505agF6YQUAAQAAAAAAAgAAAAAAAwAAAAAABAAAAAAA6AMAAAAA";
 
 class CallScreen extends StatefulWidget {
+  final int uid;
+  const CallScreen({Key? key, required this.uid}) : super(key: key);
+
   @override
   _CallScreenState createState() => _CallScreenState();
 }
@@ -27,12 +31,12 @@ class _CallScreenState extends State<CallScreen> {
   bool muted = false, disableCamera = false;
   late RtcEngine _engine;
   final patientProfileController = Get.put(PatientProfileController());
-
+  Map<String, dynamic> users = new Map<String, dynamic>();
   @override
   void initState() {
     super.initState();
+    listenFireBase(listDoctorController.healthCheckToken.value.id);
     initAgora();
-    print("object: " + listDoctorController.healthCheckToken.value.token);
   }
 
   @override
@@ -47,18 +51,29 @@ class _CallScreenState extends State<CallScreen> {
 
   final listDoctorController = Get.put(ListDoctorController());
   final accountController = Get.put(AccountController());
+
+  listenFireBase(int id) {
+    FireStoreService().getHealCheckUsers(id).listen((event) {
+      if (event.exists) {
+        setState(() {
+          users = event.data()!;
+          print(users.toString());
+        });
+      }
+    });
+  }
+
   Future<void> initAgora() async {
     //create the engine
     await initializeAgoraEngine();
     addAgoraEventHandlers();
     await _engine.enableWebSdkInteroperability(true);
-
     await _engine.joinChannel(
         listDoctorController.healthCheckToken.value.token,
         "SLOT_" +
             listDoctorController.healthCheckToken.value.slots[0].id.toString(),
         null,
-        0);
+        widget.uid);
 
     _engine.enableLocalVideo(!disableCamera);
   }
@@ -104,7 +119,29 @@ class _CallScreenState extends State<CallScreen> {
 
   /// Video view wrapper
   Widget _videoView(view) {
-    return Expanded(child: Container(child: view));
+    return Expanded(
+        child: Container(
+            child: Stack(
+      children: [
+        view,
+        if (_getRenderViews().length > 1)
+          Positioned(
+            top: 5,
+            left: 5,
+            child: Text(
+              view.uid == 0
+                  ? accountController.account.value.firstName +
+                      " " +
+                      accountController.account.value.lastName
+                  : users[view.uid.toString()],
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+              ),
+            ),
+          )
+      ],
+    )));
   }
 
   /// Video view row wrapper
@@ -120,18 +157,16 @@ class _CallScreenState extends State<CallScreen> {
   // Create UI with local view and remote view
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tele Medicine Video Call'),
-        automaticallyImplyLeading: false,
-      ),
-      backgroundColor: kBackgroundVideoColor,
-      body: Center(
-        child: Stack(
-          children: <Widget>[
-            _viewRows(),
-            _toolbar(),
-          ],
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: kBackgroundVideoColor,
+        body: Center(
+          child: Stack(
+            children: <Widget>[
+              _viewRows(),
+              _toolbar(),
+            ],
+          ),
         ),
       ),
     );
