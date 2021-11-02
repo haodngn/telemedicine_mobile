@@ -271,9 +271,12 @@ class PatientProfileController extends GetxController {
     account.value = newAccount;
     if (emptyDistrict.isFalse && emptyWard.isFalse) {
       isLoading.value = true;
-      FetchAPI.updateMyAccountInfo(account.value, image.value.path).then(
-          (value) => new Future.delayed(
-              const Duration(seconds: 2), () => {isLoading.value = false}));
+      FetchAPI.updateMyAccountInfo(account.value, image.value.path)
+          .then((value) {
+        getMyAccount();
+        new Future.delayed(
+            const Duration(seconds: 2), () => {isLoading.value = false});
+      });
       done.value = true;
     }
   }

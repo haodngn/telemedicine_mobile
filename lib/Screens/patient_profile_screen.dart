@@ -96,7 +96,7 @@ class _PatientProfileState extends State<PatientProfile> {
                       ),
                     ),
                     Text(
-                      patientProfileController.patient.value.name,
+                      patientProfileController.account.value.firstName + " " + patientProfileController.account.value.lastName,
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
