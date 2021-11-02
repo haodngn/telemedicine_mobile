@@ -7,6 +7,7 @@ import 'package:telemedicine_mobile/Screens/components/rounded_input_field.dart'
 import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
+import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 
 class FeedbackScreen extends StatefulWidget {
   const FeedbackScreen({
@@ -58,8 +59,6 @@ class _FeedbackState extends State<FeedbackScreen> {
                           color: Colors.amber,
                         ),
                         onRatingUpdate: (rating) {
-                          print(rating.toString());
-
                           setState(() {
                             star = rating.round();
                           });
@@ -83,7 +82,9 @@ class _FeedbackState extends State<FeedbackScreen> {
                             Get.put(PatientHistoryController());
                         ListDoctorController listDoctorController =
                             Get.put(ListDoctorController());
-                        print(star.toString());
+                        PatientProfileController patientProfileController =
+                            Get.put(PatientProfileController());
+                        patientProfileController.getNearestHealthCheck();
                         patientHistoryController.editHealthCheckInfo(
                             star,
                             FeddbackTextEditingController.text.toString(),

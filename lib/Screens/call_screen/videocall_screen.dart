@@ -11,7 +11,6 @@ import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 import 'package:telemedicine_mobile/firestore/firestore_service.dart';
 import 'package:screen/screen.dart';
-
 import '../../constant.dart';
 
 //appID in Agora
@@ -304,7 +303,7 @@ class _CallScreenState extends State<CallScreen> {
           Container(
             width: MediaQuery.of(context).size.width * 0.2,
             child: RawMaterialButton(
-              onPressed: () => _onCallEnd(context),
+              onPressed: () => _onCallEnd(context, false),
               child: Icon(
                 Icons.call_end,
                 color: Colors.white,
