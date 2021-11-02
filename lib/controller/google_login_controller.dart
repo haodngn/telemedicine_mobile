@@ -9,6 +9,7 @@ import 'package:telemedicine_mobile/controller/account_controller.dart';
 class GoogleSignInController with ChangeNotifier {
   var _googleSignIn = GoogleSignIn();
   GoogleSignInAccount? _user;
+
   GoogleSignInAccount get user => _user!;
 
   Future<String> googleLogin() async {
@@ -33,6 +34,7 @@ class GoogleSignInController with ChangeNotifier {
 
       await FetchAPI.loginWithToken(await response.user!.getIdToken())
           .then((value) => statusLogin = value);
+
       notifyListeners();
     } catch (e) {
       statusLogin = "";

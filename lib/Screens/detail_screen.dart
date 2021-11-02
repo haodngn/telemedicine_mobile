@@ -45,6 +45,7 @@ class DetailScreen extends StatelessWidget {
             SingleChildScrollView(
               child: Container(
                 width: double.infinity,
+                margin: const EdgeInsets.only(bottom: 50.0),
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('assets/images/detail_illustration.png'),

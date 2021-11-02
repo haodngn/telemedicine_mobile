@@ -13,6 +13,7 @@ import 'package:telemedicine_mobile/models/ContentDoctor.dart';
 import 'package:telemedicine_mobile/models/ContentHealthCheck.dart';
 import 'package:telemedicine_mobile/models/ContentHospital.dart';
 import 'package:telemedicine_mobile/models/ContentMajor.dart';
+import 'package:telemedicine_mobile/models/ContentNews.dart';
 import 'package:telemedicine_mobile/models/ContentNotification.dart';
 import 'package:telemedicine_mobile/models/ContentSlot.dart';
 import 'package:telemedicine_mobile/models/ContentSymptom.dart';
@@ -22,11 +23,14 @@ import 'package:telemedicine_mobile/models/HealthCheck.dart';
 import 'package:telemedicine_mobile/models/HealthCheckChangeSTT.dart';
 import 'package:telemedicine_mobile/models/HealthCheckPost.dart';
 import 'package:telemedicine_mobile/models/Hospital.dart';
+import 'package:telemedicine_mobile/models/JoinCallModel.dart';
 import 'package:telemedicine_mobile/models/Major.dart';
+import 'package:telemedicine_mobile/models/News.dart';
 import 'package:telemedicine_mobile/models/Notification.dart';
 import 'package:telemedicine_mobile/models/Patient.dart';
 import 'package:telemedicine_mobile/models/Role.dart';
 import 'package:telemedicine_mobile/models/Slot.dart';
+import 'package:telemedicine_mobile/models/StatisticCovid/StatisticCovid.dart';
 import 'package:telemedicine_mobile/models/Symptom.dart';
 import 'package:telemedicine_mobile/models/TimeFrame.dart';
 import 'package:dio/dio.dart';
@@ -164,6 +168,44 @@ class FetchAPI {
       } else {
         throw Exception("Internal server error");
       }
+    }
+  }
+
+  static Future<List<News>> fetchContentNews() async {
+    final response = await http.get(
+      Uri.parse(
+          "https://api.coronatracker.com/news/trending?limit=5&offset=0&language=vi&fbclid=IwAR2rQ_ijG1GnzHDAH7gkag_A1ljj6d1NVkDC_5CG8QOlV4HYpellcQ8o3Lo"),
+      headers: <String, String>{
+        HttpHeaders.contentTypeHeader: 'application/json',
+      },
+    );
+    if (response.statusCode == 200) {
+      var contentJSon = json.decode(utf8.decode(response.bodyBytes));
+      ContentNews contentNews = ContentNews.fromJson(contentJSon);
+      print("TEST:" + contentNews.news.length.toString());
+      return contentNews.news;
+    } else {
+      throw Exception("Internal server error");
+    }
+  }
+
+  static Future<dynamic> fetchContentStaticCovid() async {
+    final response = await http.get(
+      Uri.parse(
+          "https://static.pipezero.com/covid/data.json?fbclid=IwAR2-5yMjUCwJVTz2FQRS0v9ll7ggkePfoZbEZQGBOeFbctSqVgf5DP3pa04"),
+      headers: <String, String>{
+        HttpHeaders.contentTypeHeader: 'application/json',
+      },
+    );
+    if (response.statusCode == 200) {
+      var contentJSon = json.decode(utf8.decode(response.bodyBytes));
+      StatisticCovid contentCovidTotal =
+          StatisticCovid.fromJson(contentJSon["total"]);
+      StatisticCovid contentCovidToday =
+          StatisticCovid.fromJson(contentJSon["today"]);
+      return {'total': contentCovidTotal, 'today': contentCovidToday};
+    } else {
+      throw Exception("Internal server error");
     }
   }
 
@@ -724,6 +766,45 @@ class FetchAPI {
     }
   }
 
+  static Future<JoinCallResponse> joinCall(int healthCheckID) async {
+    final storage = new Storage.FlutterSecureStorage();
+    String token = await storage.read(key: "accessToken") ?? "";
+    final accountController = GetX.Get.put(AccountController());
+    String email = accountController.account.value.email;
+    String displayName = accountController.account.value.firstName +
+        " " +
+        accountController.account.value.lastName;
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500));
+      throw Exception("Error: UnAuthentication");
+    } else {
+      final Map<String, dynamic> data = new Map<String, dynamic>();
+      data['healthCheckID'] = healthCheckID;
+      data['email'] = email.toLowerCase();
+      data['displayName'] = displayName;
+      data['isInvited'] = true;
+      final response = await http.post(
+          Uri.parse("https://binhtt.tech/api/v1/health-checks/join-call"),
+          body: jsonEncode(data),
+          headers: <String, String>{
+            HttpHeaders.contentTypeHeader: 'application/json',
+            HttpHeaders.authorizationHeader: 'Bearer $token',
+          });
+      if (response.statusCode == 200) {
+        var contentJSon = json.decode(utf8.decode(response.bodyBytes));
+        JoinCallResponse joinCallResponse =
+            JoinCallResponse.fromJson(contentJSon);
+        return joinCallResponse;
+      } else if (response.statusCode == 404) {
+        throw Exception("No health check found with the specified id");
+      } else {
+        throw Exception("Internal server error");
+      }
+    }
+  }
+
   static Future<String> cancelHealthCheck(
       HealthCheckChangeSTT healthCheckChangeSTT) async {
     final storage = new Storage.FlutterSecureStorage();
@@ -900,6 +981,39 @@ class FetchAPI {
         }
       }
       return false;
+    }
+  }
+
+  static Future<ContentHospital> getListNearHospital(
+      double lat, double lng) async {
+    final storage = new Storage.FlutterSecureStorage();
+    String token = await storage.read(key: "accessToken") ?? "";
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500));
+      throw Exception("Error: UnAuthentication");
+    } else {
+      final response = await http.get(
+        Uri.parse(
+            "https://binhtt.tech/api/v1/hospitals?latitude=$lat&longitude=$lng&limit=3&page-offset=1"),
+        headers: <String, String>{
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        var contentJSon = json.decode(utf8.decode(response.bodyBytes));
+        ContentHospital contentHospital = ContentHospital.fromJson(contentJSon);
+
+        return contentHospital;
+      } else if (response.statusCode == 404) {
+        throw Exception("Not found doctor");
+      } else if (response.statusCode == 401) {
+        throw Exception("Error: Unauthorized");
+      } else {
+        throw Exception("Internal server error");
+      }
     }
   }
 }

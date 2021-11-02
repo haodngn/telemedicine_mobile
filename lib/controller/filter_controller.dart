@@ -17,6 +17,7 @@ class FilterController extends GetxController {
   RxString endTime = "00:00".obs;
   RxString parseSearchMajor = "".obs;
   RxString parseSearchHospital = "".obs;
+  Rx<int> hospitalId = 0.obs;
 
   void getMyAddress() async {
     final position = await Geolocator.getCurrentPosition(
@@ -127,6 +128,9 @@ class FilterController extends GetxController {
           condition += ("date-health-check=$formattedDate&");
           if (nameDoctor.isNotEmpty) {
             condition += ("name-doctor=${nameDoctor.value}&");
+          }
+          if (hospitalId.value != 0) {
+            condition += ("hospitals=${hospitalId.value}&");
           }
           listDoctorController.condition.value = condition;
           break;
