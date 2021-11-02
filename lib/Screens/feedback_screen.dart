@@ -4,7 +4,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
 import 'package:telemedicine_mobile/Screens/components/rounded_input_field.dart';
-import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
@@ -82,9 +81,6 @@ class _FeedbackState extends State<FeedbackScreen> {
                             Get.put(PatientHistoryController());
                         ListDoctorController listDoctorController =
                             Get.put(ListDoctorController());
-                        PatientProfileController patientProfileController =
-                            Get.put(PatientProfileController());
-                        patientProfileController.getNearestHealthCheck();
                         patientHistoryController.editHealthCheckInfo(
                             star,
                             FeddbackTextEditingController.text.toString(),

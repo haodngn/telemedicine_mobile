@@ -42,6 +42,9 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     getNews();
     getStatisticCovid();
+    PatientProfileController patientProfileController =
+        Get.put(PatientProfileController());
+    patientProfileController.getNearestHealthCheck();
     _fireBaseConfig();
   }
 

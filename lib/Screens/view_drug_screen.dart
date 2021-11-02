@@ -118,9 +118,14 @@ class _ViewDrugScreenState extends State<ViewDrugScreen> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                       child: Container(
-                        width: double.infinity,
-                        child: Text("Đơn thuốc: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,),)
-                      ),
+                          width: double.infinity,
+                          child: Text(
+                            "Đơn thuốc: ",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )),
                     ),
                     SizedBox(
                       height: 20,
@@ -186,24 +191,29 @@ class _ViewDrugScreenState extends State<ViewDrugScreen> {
                                     Container(
                                       decoration:
                                           BoxDecoration(border: Border.all()),
-                                      width:
-                                          MediaQuery.of(context).size.width * 0.5 -
-                                              7,
+                                      width: MediaQuery.of(context).size.width *
+                                              0.5 -
+                                          7,
                                       height: 60,
                                       padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                                       child: Text(
                                         patientHistoryController
-                                            .listHealthCheck[
-                                                patientHistoryController
-                                                    .index.value]
-                                            .prescriptions[index]
-                                            .drug
-                                            .name + "( " + patientHistoryController
-                                            .listHealthCheck[
-                                                patientHistoryController
-                                                    .index.value]
-                                            .prescriptions[index]
-                                            .drug.drugType.name + ")",
+                                                .listHealthCheck[
+                                                    patientHistoryController
+                                                        .index.value]
+                                                .prescriptions[index]
+                                                .drug
+                                                .name +
+                                            "( " +
+                                            patientHistoryController
+                                                .listHealthCheck[
+                                                    patientHistoryController
+                                                        .index.value]
+                                                .prescriptions[index]
+                                                .drug
+                                                .drugType
+                                                .name +
+                                            ")",
                                         style: TextStyle(
                                           fontSize: 18,
                                         ),
@@ -213,9 +223,9 @@ class _ViewDrugScreenState extends State<ViewDrugScreen> {
                                       decoration:
                                           BoxDecoration(border: Border.all()),
                                       height: 60,
-                                      width:
-                                          MediaQuery.of(context).size.width * 0.25 -
-                                              7,
+                                      width: MediaQuery.of(context).size.width *
+                                              0.25 -
+                                          7,
                                       child: Center(
                                         child: Text(
                                           (DateTime.parse(patientHistoryController.listHealthCheck[patientHistoryController.index.value].prescriptions[index].endDate).difference(DateTime.parse(patientHistoryController.listHealthCheck[patientHistoryController.index.value].prescriptions[index].startDate)).inDays *
@@ -235,7 +245,8 @@ class _ViewDrugScreenState extends State<ViewDrugScreen> {
                                                   DateTime.parse(patientHistoryController
                                                               .listHealthCheck[
                                                                   patientHistoryController
-                                                                      .index.value]
+                                                                      .index
+                                                                      .value]
                                                               .prescriptions[index]
                                                               .endDate)
                                                           .difference(DateTime.parse(patientHistoryController.listHealthCheck[patientHistoryController.index.value].prescriptions[index].startDate))
@@ -252,9 +263,9 @@ class _ViewDrugScreenState extends State<ViewDrugScreen> {
                                       decoration:
                                           BoxDecoration(border: Border.all()),
                                       height: 60,
-                                      width:
-                                          MediaQuery.of(context).size.width * 0.25 -
-                                              7,
+                                      width: MediaQuery.of(context).size.width *
+                                              0.25 -
+                                          7,
                                       child: Center(
                                         child: Text(
                                           patientHistoryController
@@ -272,73 +283,74 @@ class _ViewDrugScreenState extends State<ViewDrugScreen> {
                                     ),
                                   ],
                                 ),
-                                 Container(
-                                      decoration:
-                                          BoxDecoration(border: Border.all()),
-                                      height: 60,
-                                      width:
-                                          MediaQuery.of(context).size.width,
-                                          padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                          "Uống: Sáng - " +
-                                              patientHistoryController
-                                                  .listHealthCheck[
-                                                      patientHistoryController
-                                                          .index.value]
-                                                  .prescriptions[index]
-                                                  .morningQuantity
-                                                  .toString() +
-                                              ", Trưa - " +
-                                              patientHistoryController
-                                                  .listHealthCheck[
-                                                      patientHistoryController
-                                                          .index.value]
-                                                  .prescriptions[index]
-                                                  .afternoonQuantity
-                                                  .toString() +
-                                              ", Chiều - " +
-                                              patientHistoryController
-                                                  .listHealthCheck[
-                                                      patientHistoryController
-                                                          .index.value]
-                                                  .prescriptions[index]
-                                                  .eveningQuantity
-                                                  .toString(),
-                                          style: TextStyle(fontSize: 18),
-                                        ),
-                                        Text(
-                                          "Ngày uống: " +
-                                              DateFormat("dd/MM/yyyy").format(
-                                          DateTime.parse(
-                                              patientHistoryController
-                                                  .listHealthCheck[
-                                                      patientHistoryController
-                                                          .index.value]
-                                                  .prescriptions[index]
-                                                  .startDate)) +
-                                      " - " +
-                                      DateFormat("dd/MM/yyyy").format(
-                                          DateTime.parse(
-                                              patientHistoryController
-                                                  .listHealthCheck[
-                                                      patientHistoryController
-                                                          .index.value]
-                                                  .prescriptions[index]
-                                                  .endDate)),
-                                          style: TextStyle(fontSize: 18),
-                                        ),
-                                        ],
+                                Container(
+                                  decoration:
+                                      BoxDecoration(border: Border.all()),
+                                  height: 60,
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Uống: Sáng - " +
+                                            patientHistoryController
+                                                .listHealthCheck[
+                                                    patientHistoryController
+                                                        .index.value]
+                                                .prescriptions[index]
+                                                .morningQuantity
+                                                .toString() +
+                                            ", Trưa - " +
+                                            patientHistoryController
+                                                .listHealthCheck[
+                                                    patientHistoryController
+                                                        .index.value]
+                                                .prescriptions[index]
+                                                .afternoonQuantity
+                                                .toString() +
+                                            ", Chiều - " +
+                                            patientHistoryController
+                                                .listHealthCheck[
+                                                    patientHistoryController
+                                                        .index.value]
+                                                .prescriptions[index]
+                                                .eveningQuantity
+                                                .toString(),
+                                        style: TextStyle(fontSize: 18),
                                       ),
-                                    ),
-                                    SizedBox(height: 20,),
+                                      Text(
+                                        "Ngày uống: " +
+                                            DateFormat("dd/MM/yyyy").format(
+                                                DateTime.parse(
+                                                    patientHistoryController
+                                                        .listHealthCheck[
+                                                            patientHistoryController
+                                                                .index.value]
+                                                        .prescriptions[index]
+                                                        .startDate)) +
+                                            " - " +
+                                            DateFormat("dd/MM/yyyy").format(
+                                                DateTime.parse(
+                                                    patientHistoryController
+                                                        .listHealthCheck[
+                                                            patientHistoryController
+                                                                .index.value]
+                                                        .prescriptions[index]
+                                                        .endDate)),
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
                               ],
                             );
                           }),
                     ),
-                    
                     Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: Container(
