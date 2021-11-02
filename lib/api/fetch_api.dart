@@ -569,14 +569,6 @@ class FetchAPI {
 
   static Future<int> createNewAccount(
       AccountPost accountPost, String filePath) async {
-    final storage = new Storage.FlutterSecureStorage();
-    String token = await storage.read(key: "accessToken") ?? "";
-    if (token.isEmpty) {
-      GetX.Get.offAll(LoginScreen(),
-          transition: GetX.Transition.leftToRightWithFade,
-          duration: Duration(milliseconds: 500));
-      throw Exception("Error: UnAuthentication");
-    } else {
       try {
         FormData formData = new FormData.fromMap({
           "image": await MultipartFile.fromFile(filePath, filename: "avatar"),
@@ -598,30 +590,23 @@ class FetchAPI {
                 data: formData,
                 options: Options(headers: <String, String>{
                   HttpHeaders.contentTypeHeader: 'multipart/form-data',
-                  HttpHeaders.authorizationHeader: 'Bearer $token',
                 }));
+        print("TYU" + response.statusCode.toString());
         return response.statusCode!;
       } on DioError catch (e) {
+        print(e);
         return e.response!.statusCode!;
       }
-    }
   }
 
   static Future<int> createNewPatient(Patient patient) async {
-    final storage = new Storage.FlutterSecureStorage();
-    String token = await storage.read(key: "accessToken") ?? "";
-    if (token.isEmpty) {
-      throw Exception("Error: UnAuthentication");
-    } else {
       final response = await http.post(
           Uri.parse("https://binhtt.tech/api/v1/patients"),
           body: jsonEncode(patient.toJson()),
           headers: <String, String>{
             HttpHeaders.contentTypeHeader: 'application/json-patch+json',
-            HttpHeaders.authorizationHeader: 'Bearer $token',
           });
       return response.statusCode;
-    }
   }
 
   static Future<String> createNewHealthCheck(

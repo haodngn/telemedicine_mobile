@@ -488,7 +488,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                     patientProfileController.district.value.isEmpty &&
                             patientProfileController.emptyDistrict.value
                         ? Padding(
-                            padding: const EdgeInsets.only(left: 110),
+                      padding: const EdgeInsets.only(top: 10, left: 10),
                             child: Text(
                               "Vui lòng chọn quận, huyện",
                               style: TextStyle(color: Colors.red, fontSize: 14),
@@ -555,7 +555,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                     patientProfileController.ward.value.isEmpty &&
                             patientProfileController.emptyWard.value
                         ? Padding(
-                            padding: const EdgeInsets.only(left: 110),
+                      padding: const EdgeInsets.only(top: 10, left: 10),
                             child: Text(
                               "Vui lòng chọn phường, xã",
                               style: TextStyle(color: Colors.red, fontSize: 14),

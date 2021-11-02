@@ -81,192 +81,230 @@ class _UserInformationState extends State<UserInformation> {
                           color: Colors.black,
                           fontSize: 30),
                     ),
-                    SizedBox(height: 30),
+                    SizedBox(height: 16),
                     Center(
                       child: InkWell(
-                        onTap: () => {_showOptions(context)},
+                        onTap: () => _showOptions(context),
                         child: Container(
-                          width: MediaQuery.of(context).size.width / 2,
-                          height: MediaQuery.of(context).size.width / 2,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.white, width: 5),
-                            shape: BoxShape.circle,
-                          ),
-                          child:
-                              formAfterLoginController.image.value.path.isEmpty
-                                  ? Image(
-                                      image: AssetImage(
-                                          'assets/images/default_avatar.png'))
-                                  : ClipRRect(
-                                      borderRadius: BorderRadius.circular(80),
-                                      child: Image.file(
-                                        formAfterLoginController.image.value,
-                                        fit: BoxFit.cover,
+                            padding: EdgeInsets.all(10.0),
+                            width: MediaQuery.of(context).size.width / 1.8,
+                            height: MediaQuery.of(context).size.width / 1.8,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.white, width: 5),
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                            ),
+                            child: Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                formAfterLoginController
+                                        .image.value.path.isEmpty
+                                    ? ClipRRect(
+                                        borderRadius: BorderRadius.circular(80),
+                                        child: Image(
+                                            fit: BoxFit.cover,
+                                            image: AssetImage(
+                                                'assets/images/default_avatar.png')),
+                                      )
+                                    : ClipRRect(
+                                        borderRadius: BorderRadius.circular(80),
+                                        child: Image.file(
+                                          formAfterLoginController.image.value,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
-                                    ),
-                        ),
+                              ],
+                            )),
                       ),
                     ),
-                    formAfterLoginController.emptyImage.value ? Center(
-                      child: Text(
-                        "Vui lòng chọn ảnh đại diện",
-                        style: TextStyle(color: Colors.red, fontSize: 14),
-                      ),
-                    ) : Container(),
-                    SizedBox(height: 20),
-                    Stack(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 15, 20, 0),
-                          child: Text(
-                            "Họ:",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(100, 0, 0, 0),
-                          child: TextField(
-                            controller: textFirstNameController,
-                            decoration: InputDecoration(
-                              hintText: "Họ",
-                              border: OutlineInputBorder(),
-                              errorText:
-                                  formAfterLoginController.emptyFName.value
-                                      ? "Vui lòng nhập họ của bạn"
-                                      : null,
-                              errorStyle: TextStyle(fontSize: 14),
-                            ),
-                            keyboardType: TextInputType.name,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Stack(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 15, 20, 0),
-                          child: Text(
-                            "Tên:",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(100, 0, 0, 0),
-                          child: TextField(
-                            controller: textLastNameController,
-                            decoration: InputDecoration(
-                              hintText: "Tên",
-                              border: OutlineInputBorder(),
-                              errorText:
-                                  formAfterLoginController.emptyLName.value
-                                      ? "Vui lòng nhập tên của bạn"
-                                      : null,
-                              errorStyle: TextStyle(fontSize: 14),
-                            ),
-                            keyboardType: TextInputType.name,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Stack(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 15, 20, 0),
-                          child: Text(
-                            "Giới tính:",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(100, 5, 0, 0),
-                          child: Radio(
-                            value: "Nam",
-                            groupValue:
-                                formAfterLoginController.selectedGender.value,
-                            onChanged: (value) {
-                              formAfterLoginController.selectedGender.value =
-                                  value.toString();
-                            },
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(140, 18, 0, 0),
-                          child: Text(
-                            "Nam",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(220, 5, 0, 0),
-                          child: Radio(
-                            value: "Nữ",
-                            groupValue:
-                                formAfterLoginController.selectedGender.value,
-                            onChanged: (value) {
-                              formAfterLoginController.selectedGender.value =
-                                  value.toString();
-                            },
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(260, 18, 0, 0),
-                          child: Text(
-                            "Nữ",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    formAfterLoginController.emptyGender.value
-                        ? Padding(
-                            padding: const EdgeInsets.only(left: 110),
+                    formAfterLoginController.emptyImage.value
+                        ? Center(
                             child: Text(
-                              "Vui lòng chọn giới tính của bạn",
+                              "Vui lòng chọn ảnh đại diện",
                               style: TextStyle(color: Colors.red, fontSize: 14),
                             ),
                           )
                         : Container(),
-                    SizedBox(height: 10),
-                    Stack(
+                    SizedBox(height: 20),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 18, 20, 0),
-                          child: Text(
-                            "Ngày sinh:",
-                            style: TextStyle(
-                              fontSize: 18,
+                        Text(
+                          "Họ:",
+                          style: TextStyle(
+                            fontSize: 17,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        TextField(
+                          controller: textFirstNameController,
+                          decoration: InputDecoration(
+                            hintText: "Họ",
+                            border: OutlineInputBorder(),
+                            errorText: formAfterLoginController.emptyFName.value
+                                ? "Vui lòng nhập họ của bạn"
+                                : null,
+                            errorStyle: TextStyle(fontSize: 14),
+                          ),
+                          keyboardType: TextInputType.name,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Tên:",
+                          style: TextStyle(
+                            fontSize: 17,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        TextField(
+                          controller: textLastNameController,
+                          decoration: InputDecoration(
+                            hintText: "Tên",
+                            border: OutlineInputBorder(),
+                            errorText: formAfterLoginController.emptyLName.value
+                                ? "Vui lòng nhập tên của bạn"
+                                : null,
+                            errorStyle: TextStyle(fontSize: 14),
+                          ),
+                          keyboardType: TextInputType.name,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Giới tính:",
+                          style: TextStyle(
+                            fontSize: 17,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  formAfterLoginController
+                                      .selectedGender.value = true;
+                                },
+                                child: Container(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 2.0),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(),
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Radio(
+                                        value: true,
+                                        groupValue: formAfterLoginController
+                                            .selectedGender.value,
+                                        onChanged: (newValue) {
+                                          formAfterLoginController
+                                              .selectedGender.value = true;
+                                        },
+                                      ),
+                                      Text(
+                                        "Nam",
+                                        style: TextStyle(
+                                          fontSize: 19,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.04,
+                            ),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  formAfterLoginController
+                                      .selectedGender.value = false;
+                                },
+                                child: Container(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 2.0),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(),
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Radio(
+                                        value: false,
+                                        groupValue: formAfterLoginController
+                                            .selectedGender.value,
+                                        onChanged: (newValue) {
+                                          formAfterLoginController
+                                              .selectedGender.value = false;
+                                        },
+                                      ),
+                                      Text(
+                                        "Nữ",
+                                        style: TextStyle(
+                                          fontSize: 19,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Ngày sinh:",
+                          style: TextStyle(
+                            fontSize: 17,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(294, 8, 0, 0),
-                          child: Icon(
-                            Icons.calendar_today_rounded,
-                            size: 30,
-                            color: Colors.grey,
-                          ),
+                        SizedBox(
+                          height: 8,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 100),
-                          child: Container(
-                            width: double.infinity,
-                            child: OutlinedButton(
-                              onPressed: () =>
-                                  formAfterLoginController.pickDate(context),
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 106),
+                        Stack(
+                          children: [
+                            Positioned.fill(
+                              left: 4,
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Icon(
+                                  Icons.calendar_today_rounded,
+                                  size: 30,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: double.infinity,
+                              height: 50,
+                              child: OutlinedButton(
+                                onPressed: () =>
+                                    formAfterLoginController.pickDate(context),
                                 child: Text(
                                   formAfterLoginController.dob.value.year >=
                                               DateTime.now().year &&
@@ -286,67 +324,67 @@ class _UserInformationState extends State<UserInformation> {
                                 ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
                       ],
                     ),
                     formAfterLoginController.emptyDOB.value
                         ? Padding(
-                            padding: const EdgeInsets.only(left: 110),
+                            padding: const EdgeInsets.only(top: 10, left: 10),
                             child: Text(
                               "Vui lòng chọn ngày sinh của bạn",
                               style: TextStyle(color: Colors.red, fontSize: 14),
                             ),
                           )
                         : Container(),
-                    SizedBox(height: 15),
-                    Stack(
+                    SizedBox(height: 20),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 15, 20, 0),
-                          child: Text(
-                            "Điện thoại:",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
+                        Text(
+                          "Điện thoại:",
+                          style: TextStyle(
+                            fontSize: 17,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 100),
-                          child: TextField(
-                            controller: textPhoneController,
-                            decoration: InputDecoration(
-                              hintText: "Số điện thoại",
-                              border: OutlineInputBorder(),
-                              errorText:
-                                  formAfterLoginController.emptyPhone.value
-                                      ? "Vui lòng nhập số điện thoại"
-                                      : null,
-                              errorStyle: TextStyle(fontSize: 14),
-                            ),
-                            keyboardType: TextInputType.phone,
+                        SizedBox(
+                          height: 8,
+                        ),
+                        TextField(
+                          controller: textPhoneController,
+                          decoration: InputDecoration(
+                            hintText: "Số điện thoại",
+                            border: OutlineInputBorder(),
+                            errorText: formAfterLoginController.emptyPhone.value
+                                ? "Vui lòng nhập số điện thoại"
+                                : null,
+                            errorStyle: TextStyle(fontSize: 14),
                           ),
+                          keyboardType: TextInputType.phone,
                         ),
                       ],
                     ),
-                    Stack(
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 35),
-                          child: Text(
-                            "Thành phố:",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
+                        Text(
+                          "Thành phố:",
+                          style: TextStyle(
+                            fontSize: 17,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(100, 20, 0, 0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(6),
-                              border: Border.all(color: Colors.grey, width: 1),
-                            ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(color: Colors.grey, width: 1),
+                          ),
+                          child: DropdownButtonHideUnderline(
                             child: DropdownButton(
                               hint: Padding(
                                 padding: const EdgeInsets.only(left: 10.0),
@@ -392,7 +430,7 @@ class _UserInformationState extends State<UserInformation> {
                     ),
                     formAfterLoginController.emptyCity.value
                         ? Padding(
-                            padding: const EdgeInsets.only(left: 110),
+                            padding: const EdgeInsets.only(top: 10, left: 10),
                             child: Text(
                               "Vui lòng chọn thành phố bạn ở",
                               style: TextStyle(color: Colors.red, fontSize: 14),
@@ -400,24 +438,24 @@ class _UserInformationState extends State<UserInformation> {
                           )
                         : Container(),
                     SizedBox(height: 20),
-                    Stack(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15.0),
-                          child: Text(
-                            "Quận:",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
+                        Text(
+                          "Quận:",
+                          style: TextStyle(
+                            fontSize: 17,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(100, 0, 0, 0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(6),
-                              border: Border.all(color: Colors.grey, width: 1),
-                            ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(color: Colors.grey, width: 1),
+                          ),
+                          child: DropdownButtonHideUnderline(
                             child: DropdownButton(
                               hint: Padding(
                                 padding: const EdgeInsets.only(left: 10.0),
@@ -456,12 +494,12 @@ class _UserInformationState extends State<UserInformation> {
                               }).toList(),
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                     formAfterLoginController.emptyDistrict.value
                         ? Padding(
-                            padding: const EdgeInsets.only(left: 110),
+                            padding: const EdgeInsets.only(top: 10, left: 10),
                             child: Text(
                               "Vui lòng chọn quận, huyện",
                               style: TextStyle(color: Colors.red, fontSize: 14),
@@ -471,24 +509,24 @@ class _UserInformationState extends State<UserInformation> {
                     SizedBox(
                       height: 20,
                     ),
-                    Stack(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 14.0),
-                          child: Text(
-                            "Phường:",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
+                        Text(
+                          "Phường:",
+                          style: TextStyle(
+                            fontSize: 17,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(100, 0, 0, 0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(6),
-                              border: Border.all(color: Colors.grey, width: 1),
-                            ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(color: Colors.grey, width: 1),
+                          ),
+                          child: DropdownButtonHideUnderline(
                             child: DropdownButton(
                               hint: Padding(
                                 padding: const EdgeInsets.only(left: 10.0),
@@ -527,7 +565,7 @@ class _UserInformationState extends State<UserInformation> {
                     ),
                     formAfterLoginController.emptyWard.value
                         ? Padding(
-                            padding: const EdgeInsets.only(left: 110),
+                            padding: const EdgeInsets.only(top: 10, left: 10),
                             child: Text(
                               "Vui lòng chọn phường, xã",
                               style: TextStyle(color: Colors.red, fontSize: 14),
@@ -537,32 +575,30 @@ class _UserInformationState extends State<UserInformation> {
                     SizedBox(
                       height: 20,
                     ),
-                    Stack(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 17, 20, 0),
-                          child: Text(
-                            "Đường:",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
+                        Text(
+                          "Đường:",
+                          style: TextStyle(
+                            fontSize: 17,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(100, 0, 0, 0),
-                          child: TextField(
-                            controller: textStreetController,
-                            decoration: InputDecoration(
-                              hintText: "Đường",
-                              border: OutlineInputBorder(),
-                              errorText:
-                                  formAfterLoginController.emptyStreet.value
-                                      ? "Vui lòng nhập địa chỉ của bạn"
-                                      : null,
-                              errorStyle: TextStyle(fontSize: 14),
-                            ),
-                            keyboardType: TextInputType.name,
+                        SizedBox(
+                          height: 8,
+                        ),
+                        TextField(
+                          controller: textStreetController,
+                          decoration: InputDecoration(
+                            hintText: "Đường",
+                            border: OutlineInputBorder(),
+                            errorText:
+                                formAfterLoginController.emptyStreet.value
+                                    ? "Vui lòng nhập địa chỉ của bạn"
+                                    : null,
+                            errorStyle: TextStyle(fontSize: 14),
                           ),
+                          keyboardType: TextInputType.name,
                         ),
                       ],
                     ),
@@ -579,91 +615,86 @@ class _UserInformationState extends State<UserInformation> {
                     SizedBox(
                       height: 20,
                     ),
-                    Stack(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 17, 20, 0),
-                          child: Text(
-                            "Dị ứng:",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
+                        Text(
+                          "Dị ứng:",
+                          style: TextStyle(
+                            fontSize: 17,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(100, 0, 0, 0),
-                          child: TextField(
-                            controller: textAllergyController,
-                            decoration: InputDecoration(
-                              hintText: "Dị ứng",
-                              border: OutlineInputBorder(),
-                            ),
-                            keyboardType: TextInputType.name,
+                        SizedBox(
+                          height: 8,
+                        ),
+                        TextField(
+                          controller: textAllergyController,
+                          decoration: InputDecoration(
+                            hintText: "Dị ứng",
+                            border: OutlineInputBorder(),
                           ),
+                          keyboardType: TextInputType.name,
                         ),
                       ],
                     ),
                     SizedBox(
                       height: 20,
                     ),
-                    Stack(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 17, 20, 0),
-                          child: Text(
-                            "Nhóm máu:",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
+                        Text(
+                          "Nhóm máu:",
+                          style: TextStyle(
+                            fontSize: 17,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(100, 0, 0, 0),
-                          child: TextField(
-                            controller: textBloodGroupController,
-                            decoration: InputDecoration(
-                              hintText: "Nhóm máu",
-                              border: OutlineInputBorder(),
-                            ),
-                            keyboardType: TextInputType.name,
+                        SizedBox(
+                          height: 8,
+                        ),
+                        TextField(
+                          controller: textBloodGroupController,
+                          decoration: InputDecoration(
+                            hintText: "Nhóm máu",
+                            border: OutlineInputBorder(),
                           ),
+                          keyboardType: TextInputType.name,
                         ),
                       ],
                     ),
                     SizedBox(
                       height: 20,
                     ),
-                    Stack(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 17, 20, 0),
-                          child: Text(
-                            "Bệnh nền:",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
+                        Text(
+                          "Bệnh nền:",
+                          style: TextStyle(
+                            fontSize: 18,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(100, 0, 0, 0),
-                          child: TextField(
-                            controller: textBackgroundDiseaseController,
-                            decoration: InputDecoration(
-                              hintText: "Bệnh nền",
-                              border: OutlineInputBorder(),
-                            ),
-                            keyboardType: TextInputType.name,
+                        SizedBox(
+                          height: 8,
+                        ),
+                        TextField(
+                          controller: textBackgroundDiseaseController,
+                          decoration: InputDecoration(
+                            hintText: "Bệnh nền",
+                            border: OutlineInputBorder(),
                           ),
+                          keyboardType: TextInputType.name,
                         ),
                       ],
                     ),
                     SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(220, 0, 0, 0),
+                    Container(
+                      width: double.infinity,
+                      height: 50,
                       child: RaisedButton(
                         color: Colors.blue,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          borderRadius: BorderRadius.all(Radius.circular(24)),
                         ),
                         onPressed: () => {
                           formAfterLoginController.createAccountPatient(
@@ -683,6 +714,9 @@ class _UserInformationState extends State<UserInformation> {
                           ),
                         ),
                       ),
+                    ),
+                    SizedBox(
+                      height: 22,
                     ),
                   ],
                 ),
