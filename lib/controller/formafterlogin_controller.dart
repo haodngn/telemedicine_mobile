@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
+import 'package:telemedicine_mobile/Screens/login_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_address_api.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
@@ -19,7 +21,7 @@ class FormAfterLoginController extends GetxController {
   final patientProfileController = Get.put(PatientProfileController());
   final accountController = Get.put(AccountController());
 
-  RxString selectedGender = "".obs;
+  RxBool selectedGender = false.obs;
   Rx<DateTime> dob = DateTime.now().obs;
   RxList<dynamic> provinceData = [].obs;
   RxList<dynamic> districtData = [].obs;
@@ -63,6 +65,7 @@ class FormAfterLoginController extends GetxController {
   }
 
   Rx<File> image = new File("").obs;
+
   Future pickImage(ImageSource source) async {
     try {
       final pImage = await ImagePicker().pickImage(source: source);
@@ -79,7 +82,6 @@ class FormAfterLoginController extends GetxController {
 
   RxBool emptyFName = false.obs;
   RxBool emptyLName = false.obs;
-  RxBool emptyGender = false.obs;
   RxBool emptyDOB = false.obs;
   RxBool emptyPhone = false.obs;
   RxBool emptyCity = false.obs;
@@ -126,11 +128,6 @@ class FormAfterLoginController extends GetxController {
     } else {
       emptyLName.value = false;
     }
-    if (selectedGender.isEmpty) {
-      emptyGender.value = true;
-    } else {
-      emptyGender.value = false;
-    }
     if (selectDOB.value) {
       emptyDOB.value = true;
     } else {
@@ -163,13 +160,14 @@ class FormAfterLoginController extends GetxController {
     }
     if (emptyFName.isFalse &&
         emptyLName.isFalse &&
-        emptyGender.isFalse &&
         emptyDOB.isFalse &&
         emptyPhone.isFalse &&
         emptyCity.isFalse &&
         emptyDistrict.isFalse &&
         emptyWard.isFalse &&
-        emptyStreet.isFalse) {
+        emptyStreet.isFalse &&
+        emptyImage.isFalse) {
+      print("TEST");
       AccountPost newAccount = new AccountPost(
         email: accountController.account.value.email,
         firstName: fName,
@@ -182,7 +180,7 @@ class FormAfterLoginController extends GetxController {
         postalCode: "000000",
         phone: phoneNumber,
         dob: DateFormat("yyyy-MM-dd").format(dob.value),
-        isMale: selectedGender.value.endsWith("Nam") ? true : false,
+        isMale: selectedGender.value,
         roleId: 3,
       );
 
@@ -197,10 +195,11 @@ class FormAfterLoginController extends GetxController {
           isActive: true,
           healthChecks: []);
       FetchAPI.createNewAccount(newAccount, image.value.path).then((value) {
-        if (value == 201) {
+        if (value == 201 || value == 200) {
           FetchAPI.createNewPatient(newPatient).then((value) {
             done.value = true;
-            Get.to(BottomNavScreen());
+            Get.to(LoginScreen());
+            Fluttertoast.showToast(msg: "Đăng ký tài khoản thành công", fontSize: 18);
           });
         }
       });

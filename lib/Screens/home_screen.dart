@@ -1082,221 +1082,246 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                     height: 20,
                   ),
-                  statisticCovid != null ? Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 14),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            width: 115,
-                            height: 115,
-                            decoration: BoxDecoration(
-                              color: Color(0xffed1c24).withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  height: 12,
-                                ),
-                                Center(
-                                  child: Text(
-                                    "Số ca nhiễm".toUpperCase(),
-                                    softWrap: false,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                  statisticCovid != null
+                      ? Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 14),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  width: 115,
+                                  height: 115,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xffed1c24).withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        height: 12,
+                                      ),
+                                      Center(
+                                        child: Text(
+                                          "Số ca nhiễm".toUpperCase(),
+                                          softWrap: false,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text(
+                                        patientProfileController
+                                                    .statusCovid.value ==
+                                                "VietNam"
+                                            ? formatter
+                                                .format(statisticCovid['total']
+                                                    .internal
+                                                    .cases)
+                                                .replaceAll(",", ".")
+                                            : NumberFormat.compact()
+                                                .format(statisticCovid['total']
+                                                    .world
+                                                    .cases)
+                                                .toString(),
+                                        softWrap: false,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: 19,
+                                          fontWeight: FontWeight.w800,
+                                          color: Color(0xffED1C24),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text(
+                                        "Hôm nay",
+                                        style: TextStyle(color: Colors.black54),
+                                      ),
+                                      SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text(
+                                        "+${patientProfileController.statusCovid.value == "VietNam" ? statisticCovid['today'].internal.cases > 100 ? formatter.format(statisticCovid['today'].internal.cases).replaceAll(",", ".") : statisticCovid['today'].internal.cases : statisticCovid['today'].world.cases > 100 ? formatter.format(statisticCovid['today'].world.cases).replaceAll(",", ".") : statisticCovid['today'].world.cases}",
+                                        softWrap: false,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          color:
+                                              Colors.black87.withOpacity(0.7),
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      )
+                                    ],
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 4,
-                                ),
-                                Text(
-                                  patientProfileController.statusCovid.value ==
-                                          "VietNam"
-                                      ? formatter.format(statisticCovid['total'].internal.cases).replaceAll(",", ".")
-                                      : NumberFormat.compact().format(statisticCovid['total'].world.cases)
-                                          .toString(),
-                                  softWrap: false,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: 19,
-                                    fontWeight: FontWeight.w800,
-                                    color: Color(0xffED1C24),
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Expanded(
+                                child: Container(
+                                  width: 115,
+                                  height: 115,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xff3ca745).withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        height: 12,
+                                      ),
+                                      Text(
+                                        "Khỏi".toUpperCase(),
+                                        softWrap: false,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text(
+                                        patientProfileController
+                                                    .statusCovid.value ==
+                                                "VietNam"
+                                            ? formatter
+                                                .format(statisticCovid['total']
+                                                    .internal
+                                                    .treating)
+                                                .replaceAll(",", ".")
+                                            : NumberFormat.compact()
+                                                .format(statisticCovid['total']
+                                                    .world
+                                                    .treating)
+                                                .replaceAll(",", "."),
+                                        softWrap: false,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w800,
+                                          color: Color(0xff28A745),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text(
+                                        "Hôm nay",
+                                        style: TextStyle(color: Colors.black54),
+                                      ),
+                                      SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text(
+                                        "+${patientProfileController.statusCovid.value == "VietNam" ? statisticCovid['today'].internal.treating > 100 ? formatter.format(statisticCovid['today'].internal.treating).replaceAll(",", ".") : statisticCovid['today'].internal.treating : statisticCovid['today'].world.treating > 100 ? formatter.format(statisticCovid['today'].world.treating).replaceAll(",", ".") : statisticCovid['today'].world.treating}",
+                                        softWrap: false,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          color:
+                                              Colors.black87.withOpacity(0.7),
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      )
+                                    ],
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 4,
-                                ),
-                                Text(
-                                  "Hôm nay",
-                                  style: TextStyle(color: Colors.black54),
-                                ),
-                                SizedBox(
-                                  height: 4,
-                                ),
-                                Text(
-                                  "+${patientProfileController.statusCovid.value ==
-                                      "VietNam"
-                                      ? statisticCovid['today'].internal.cases > 100 ? formatter.format(statisticCovid['today'].internal.cases).replaceAll(",", ".") : statisticCovid['today'].internal.cases
-                                      : statisticCovid['today'].world.cases > 100 ? formatter.format(statisticCovid['today'].world.cases).replaceAll(",", ".") : statisticCovid['today'].world.cases}",
-                                  softWrap: false,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    color: Colors.black87.withOpacity(0.7),
-                                    fontWeight: FontWeight.w700,
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Expanded(
+                                child: Container(
+                                  width: 115,
+                                  height: 115,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xffF0EFF4),
+                                    borderRadius: BorderRadius.circular(16),
                                   ),
-                                )
-                              ],
-                            ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        height: 12,
+                                      ),
+                                      Text(
+                                        "Tử vong".toUpperCase(),
+                                        softWrap: false,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text(
+                                        patientProfileController
+                                                    .statusCovid.value ==
+                                                "VietNam"
+                                            ? formatter
+                                                .format(statisticCovid['total']
+                                                    .internal
+                                                    .death)
+                                                .replaceAll(",", ".")
+                                            : NumberFormat.compact()
+                                                .format(statisticCovid['total']
+                                                    .world
+                                                    .death)
+                                                .replaceAll(",", "."),
+                                        softWrap: false,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w800,
+                                          color: Color(0xff333333),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text(
+                                        "Hôm nay",
+                                        style: TextStyle(color: Colors.black54),
+                                      ),
+                                      SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text(
+                                        "+${patientProfileController.statusCovid.value == "VietNam" ? statisticCovid['today'].internal.death > 100 ? formatter.format(statisticCovid['today'].internal.death).replaceAll(",", ".") : statisticCovid['today'].internal.death : statisticCovid['today'].world.death > 100 ? formatter.format(statisticCovid['today'].world.death).replaceAll(",", ".") : statisticCovid['today'].world.death}",
+                                        softWrap: false,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          color:
+                                              Colors.black87.withOpacity(0.7),
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Expanded(
-                          child: Container(
-                            width: 115,
-                            height: 115,
-                            decoration: BoxDecoration(
-                              color: Color(0xff3ca745).withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  height: 12,
-                                ),
-                                Text(
-                                  "Khỏi".toUpperCase(),
-                                  softWrap: false,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 4,
-                                ),
-                                Text(
-                                  patientProfileController.statusCovid.value ==
-                                      "VietNam"
-                                      ? formatter.format(statisticCovid['total'].internal.treating).replaceAll(",", ".")
-                                      : NumberFormat.compact().format(statisticCovid['total'].world.treating).replaceAll(",", "."),
-                                  softWrap: false,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w800,
-                                    color: Color(0xff28A745),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 4,
-                                ),
-                                Text(
-                                  "Hôm nay",
-                                  style: TextStyle(color: Colors.black54),
-                                ),
-                                SizedBox(
-                                  height: 4,
-                                ),
-                                Text(
-                                  "+${patientProfileController.statusCovid.value ==
-                                      "VietNam"
-                                      ? statisticCovid['today'].internal.treating > 100 ? formatter.format(statisticCovid['today'].internal.treating).replaceAll(",", ".") :statisticCovid['today'].internal.treating
-                                      : statisticCovid['today'].world.treating > 100 ? formatter.format(statisticCovid['today'].world.treating).replaceAll(",", ".") : statisticCovid['today'].world.treating}",
-                                  softWrap: false,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    color: Colors.black87.withOpacity(0.7),
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Expanded(
-                          child: Container(
-                            width: 115,
-                            height: 115,
-                            decoration: BoxDecoration(
-                              color: Color(0xffF0EFF4),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  height: 12,
-                                ),
-                                Text(
-                                  "Tử vong".toUpperCase(),
-                                  softWrap: false,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 4,
-                                ),
-                                Text(
-                                  patientProfileController.statusCovid.value ==
-                                      "VietNam"
-                                      ?  formatter.format(statisticCovid['total'].internal.death).replaceAll(",", ".")
-                                      : NumberFormat.compact().format(statisticCovid['total'].world.death).replaceAll(",", "."),
-                                  softWrap: false,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w800,
-                                    color: Color(0xff333333),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 4,
-                                ),
-                                Text(
-                                  "Hôm nay",
-                                  style: TextStyle(color: Colors.black54),
-                                ),
-                                SizedBox(
-                                  height: 4,
-                                ),
-                                Text(
-                                  "+${patientProfileController.statusCovid.value ==
-                                      "VietNam"
-                                      ? statisticCovid['today'].internal.death > 100 ? formatter.format(statisticCovid['today'].internal.death).replaceAll(",", ".") : statisticCovid['today'].internal.death
-                                      : statisticCovid['today'].world.death > 100 ? formatter.format(statisticCovid['today'].world.death).replaceAll(",", ".") : statisticCovid['today'].world.death}",
-                                  softWrap: false,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    color: Colors.black87.withOpacity(0.7),
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ) : Container(),
+                        )
+                      : Container(),
                   SizedBox(
                     height: 30,
                   ),

@@ -570,43 +570,44 @@ class FetchAPI {
 
   static Future<int> createNewAccount(
       AccountPost accountPost, String filePath) async {
-    final storage = new Storage.FlutterSecureStorage();
-    try {
-      FormData formData = new FormData.fromMap({
-        "image": await MultipartFile.fromFile(filePath, filename: "avatar"),
-        "email": accountPost.email,
-        "firstName": accountPost.firstName,
-        "lastName": accountPost.lastName,
-        "ward": accountPost.ward,
-        "streetAddress": accountPost.streetAddress,
-        "locality": accountPost.locality,
-        "city": accountPost.city,
-        "postalCode": "000000",
-        "phone": accountPost.phone,
-        "dob": accountPost.dob,
-        "isMale": accountPost.isMale,
-        "roleId": 3,
-      });
-      Response response =
-          await Dio().post("https://binhtt.tech/api/v1/accounts",
-              data: formData,
-              options: Options(headers: <String, String>{
-                HttpHeaders.contentTypeHeader: 'multipart/form-data',
-              }));
-      return response.statusCode!;
-    } on DioError catch (e) {
-      return e.response!.statusCode!;
-    }
+      try {
+        FormData formData = new FormData.fromMap({
+          "image": await MultipartFile.fromFile(filePath, filename: "avatar"),
+          "email": accountPost.email,
+          "firstName": accountPost.firstName,
+          "lastName": accountPost.lastName,
+          "ward": accountPost.ward,
+          "streetAddress": accountPost.streetAddress,
+          "locality": accountPost.locality,
+          "city": accountPost.city,
+          "postalCode": "000000",
+          "phone": accountPost.phone,
+          "dob": accountPost.dob,
+          "isMale": accountPost.isMale,
+          "roleId": 3,
+        });
+        Response response =
+            await Dio().post("https://binhtt.tech/api/v1/accounts",
+                data: formData,
+                options: Options(headers: <String, String>{
+                  HttpHeaders.contentTypeHeader: 'multipart/form-data',
+                }));
+        print("TYU" + response.statusCode.toString());
+        return response.statusCode!;
+      } on DioError catch (e) {
+        print(e);
+        return e.response!.statusCode!;
+      }
   }
 
   static Future<int> createNewPatient(Patient patient) async {
-    final response = await http.post(
-        Uri.parse("https://binhtt.tech/api/v1/patients"),
-        body: jsonEncode(patient.toJson()),
-        headers: <String, String>{
-          HttpHeaders.contentTypeHeader: 'application/json-patch+json',
-        });
-    return response.statusCode;
+      final response = await http.post(
+          Uri.parse("https://binhtt.tech/api/v1/patients"),
+          body: jsonEncode(patient.toJson()),
+          headers: <String, String>{
+            HttpHeaders.contentTypeHeader: 'application/json-patch+json',
+          });
+      return response.statusCode;
   }
 
   static Future<String> createNewHealthCheck(
