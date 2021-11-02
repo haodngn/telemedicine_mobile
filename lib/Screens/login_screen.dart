@@ -14,28 +14,34 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Background(
+    return Scaffold(
+      body: Background(
         child: Stack(
-      children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SvgPicture.asset(
-              "assets/icons/covid-19.svg",
-              height: size.height * 0.5,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SvgPicture.asset(
+                  "assets/icons/covid-19.svg",
+                  height: size.height * 0.5,
+                ),
+                FacebookButton(),
+                SizedBox(
+                  height: 20,
+                ),
+                GoogleButton(),
+              ],
             ),
-            FacebookButton(),
-            GoogleButton(),
+            Positioned.fill(
+                child: Align(
+              alignment: Alignment.center,
+              child: Obx(() => accountController.isLoading.value
+                  ? CircularProgressIndicator(color: kWhiteColor)
+                  : Container()),
+            )),
           ],
         ),
-        Positioned.fill(
-            child: Align(
-          alignment: Alignment.center,
-          child: Obx(() => accountController.isLoading.value
-              ? CircularProgressIndicator(color: kWhiteColor)
-              : Container()),
-        )),
-      ],
-    ));
+      ),
+    );
   }
 }
