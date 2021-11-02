@@ -20,6 +20,7 @@ import 'package:telemedicine_mobile/controller/filter_controller.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
+import 'package:telemedicine_mobile/models/News.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -33,11 +34,27 @@ class _HomeScreenState extends State<HomeScreen> {
       FlutterLocalNotificationsPlugin();
   final storage = new FlutterSecureStorage();
   final accountController = Get.put(AccountController());
-
+  List<News>? listNews;
+  var statisticCovid;
+  NumberFormat formatter = NumberFormat('###,000');
   @override
   void initState() {
     super.initState();
+    getNews();
+    getStatisticCovid();
     _fireBaseConfig();
+  }
+
+  void getNews() async {
+    var newsList = await FetchAPI.fetchContentNews();
+    print(newsList.length);
+    setState(() {
+      listNews = newsList;
+    });
+  }
+
+  void getStatisticCovid() async {
+    statisticCovid = await FetchAPI.fetchContentStaticCovid();
   }
 
   void _fireBaseConfig() {
@@ -63,16 +80,10 @@ class _HomeScreenState extends State<HomeScreen> {
     _firebaseMessaging
         .getToken()
         .then((token) {
-          printWrapped('Token FCM : $token');
           storage.write(key: "tokenFCM", value: token);
         })
         .then((value) => {FetchAPI.makeConnection()})
         .then((value) => {FetchAPI.getCountUnreadNotification()});
-  }
-
-  void printWrapped(String text) {
-    final pattern = new RegExp('.{1,800}'); // 800 is the size of each chunk
-    pattern.allMatches(text).forEach((match) => print(match.group(0)));
   }
 
   void showNotification(String title, String body) async {
@@ -192,7 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 20,
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 30),
+                    padding: EdgeInsets.symmetric(horizontal: 18),
                     child: Text(
                       'Xin chào!',
                       style: TextStyle(
@@ -215,7 +226,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Center(
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
+                      padding: const EdgeInsets.fromLTRB(18, 20, 18, 20),
                       child: InkWell(
                         onTap: () {
                           filterController.getListMajor();
@@ -257,7 +268,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 20,
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 30),
+                    padding: EdgeInsets.symmetric(horizontal: 18),
                     child: Row(
                       children: [
                         Text(
@@ -505,7 +516,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 30,
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 30),
+                    padding: EdgeInsets.symmetric(horizontal: 18),
                     child: Text(
                       'Bác sĩ hàng đầu',
                       style: TextStyle(
@@ -975,7 +986,365 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 30,
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 30),
+                    padding: EdgeInsets.symmetric(horizontal: 18),
+                    child: Text(
+                      'Thống kê Covid-19',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: kTitleTextColor,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(18, 0, 18, 0),
+                    child: Container(
+                      width: double.infinity,
+                      height: 60,
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Color(0xfff6f6f6),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: InkWell(
+                              onTap: () => {
+                                patientProfileController.statusCovid.value =
+                                    "VietNam",
+                              },
+                              child: Container(
+                                width: 104,
+                                height: double.infinity,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: patientProfileController
+                                              .statusCovid.value ==
+                                          "VietNam"
+                                      ? kBlueColor
+                                      : Color(0xfff6f6f6),
+                                ),
+                                child: Center(
+                                    child: Text(
+                                  "Việt Nam",
+                                  style: TextStyle(
+                                    color: patientProfileController
+                                                .statusCovid.value ==
+                                            "VietNam"
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontSize: 18,
+                                  ),
+                                )),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: InkWell(
+                              onTap: () => {
+                                patientProfileController.statusCovid.value =
+                                    "World"
+                              },
+                              child: Container(
+                                width: 104,
+                                height: double.infinity,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: patientProfileController
+                                              .statusCovid.value ==
+                                          "World"
+                                      ? kBlueColor
+                                      : Color(0xfff6f6f6),
+                                ),
+                                child: Center(
+                                    child: Text(
+                                  "Thế giới",
+                                  style: TextStyle(
+                                    color: patientProfileController
+                                                .statusCovid.value ==
+                                            "World"
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontSize: 18,
+                                  ),
+                                )),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  statisticCovid != null ? Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 14),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            width: 115,
+                            height: 115,
+                            decoration: BoxDecoration(
+                              color: Color(0xffed1c24).withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  height: 12,
+                                ),
+                                Center(
+                                  child: Text(
+                                    "Số ca nhiễm".toUpperCase(),
+                                    softWrap: false,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Text(
+                                  patientProfileController.statusCovid.value ==
+                                          "VietNam"
+                                      ? formatter.format(statisticCovid['total'].internal.cases).replaceAll(",", ".")
+                                      : NumberFormat.compact().format(statisticCovid['total'].world.cases)
+                                          .toString(),
+                                  softWrap: false,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 19,
+                                    fontWeight: FontWeight.w800,
+                                    color: Color(0xffED1C24),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Text(
+                                  "Hôm nay",
+                                  style: TextStyle(color: Colors.black54),
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Text(
+                                  "+${patientProfileController.statusCovid.value ==
+                                      "VietNam"
+                                      ? statisticCovid['today'].internal.cases > 100 ? formatter.format(statisticCovid['today'].internal.cases).replaceAll(",", ".") : statisticCovid['today'].internal.cases
+                                      : statisticCovid['today'].world.cases > 100 ? formatter.format(statisticCovid['today'].world.cases).replaceAll(",", ".") : statisticCovid['today'].world.cases}",
+                                  softWrap: false,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.black87.withOpacity(0.7),
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Expanded(
+                          child: Container(
+                            width: 115,
+                            height: 115,
+                            decoration: BoxDecoration(
+                              color: Color(0xff3ca745).withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  height: 12,
+                                ),
+                                Text(
+                                  "Khỏi".toUpperCase(),
+                                  softWrap: false,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Text(
+                                  patientProfileController.statusCovid.value ==
+                                      "VietNam"
+                                      ? formatter.format(statisticCovid['total'].internal.treating).replaceAll(",", ".")
+                                      : NumberFormat.compact().format(statisticCovid['total'].world.treating).replaceAll(",", "."),
+                                  softWrap: false,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w800,
+                                    color: Color(0xff28A745),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Text(
+                                  "Hôm nay",
+                                  style: TextStyle(color: Colors.black54),
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Text(
+                                  "+${patientProfileController.statusCovid.value ==
+                                      "VietNam"
+                                      ? statisticCovid['today'].internal.treating > 100 ? formatter.format(statisticCovid['today'].internal.treating).replaceAll(",", ".") :statisticCovid['today'].internal.treating
+                                      : statisticCovid['today'].world.treating > 100 ? formatter.format(statisticCovid['today'].world.treating).replaceAll(",", ".") : statisticCovid['today'].world.treating}",
+                                  softWrap: false,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.black87.withOpacity(0.7),
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Expanded(
+                          child: Container(
+                            width: 115,
+                            height: 115,
+                            decoration: BoxDecoration(
+                              color: Color(0xffF0EFF4),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  height: 12,
+                                ),
+                                Text(
+                                  "Tử vong".toUpperCase(),
+                                  softWrap: false,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Text(
+                                  patientProfileController.statusCovid.value ==
+                                      "VietNam"
+                                      ?  formatter.format(statisticCovid['total'].internal.death).replaceAll(",", ".")
+                                      : NumberFormat.compact().format(statisticCovid['total'].world.death).replaceAll(",", "."),
+                                  softWrap: false,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w800,
+                                    color: Color(0xff333333),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Text(
+                                  "Hôm nay",
+                                  style: TextStyle(color: Colors.black54),
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Text(
+                                  "+${patientProfileController.statusCovid.value ==
+                                      "VietNam"
+                                      ? statisticCovid['today'].internal.death > 100 ? formatter.format(statisticCovid['today'].internal.death).replaceAll(",", ".") : statisticCovid['today'].internal.death
+                                      : statisticCovid['today'].world.death > 100 ? formatter.format(statisticCovid['today'].world.death).replaceAll(",", ".") : statisticCovid['today'].world.death}",
+                                  softWrap: false,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.black87.withOpacity(0.7),
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ) : Container(),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 18),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Tin tức',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: kTitleTextColor,
+                            fontSize: 18,
+                          ),
+                        ),
+                        Expanded(child: Container()),
+                        InkWell(
+                          onTap: () {},
+                          child: Text(
+                            "Xem tất cả",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: kBlueColor,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  listNews != null
+                      ? Column(
+                          children: [
+                            ...listNews!.map((e) => BuildNewsList(
+                                title: e.title,
+                                desc: e.description,
+                                url: e.url,
+                                urlImage: e.urlToImage))
+                          ],
+                        )
+                      : Container(),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 18),
                     child: Text(
                       'Bình luận phổ biến',
                       style: TextStyle(
@@ -992,24 +1361,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                     height: 30,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 30),
-                    child: Text(
-                      'Tin tức',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: kTitleTextColor,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  buildNewsList(),
-                  SizedBox(
-                    height: 20,
-                  ),
                 ],
               ),
             ),
@@ -1023,7 +1374,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Row(
         children: [
           SizedBox(
-            width: 30,
+            width: 12,
           ),
           CategoryCard(
             'Danh sách\nbác sĩ',
@@ -1072,124 +1423,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           CategoryCard('Eye\nSymptoms', 'assets/icons/eye_specialist.png',
               kOrangeColor, 3),
-          SizedBox(
-            width: 30,
-          ),
-        ],
-      ),
-    );
-  }
-
-  buildNewsList() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: <Widget>[
-          SizedBox(
-            width: 30,
-          ),
-          InkWell(
-            onTap: () async {
-              final url =
-                  "https://covid19.gov.vn/se-ban-hanh-huong-dan-tiem-vaccine-phong-covid-19-cho-tre-em-tu-12-18-tuoi-171211012064538258.htm";
-              if (await canLaunch(url)) {
-                await launch(url);
-              }
-            },
-            child: Stack(
-              children: <Widget>[
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Container(
-                    width: 225,
-                    height: 225,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 16,
-                    ),
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Text(
-                        'Từ 1-10/10 cả nước đã tiêm được 11 triệu liều vaccine',
-                        style: TextStyle(
-                          color: kTitleTextColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  left: 17,
-                  child: Container(
-                    height: 200,
-                    width: 200,
-                    // decoration: BoxDecoration(
-                    //   color: kBlueColor,
-                    //   borderRadius: BorderRadius.circular(20),
-                    // ),
-                    child: Image.network(
-                        'https://covid19.qltns.mediacdn.vn/354844073405468672/2021/10/12/base64-16339610675771824683604-1633995716703-16339957168241470550172.png'),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          InkWell(
-            onTap: () async {
-              final url =
-                  "https://covid19.gov.vn/nguoi-benh-khong-phai-chi-tra-xet-nghiem-covid-19-khi-den-kham-va-dieu-tri-tai-co-so-y-te-cong-lap-171211010234733766.htm";
-              if (await canLaunch(url)) {
-                await launch(url);
-              }
-            },
-            child: Stack(
-              children: <Widget>[
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Container(
-                    width: 225,
-                    height: 225,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 16,
-                    ),
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Text(
-                        'Người bệnh không phải chi trả xét nghiệm COVID-19',
-                        style: TextStyle(
-                          color: kTitleTextColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  left: 17,
-                  child: Container(
-                    height: 200,
-                    width: 200,
-                    // decoration: BoxDecoration(
-                    //   color: kBlueColor,
-                    //   borderRadius: BorderRadius.circular(20),
-                    // ),
-                    child: Image.network(
-                        'https://covid19.qltns.mediacdn.vn/354844073405468672/2021/10/10/lay-mau-xet-nghiem-lai-xe-1627307782568392624728-1633884443237-1633884443907258278064.jpeg'),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            width: 10,
-          ),
         ],
       ),
     );
@@ -1201,7 +1434,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Row(
         children: <Widget>[
           SizedBox(
-            width: 30,
+            width: 24,
           ),
           Container(
             alignment: Alignment.center,
@@ -1493,9 +1726,89 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           SizedBox(
-            width: 30,
+            width: 24,
           ),
         ],
+      ),
+    );
+  }
+}
+
+class BuildNewsList extends StatelessWidget {
+  const BuildNewsList({
+    Key? key,
+    required this.title,
+    required this.desc,
+    required this.url,
+    required this.urlImage,
+  }) : super(key: key);
+  final String title, desc, url, urlImage;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () async {
+        if (await canLaunch(url)) {
+          await launch(url);
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              height: 90,
+              width: 120,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+              ),
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12.0),
+                  child: Image.network(
+                    urlImage,
+                    fit: BoxFit.cover,
+                  )),
+            ),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.only(
+                  left: 10,
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      title,
+                      softWrap: true,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w600,
+                        color: kTitleTextColor,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      desc,
+                      softWrap: true,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400,
+                        wordSpacing: 1,
+                        color: kTitleTextColor.withOpacity(0.6),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

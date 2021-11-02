@@ -13,6 +13,7 @@ import 'package:telemedicine_mobile/models/ContentDoctor.dart';
 import 'package:telemedicine_mobile/models/ContentHealthCheck.dart';
 import 'package:telemedicine_mobile/models/ContentHospital.dart';
 import 'package:telemedicine_mobile/models/ContentMajor.dart';
+import 'package:telemedicine_mobile/models/ContentNews.dart';
 import 'package:telemedicine_mobile/models/ContentNotification.dart';
 import 'package:telemedicine_mobile/models/ContentSlot.dart';
 import 'package:telemedicine_mobile/models/ContentSymptom.dart';
@@ -24,10 +25,12 @@ import 'package:telemedicine_mobile/models/HealthCheckPost.dart';
 import 'package:telemedicine_mobile/models/Hospital.dart';
 import 'package:telemedicine_mobile/models/JoinCallModel.dart';
 import 'package:telemedicine_mobile/models/Major.dart';
+import 'package:telemedicine_mobile/models/News.dart';
 import 'package:telemedicine_mobile/models/Notification.dart';
 import 'package:telemedicine_mobile/models/Patient.dart';
 import 'package:telemedicine_mobile/models/Role.dart';
 import 'package:telemedicine_mobile/models/Slot.dart';
+import 'package:telemedicine_mobile/models/StatisticCovid/StatisticCovid.dart';
 import 'package:telemedicine_mobile/models/Symptom.dart';
 import 'package:telemedicine_mobile/models/TimeFrame.dart';
 import 'package:dio/dio.dart';
@@ -165,6 +168,44 @@ class FetchAPI {
       } else {
         throw Exception("Internal server error");
       }
+    }
+  }
+
+  static Future<List<News>> fetchContentNews() async {
+    final response = await http.get(
+      Uri.parse(
+          "https://api.coronatracker.com/news/trending?limit=5&offset=0&language=vi&fbclid=IwAR2rQ_ijG1GnzHDAH7gkag_A1ljj6d1NVkDC_5CG8QOlV4HYpellcQ8o3Lo"),
+      headers: <String, String>{
+        HttpHeaders.contentTypeHeader: 'application/json',
+      },
+    );
+    if (response.statusCode == 200) {
+      var contentJSon = json.decode(utf8.decode(response.bodyBytes));
+      ContentNews contentNews = ContentNews.fromJson(contentJSon);
+      print("TEST:" + contentNews.news.length.toString());
+      return contentNews.news;
+    } else {
+      throw Exception("Internal server error");
+    }
+  }
+
+  static Future<dynamic> fetchContentStaticCovid() async {
+    final response = await http.get(
+      Uri.parse(
+          "https://static.pipezero.com/covid/data.json?fbclid=IwAR2-5yMjUCwJVTz2FQRS0v9ll7ggkePfoZbEZQGBOeFbctSqVgf5DP3pa04"),
+      headers: <String, String>{
+        HttpHeaders.contentTypeHeader: 'application/json',
+      },
+    );
+    if (response.statusCode == 200) {
+      var contentJSon = json.decode(utf8.decode(response.bodyBytes));
+      StatisticCovid contentCovidTotal =
+          StatisticCovid.fromJson(contentJSon["total"]);
+      StatisticCovid contentCovidToday =
+          StatisticCovid.fromJson(contentJSon["today"]);
+      return {'total': contentCovidTotal, 'today': contentCovidToday};
+    } else {
+      throw Exception("Internal server error");
     }
   }
 
