@@ -1,4 +1,3 @@
-import 'package:telemedicine_mobile/models/Doctor.dart';
 import 'package:telemedicine_mobile/models/News.dart';
 
 class ContentNews {
