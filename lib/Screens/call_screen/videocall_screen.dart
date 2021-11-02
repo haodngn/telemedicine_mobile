@@ -269,56 +269,83 @@ class _CallScreenState extends State<CallScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          RawMaterialButton(
-            onPressed: _onToggleMute,
-            child: Icon(
-              muted ? Icons.mic_off : Icons.mic,
-              color: muted ? Colors.white : Colors.blueAccent,
-              size: 20.0,
+          Container(
+            width: MediaQuery.of(context).size.width * 0.2,
+            child: RawMaterialButton(
+              onPressed: _onToggleMute,
+              child: Icon(
+                muted ? Icons.mic_off : Icons.mic,
+                color: muted ? Colors.white : Colors.blueAccent,
+                size: 20.0,
+              ),
+              shape: CircleBorder(),
+              elevation: 2.0,
+              fillColor: muted ? Colors.blueAccent : Colors.white,
+              padding: const EdgeInsets.all(12.0),
             ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: muted ? Colors.blueAccent : Colors.white,
-            padding: const EdgeInsets.all(12.0),
           ),
-          RawMaterialButton(
-            onPressed: _onToggleCamera,
-            child: Icon(
-              !disableCamera
-                  ? Icons.videocam_outlined
-                  : Icons.videocam_off_outlined,
-              color: disableCamera ? Colors.white : Colors.blueAccent,
-              size: 20.0,
+          Container(
+            width: MediaQuery.of(context).size.width * 0.2,
+            child: RawMaterialButton(
+              onPressed: _onToggleCamera,
+              child: Icon(
+                !disableCamera
+                    ? Icons.videocam_outlined
+                    : Icons.videocam_off_outlined,
+                color: disableCamera ? Colors.white : Colors.blueAccent,
+                size: 20.0,
+              ),
+              shape: CircleBorder(),
+              elevation: 2.0,
+              fillColor: disableCamera ? Colors.blueAccent : Colors.white,
+              padding: const EdgeInsets.all(12.0),
             ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: disableCamera ? Colors.blueAccent : Colors.white,
-            padding: const EdgeInsets.all(12.0),
           ),
-          RawMaterialButton(
-            onPressed: () => _onCallEnd(context, false),
-            child: Icon(
-              Icons.call_end,
-              color: Colors.white,
-              size: 35.0,
+          Container(
+            width: MediaQuery.of(context).size.width * 0.2,
+            child: RawMaterialButton(
+              onPressed: () => _onCallEnd(context),
+              child: Icon(
+                Icons.call_end,
+                color: Colors.white,
+                size: 35.0,
+              ),
+              shape: CircleBorder(),
+              elevation: 2.0,
+              fillColor: Colors.redAccent,
+              padding: const EdgeInsets.all(15.0),
             ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.redAccent,
-            padding: const EdgeInsets.all(15.0),
           ),
-          RawMaterialButton(
-            onPressed: _onSwitchCamera,
-            child: Icon(
-              Icons.switch_camera,
-              color: Colors.blueAccent,
-              size: 20.0,
+          Container(
+            width: MediaQuery.of(context).size.width * 0.2,
+            child: RawMaterialButton(
+              onPressed: _onSwitchCamera,
+              child: Icon(
+                Icons.switch_camera,
+                color: Colors.blueAccent,
+                size: 20.0,
+              ),
+              shape: CircleBorder(),
+              elevation: 2.0,
+              fillColor: Colors.white,
+              padding: const EdgeInsets.all(12.0),
             ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.white,
-            padding: const EdgeInsets.all(12.0),
-          )
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width * 0.2,
+            child: RawMaterialButton(
+              onPressed: _onHealthCheckInfo,
+              child: Icon(
+                Icons.more_horiz,
+                color: Colors.blueAccent,
+                size: 29.0,
+              ),
+              shape: CircleBorder(),
+              elevation: 2.0,
+              fillColor: Colors.white,
+              padding: const EdgeInsets.all(7.0),
+            ),
+          ),
         ],
       ),
     );
@@ -351,6 +378,86 @@ class _CallScreenState extends State<CallScreen> {
 
   void _onSwitchCamera() {
     _engine.switchCamera();
+  }
+
+  void _onHealthCheckInfo() {
+    final listDoctorController = Get.put(ListDoctorController());
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "Thông tin của tôi",
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Chiều cao: " +
+                            listDoctorController.healthCheckToken.value.height
+                                .toString(),
+                        style: TextStyle(
+                          fontSize: 22,
+                        ),
+                      ),
+                      Expanded(child: Container()),
+                      Text(
+                        "Cân nặng: " +
+                            listDoctorController.healthCheckToken.value.weight
+                                .toString(),
+                        style: TextStyle(
+                          fontSize: 22,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                  child: Text(
+                    "Triệu chứng: " +
+                        listDoctorController
+                            .healthCheckToken.value.symptomHealthChecks
+                            .map((e) {
+                              return e.symptom.name;
+                            })
+                            .toList()
+                            .toString()
+                            .replaceAll("[", "")
+                            .replaceAll("]", ""),
+                    style: TextStyle(
+                      fontSize: 22,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Thông tin bác sĩ",
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Text(
+                    "Tên: " +
+                        listDoctorController
+                            .healthCheckToken.value.slots[0].doctor.name,
+                    style: TextStyle(
+                      fontSize: 22,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
   }
 }
 
