@@ -1,6 +1,9 @@
+import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:telemedicine_mobile/Screens/hospial_map/hospital_map.dart';
+import 'package:telemedicine_mobile/Screens/list_doctor_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/models/ContentHospital.dart';
 
@@ -26,8 +29,12 @@ class HospitalController extends GetxController {
               icon: BitmapDescriptor.defaultMarkerWithHue(
                 BitmapDescriptor.hueViolet,
               ),
-              infoWindow:
-                  InfoWindow(title: e.name, onTap: () {}, snippet: e.address)))
+              infoWindow: InfoWindow(
+                  title: e.name,
+                  onTap: () {
+                    Get.to(ListDoctorScreen());
+                  },
+                  snippet: e.address)))
         });
     listMarkers.value = listMarker;
     print(listMarkers.toString());
