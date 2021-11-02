@@ -10,6 +10,7 @@ import 'package:telemedicine_mobile/controller/account_controller.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 import 'package:telemedicine_mobile/firestore/firestore_service.dart';
+import 'package:screen/screen.dart';
 
 import '../../constant.dart';
 
@@ -36,6 +37,7 @@ class _CallScreenState extends State<CallScreen> {
   @override
   void initState() {
     super.initState();
+    Screen.keepOn(true);
     listenFireBase(listDoctorController.healthCheckToken.value.id);
     initAgora();
   }
