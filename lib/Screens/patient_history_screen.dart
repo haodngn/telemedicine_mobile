@@ -698,7 +698,7 @@ class BoxHistoryPast extends StatelessWidget {
                   child: Container(
                     width: double.infinity,
                     height: 60,
-                    padding: EdgeInsets.all(20),
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       color: Color(0xffededed),
@@ -844,7 +844,7 @@ class BoxHistoryPast extends StatelessWidget {
                                     });
                               },
                               child: Container(
-                                width: 140,
+                                width: 130,
                                 height: 50,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(28),
@@ -871,7 +871,7 @@ class BoxHistoryPast extends StatelessWidget {
                                     duration: Duration(microseconds: 600)),
                               },
                               child: Container(
-                                width: 140,
+                                width: 130,
                                 height: 50,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(28),
