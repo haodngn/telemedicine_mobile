@@ -684,7 +684,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                     height: 20,
                   ),
-                  patientHistoryController.listTopDoctor.length > 0
+                  patientHistoryController.listTopDoctor.length > 1
                       ? Padding(
                           padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                           child: InkWell(
@@ -836,7 +836,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                     height: 20,
                   ),
-                  patientHistoryController.listTopDoctor.length > 0
+                  patientHistoryController.listTopDoctor.length > 2
                       ? Padding(
                           padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                           child: InkWell(
