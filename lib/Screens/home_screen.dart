@@ -214,7 +214,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 30),
+                    padding: EdgeInsets.symmetric(horizontal: 18),
                     child: Text(
                       patientProfileController.patient.value.name,
                       style: TextStyle(

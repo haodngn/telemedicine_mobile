@@ -39,7 +39,8 @@ class FetchAPI {
   static Future<String> loginWithToken(String tokenId) async {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     final storage = new Storage.FlutterSecureStorage();
-    data['tokenId'] = tokenId;
+    data['tokenId'] =
+        "eyJhbGciOiJSUzI1NiIsImtpZCI6IjE1MjU1NWEyMjM3MWYxMGY0ZTIyZjFhY2U3NjJmYzUwZmYzYmVlMGMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiVsSDbiBUw6JtIE5ndXnhu4VuIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FBVFhBSnlxZ3pjYVRhNjlJdWtxZVdkUFh4TC13dExzYnk2UmQ1TTBTOGc0PXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL3RlbGVtZWRpY2luZS1mYzBlZSIsImF1ZCI6InRlbGVtZWRpY2luZS1mYzBlZSIsImF1dGhfdGltZSI6MTYzNTg0MTg4MCwidXNlcl9pZCI6IlYwY05VbER2OVZoY2tXTGw5RGxnV29HeTFyRjIiLCJzdWIiOiJWMGNOVWxEdjlWaGNrV0xsOURsZ1dvR3kxckYyIiwiaWF0IjoxNjM1ODQxODgwLCJleHAiOjE2MzU4NDU0ODAsImVtYWlsIjoidmFudGFtMTQxN0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNjc5ODQ1NDM5NDI4ODgyNzAyOSJdLCJlbWFpbCI6WyJ2YW50YW0xNDE3QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.GIErq0J3Kc-YVfmne6xQuyD7HyAMEwHkg0SKCY202IFyEfXlNQaLWu70xReIlaKB9Cw_v-eD8ZZGVVARlYS4Q-TzQmL14wwFD72sE4QBu7NhDT8mk5TgTwYD0cUG9jKfiLU93EnNk6PCwKX-YA-wu0a_stoTJlRlf6P4ACHKosnsXd5Rf3TQvBNhSvyGzdILHqBoFGsgZJ0MNfiE7fX_SjSjVSE_5shA5vUwbi9FTYr0T1hHRuIK7q-QMGw6BrPQrepg9cZvnVGp4vTSi9OmkaLz5t5BReBD8k-hw_SxUaHxMpjWqc_UgR4Dfgw60pnkZhqSvhJt9K0eDUwjYZX36w";
     data['loginType'] = 3;
     final accountController = GetX.Get.put(AccountController());
     try {
@@ -570,58 +571,42 @@ class FetchAPI {
   static Future<int> createNewAccount(
       AccountPost accountPost, String filePath) async {
     final storage = new Storage.FlutterSecureStorage();
-    String token = await storage.read(key: "accessToken") ?? "";
-    if (token.isEmpty) {
-      GetX.Get.offAll(LoginScreen(),
-          transition: GetX.Transition.leftToRightWithFade,
-          duration: Duration(milliseconds: 500));
-      throw Exception("Error: UnAuthentication");
-    } else {
-      try {
-        FormData formData = new FormData.fromMap({
-          "image": await MultipartFile.fromFile(filePath, filename: "avatar"),
-          "email": accountPost.email,
-          "firstName": accountPost.firstName,
-          "lastName": accountPost.lastName,
-          "ward": accountPost.ward,
-          "streetAddress": accountPost.streetAddress,
-          "locality": accountPost.locality,
-          "city": accountPost.city,
-          "postalCode": "000000",
-          "phone": accountPost.phone,
-          "dob": accountPost.dob,
-          "isMale": accountPost.isMale,
-          "roleId": 3,
-        });
-        Response response =
-            await Dio().post("https://binhtt.tech/api/v1/accounts",
-                data: formData,
-                options: Options(headers: <String, String>{
-                  HttpHeaders.contentTypeHeader: 'multipart/form-data',
-                  HttpHeaders.authorizationHeader: 'Bearer $token',
-                }));
-        return response.statusCode!;
-      } on DioError catch (e) {
-        return e.response!.statusCode!;
-      }
+    try {
+      FormData formData = new FormData.fromMap({
+        "image": await MultipartFile.fromFile(filePath, filename: "avatar"),
+        "email": accountPost.email,
+        "firstName": accountPost.firstName,
+        "lastName": accountPost.lastName,
+        "ward": accountPost.ward,
+        "streetAddress": accountPost.streetAddress,
+        "locality": accountPost.locality,
+        "city": accountPost.city,
+        "postalCode": "000000",
+        "phone": accountPost.phone,
+        "dob": accountPost.dob,
+        "isMale": accountPost.isMale,
+        "roleId": 3,
+      });
+      Response response =
+          await Dio().post("https://binhtt.tech/api/v1/accounts",
+              data: formData,
+              options: Options(headers: <String, String>{
+                HttpHeaders.contentTypeHeader: 'multipart/form-data',
+              }));
+      return response.statusCode!;
+    } on DioError catch (e) {
+      return e.response!.statusCode!;
     }
   }
 
   static Future<int> createNewPatient(Patient patient) async {
-    final storage = new Storage.FlutterSecureStorage();
-    String token = await storage.read(key: "accessToken") ?? "";
-    if (token.isEmpty) {
-      throw Exception("Error: UnAuthentication");
-    } else {
-      final response = await http.post(
-          Uri.parse("https://binhtt.tech/api/v1/patients"),
-          body: jsonEncode(patient.toJson()),
-          headers: <String, String>{
-            HttpHeaders.contentTypeHeader: 'application/json-patch+json',
-            HttpHeaders.authorizationHeader: 'Bearer $token',
-          });
-      return response.statusCode;
-    }
+    final response = await http.post(
+        Uri.parse("https://binhtt.tech/api/v1/patients"),
+        body: jsonEncode(patient.toJson()),
+        headers: <String, String>{
+          HttpHeaders.contentTypeHeader: 'application/json-patch+json',
+        });
+    return response.statusCode;
   }
 
   static Future<String> createNewHealthCheck(
