@@ -13,6 +13,7 @@ import 'package:telemedicine_mobile/models/ContentDoctor.dart';
 import 'package:telemedicine_mobile/models/ContentHealthCheck.dart';
 import 'package:telemedicine_mobile/models/ContentHospital.dart';
 import 'package:telemedicine_mobile/models/ContentMajor.dart';
+import 'package:telemedicine_mobile/models/ContentNews.dart';
 import 'package:telemedicine_mobile/models/ContentNotification.dart';
 import 'package:telemedicine_mobile/models/ContentSlot.dart';
 import 'package:telemedicine_mobile/models/ContentSymptom.dart';
@@ -23,10 +24,12 @@ import 'package:telemedicine_mobile/models/HealthCheckChangeSTT.dart';
 import 'package:telemedicine_mobile/models/HealthCheckPost.dart';
 import 'package:telemedicine_mobile/models/Hospital.dart';
 import 'package:telemedicine_mobile/models/Major.dart';
+import 'package:telemedicine_mobile/models/News.dart';
 import 'package:telemedicine_mobile/models/Notification.dart';
 import 'package:telemedicine_mobile/models/Patient.dart';
 import 'package:telemedicine_mobile/models/Role.dart';
 import 'package:telemedicine_mobile/models/Slot.dart';
+import 'package:telemedicine_mobile/models/StatisticCovid/StatisticCovid.dart';
 import 'package:telemedicine_mobile/models/Symptom.dart';
 import 'package:telemedicine_mobile/models/TimeFrame.dart';
 import 'package:dio/dio.dart';
@@ -35,8 +38,7 @@ class FetchAPI {
   static Future<String> loginWithToken(String tokenId) async {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     final storage = new Storage.FlutterSecureStorage();
-    data['tokenId'] =
-        "eyJhbGciOiJSUzI1NiIsImtpZCI6IjE1MjU1NWEyMjM3MWYxMGY0ZTIyZjFhY2U3NjJmYzUwZmYzYmVlMGMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiVsSDbiBUw6JtIE5ndXnhu4VuIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FBVFhBSnlxZ3pjYVRhNjlJdWtxZVdkUFh4TC13dExzYnk2UmQ1TTBTOGc0PXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL3RlbGVtZWRpY2luZS1mYzBlZSIsImF1ZCI6InRlbGVtZWRpY2luZS1mYzBlZSIsImF1dGhfdGltZSI6MTYzNTc1MjI3MSwidXNlcl9pZCI6IlYwY05VbER2OVZoY2tXTGw5RGxnV29HeTFyRjIiLCJzdWIiOiJWMGNOVWxEdjlWaGNrV0xsOURsZ1dvR3kxckYyIiwiaWF0IjoxNjM1NzUyMjcxLCJleHAiOjE2MzU3NTU4NzEsImVtYWlsIjoidmFudGFtMTQxN0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNjc5ODQ1NDM5NDI4ODgyNzAyOSJdLCJlbWFpbCI6WyJ2YW50YW0xNDE3QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.c2ikUpM_uujYU6SGi0rbeFKsoiJA2Unoy5A-jQDPnpDo1WkkcWzEUXrod3dvdym3RED5m99QFx6CYLXsF0CQD-lAzV_GBNDqTKri04pcoa-22zZgz9q9cot57AucroP39RGvWwgRJ-qnY0Ve5gb1lbidTI0IspNt8hJCm-v-df1AbeyVjmVpBylU9tPg05aSza7YLlkVvSQjKT24XEeh-8HlqiYHlzeA8Pk1RRzZ0AZD8rq3DagP7qa9cS9mbR1_aTcps0dqGLUFXfEH04nAG0CxoismZyGjuQ4EULrTZN0DiQyGMVV84nRbMKn504ep-Hiksh8V_h4oQvLnE4NS6Q";
+    data['tokenId'] = tokenId;
     data['loginType'] = 3;
     final accountController = GetX.Get.put(AccountController());
     try {
@@ -165,6 +167,44 @@ class FetchAPI {
       } else {
         throw Exception("Internal server error");
       }
+    }
+  }
+
+  static Future<List<News>> fetchContentNews() async {
+    final response = await http.get(
+      Uri.parse(
+          "https://api.coronatracker.com/news/trending?limit=5&offset=0&language=vi&fbclid=IwAR2rQ_ijG1GnzHDAH7gkag_A1ljj6d1NVkDC_5CG8QOlV4HYpellcQ8o3Lo"),
+      headers: <String, String>{
+        HttpHeaders.contentTypeHeader: 'application/json',
+      },
+    );
+    if (response.statusCode == 200) {
+      var contentJSon = json.decode(utf8.decode(response.bodyBytes));
+      ContentNews contentNews = ContentNews.fromJson(contentJSon);
+      print("TEST:" + contentNews.news.length.toString());
+      return contentNews.news;
+    } else {
+      throw Exception("Internal server error");
+    }
+  }
+
+  static Future<dynamic> fetchContentStaticCovid() async {
+    final response = await http.get(
+      Uri.parse(
+          "https://static.pipezero.com/covid/data.json?fbclid=IwAR2-5yMjUCwJVTz2FQRS0v9ll7ggkePfoZbEZQGBOeFbctSqVgf5DP3pa04"),
+      headers: <String, String>{
+        HttpHeaders.contentTypeHeader: 'application/json',
+      },
+    );
+    if (response.statusCode == 200) {
+      var contentJSon = json.decode(utf8.decode(response.bodyBytes));
+      StatisticCovid contentCovidTotal =
+          StatisticCovid.fromJson(contentJSon["total"]);
+      StatisticCovid contentCovidToday =
+          StatisticCovid.fromJson(contentJSon["today"]);
+      return {'total': contentCovidTotal, 'today': contentCovidToday};
+    } else {
+      throw Exception("Internal server error");
     }
   }
 
