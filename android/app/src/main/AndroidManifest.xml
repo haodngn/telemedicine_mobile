@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.telemedicine_mobile">
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -51,6 +53,8 @@
             android:value="2" />
        <meta-data android:name="com.facebook.sdk.ApplicationId"
            android:value="@string/facebook_app_id"/>
+       <meta-data android:name="com.google.android.geo.API_KEY"
+           android:value="AIzaSyDWF87FV_EHA0Vjj00bsfUb3XnY5DqerLQ"/>
        <activity android:name="com.facebook.FacebookActivity"
            android:configChanges= "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
            android:label="@string/app_name" />
@@ -63,6 +67,5 @@
                <data android:scheme="@string/fb_login_protocol_scheme" />
            </intent-filter>
        </activity>
-
    </application>
 </manifest>

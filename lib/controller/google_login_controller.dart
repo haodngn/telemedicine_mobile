@@ -33,7 +33,9 @@ class GoogleSignInController with ChangeNotifier {
           await FirebaseAuth.instance.signInWithCredential(credential);
 
       await FetchAPI.loginWithToken(await response.user!.getIdToken())
-          .then((value) => statusLogin = value);
+          .then((value) => {
+                statusLogin = value,
+              });
       notifyListeners();
     } catch (e) {
       statusLogin = "";

@@ -23,6 +23,7 @@ import 'package:telemedicine_mobile/models/HealthCheck.dart';
 import 'package:telemedicine_mobile/models/HealthCheckChangeSTT.dart';
 import 'package:telemedicine_mobile/models/HealthCheckPost.dart';
 import 'package:telemedicine_mobile/models/Hospital.dart';
+import 'package:telemedicine_mobile/models/JoinCallModel.dart';
 import 'package:telemedicine_mobile/models/Major.dart';
 import 'package:telemedicine_mobile/models/News.dart';
 import 'package:telemedicine_mobile/models/Notification.dart';
@@ -765,6 +766,45 @@ class FetchAPI {
     }
   }
 
+  static Future<JoinCallResponse> joinCall(int healthCheckID) async {
+    final storage = new Storage.FlutterSecureStorage();
+    String token = await storage.read(key: "accessToken") ?? "";
+    final accountController = GetX.Get.put(AccountController());
+    String email = accountController.account.value.email;
+    String displayName = accountController.account.value.firstName +
+        " " +
+        accountController.account.value.lastName;
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500));
+      throw Exception("Error: UnAuthentication");
+    } else {
+      final Map<String, dynamic> data = new Map<String, dynamic>();
+      data['healthCheckID'] = healthCheckID;
+      data['email'] = email.toLowerCase();
+      data['displayName'] = displayName;
+      data['isInvited'] = true;
+      final response = await http.post(
+          Uri.parse("https://binhtt.tech/api/v1/health-checks/join-call"),
+          body: jsonEncode(data),
+          headers: <String, String>{
+            HttpHeaders.contentTypeHeader: 'application/json',
+            HttpHeaders.authorizationHeader: 'Bearer $token',
+          });
+      if (response.statusCode == 200) {
+        var contentJSon = json.decode(utf8.decode(response.bodyBytes));
+        JoinCallResponse joinCallResponse =
+            JoinCallResponse.fromJson(contentJSon);
+        return joinCallResponse;
+      } else if (response.statusCode == 404) {
+        throw Exception("No health check found with the specified id");
+      } else {
+        throw Exception("Internal server error");
+      }
+    }
+  }
+
   static Future<String> cancelHealthCheck(
       HealthCheckChangeSTT healthCheckChangeSTT) async {
     final storage = new Storage.FlutterSecureStorage();
@@ -941,6 +981,39 @@ class FetchAPI {
         }
       }
       return false;
+    }
+  }
+
+  static Future<ContentHospital> getListNearHospital(
+      double lat, double lng) async {
+    final storage = new Storage.FlutterSecureStorage();
+    String token = await storage.read(key: "accessToken") ?? "";
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500));
+      throw Exception("Error: UnAuthentication");
+    } else {
+      final response = await http.get(
+        Uri.parse(
+            "https://binhtt.tech/api/v1/hospitals?latitude=$lat&longitude=$lng&limit=3&page-offset=1"),
+        headers: <String, String>{
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        var contentJSon = json.decode(utf8.decode(response.bodyBytes));
+        ContentHospital contentHospital = ContentHospital.fromJson(contentJSon);
+
+        return contentHospital;
+      } else if (response.statusCode == 404) {
+        throw Exception("Not found doctor");
+      } else if (response.statusCode == 401) {
+        throw Exception("Error: Unauthorized");
+      } else {
+        throw Exception("Internal server error");
+      }
     }
   }
 }
