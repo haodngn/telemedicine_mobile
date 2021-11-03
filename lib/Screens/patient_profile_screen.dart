@@ -88,15 +88,17 @@ class _PatientProfileState extends State<PatientProfile> {
                         image: DecorationImage(
                           fit: BoxFit.cover,
                           image: NetworkImage(patientProfileController
-                                      .patient.value.avatar ==
+                                      .account.value.avatar ==
                                   ""
                               ? 'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg'
-                              : patientProfileController.patient.value.avatar),
+                              : patientProfileController.account.value.avatar),
                         ),
                       ),
                     ),
                     Text(
-                      patientProfileController.account.value.firstName + " " + patientProfileController.account.value.lastName,
+                      patientProfileController.account.value.firstName +
+                          " " +
+                          patientProfileController.account.value.lastName,
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,

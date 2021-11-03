@@ -108,12 +108,12 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                                         child: Image(
                                           fit: BoxFit.cover,
                                           image: NetworkImage(
-                                              patientProfileController.patient
+                                              patientProfileController.account
                                                           .value.avatar ==
                                                       ""
                                                   ? 'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg'
                                                   : patientProfileController
-                                                      .patient.value.avatar),
+                                                      .account.value.avatar),
                                         ),
                                       )
                                     : ClipRRect(
@@ -488,7 +488,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                     patientProfileController.district.value.isEmpty &&
                             patientProfileController.emptyDistrict.value
                         ? Padding(
-                      padding: const EdgeInsets.only(top: 10, left: 10),
+                            padding: const EdgeInsets.only(top: 10, left: 10),
                             child: Text(
                               "Vui lòng chọn quận, huyện",
                               style: TextStyle(color: Colors.red, fontSize: 14),
@@ -555,7 +555,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                     patientProfileController.ward.value.isEmpty &&
                             patientProfileController.emptyWard.value
                         ? Padding(
-                      padding: const EdgeInsets.only(top: 10, left: 10),
+                            padding: const EdgeInsets.only(top: 10, left: 10),
                             child: Text(
                               "Vui lòng chọn phường, xã",
                               style: TextStyle(color: Colors.red, fontSize: 14),
@@ -636,11 +636,14 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
               ),
             ),
           ),
-          Obx(() => patientProfileController.isLoading.value ? Container(
-            width: double.infinity,
-            height: double.infinity,
-            color: Colors.black.withOpacity(0.5),
-          ):Container(),
+          Obx(
+            () => patientProfileController.isLoading.value
+                ? Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    color: Colors.black.withOpacity(0.5),
+                  )
+                : Container(),
           ),
           Positioned.fill(
               child: Align(
