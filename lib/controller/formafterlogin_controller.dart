@@ -91,6 +91,7 @@ class FormAfterLoginController extends GetxController {
   RxBool emptyImage = false.obs;
 
   RxBool done = false.obs;
+  RxBool isLoading = false.obs;
 
   Future pickDate(BuildContext context) async {
     final initialDate = DateTime.parse("2000-01-01");
@@ -167,7 +168,7 @@ class FormAfterLoginController extends GetxController {
         emptyWard.isFalse &&
         emptyStreet.isFalse &&
         emptyImage.isFalse) {
-      print("TEST");
+      isLoading.value = true;
       AccountPost newAccount = new AccountPost(
         email: accountController.account.value.email,
         firstName: fName,
@@ -198,10 +199,12 @@ class FormAfterLoginController extends GetxController {
         if (value == 201 || value == 200) {
           FetchAPI.createNewPatient(newPatient).then((value) {
             done.value = true;
+            isLoading.value = false;
             Get.to(LoginScreen());
             Fluttertoast.showToast(msg: "Đăng ký tài khoản thành công", fontSize: 18);
           });
         }
+        isLoading.value = false;
       });
     }
   }
