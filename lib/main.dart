@@ -12,32 +12,32 @@ import 'package:telemedicine_mobile/Screens/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-
 /// Create a [AndroidNotificationChannel] for heads up notifications
 late AndroidNotificationChannel channel;
 
 /// Initialize the [FlutterLocalNotificationsPlugin] package.
-late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    new FlutterLocalNotificationsPlugin();
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await [Permission.microphone, Permission.camera].request();
+  await [Permission.microphone, Permission.camera, Permission.location]
+      .request();
   var initializationSettingsAndroid =
-  AndroidInitializationSettings('@mipmap/ic_launcher');
+      AndroidInitializationSettings('@mipmap/ic_launcher');
   var initializationSettingsIOS = IOSInitializationSettings();
-  var initializationSettings =  new InitializationSettings(
-       android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+  var initializationSettings = new InitializationSettings(
+      android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
   flutterLocalNotificationsPlugin.initialize(
     initializationSettings,
   );
   if (!kIsWeb) {
     channel = const AndroidNotificationChannel(
-      'high_importance_channel', // id
-      'High Importance Notifications', // title
-      importance: Importance.high,
-      playSound: true,
-      enableVibration: true
-    );
+        'high_importance_channel', // id
+        'High Importance Notifications', // title
+        importance: Importance.high,
+        playSound: true,
+        enableVibration: true);
 
     /// Create an Android Notification Channel.
     ///
@@ -45,7 +45,7 @@ Future main() async {
     /// default FCM channel to enable heads up notifications.
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()
+            AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
     /// Update the iOS foreground notification presentation options to allow
@@ -65,7 +65,8 @@ Future main() async {
 
 Future<void> _messageHandler(RemoteMessage message) async {
   print('background message ${message.notification!.body}');
-  showNotification(message.notification!.title ?? "", message.notification!.body ?? "");
+  showNotification(
+      message.notification!.title ?? "", message.notification!.body ?? "");
 }
 
 void showNotification(String title, String body) async {
@@ -82,7 +83,7 @@ Future<void> _demoNotification(String title, String body) async {
       ticker: 'test ticker');
   var iOSChannelSpecifics = IOSNotificationDetails();
   var platformChannelSpecifics = NotificationDetails(
-      android: androidPlatformChannelSpecifics,iOS: iOSChannelSpecifics);
+      android: androidPlatformChannelSpecifics, iOS: iOSChannelSpecifics);
 
   await flutterLocalNotificationsPlugin
       .show(0, title, body, platformChannelSpecifics, payload: 'test');

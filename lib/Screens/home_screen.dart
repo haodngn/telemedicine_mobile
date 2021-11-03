@@ -1433,24 +1433,10 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           CategoryCard(
             'Bệnh viện\nGần đây',
-            'assets/icons/dental_surgeon.png',
+            'assets/icons/hospital.png',
             kBlueColor,
             4,
           ),
-          SizedBox(
-            width: 10,
-          ),
-          CategoryCard(
-            'Heart\nSymptoms',
-            'assets/icons/heart_surgeon.png',
-            kYellowColor,
-            3,
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          CategoryCard('Eye\nSymptoms', 'assets/icons/eye_specialist.png',
-              kOrangeColor, 3),
         ],
       ),
     );
