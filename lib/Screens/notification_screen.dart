@@ -15,6 +15,12 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   final patientProfileController = Get.put(PatientProfileController());
 
+  @override
+  void initState() {
+    super.initState();
+    patientProfileController.getListNotification();
+  }
+
   Widget textfield({@required hintText, @required icon, onTap}) {
     return Material(
       elevation: 4,
@@ -46,11 +52,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ),
       ),
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override

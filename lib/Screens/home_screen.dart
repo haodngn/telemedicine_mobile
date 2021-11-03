@@ -72,6 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
       print(event);
       print(event.notification!.title);
       print(event.notification!.body);
+      print(accountController.countNotificationUnread.value);
       accountController.countNotificationUnread.value =
           accountController.countNotificationUnread.value + 1;
       showNotification(
@@ -615,6 +616,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                               .major
                                               .name
                                           : "",
+                                      maxLines: 1,
+                                      softWrap: true,
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                           color: Colors.grey.withOpacity(0.75),
                                           fontSize: 16,
@@ -767,6 +771,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                               .major
                                               .name
                                           : "",
+                                      maxLines: 1,
+                                      softWrap: true,
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                           color: Colors.grey.withOpacity(0.75),
                                           fontSize: 16,
@@ -919,6 +926,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                               .major
                                               .name
                                           : "",
+                                      maxLines: 1,
+                                      softWrap: true,
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                           color: Colors.grey.withOpacity(0.75),
                                           fontSize: 16,

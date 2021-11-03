@@ -910,8 +910,9 @@ class FetchAPI {
           duration: Duration(milliseconds: 500));
       throw Exception("Error: UnAuthentication");
     } else {
+      final accountController = GetX.Get.put(AccountController());
       final response = await http.get(
-          Uri.parse("https://binhtt.tech/api/v1/notifications?user-id=33" +
+          Uri.parse("https://binhtt.tech/api/v1/notifications?user-id=${accountController.account.value.id}" +
               "&page-offset=1&limit=20"),
           headers: <String, String>{
             HttpHeaders.contentTypeHeader: 'application/json',
