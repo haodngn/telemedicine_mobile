@@ -103,6 +103,15 @@ class FilterController extends GetxController {
         .toList();
   }
 
+  searchDoctorByNearest() {
+    String condition = "";
+    if (hospitalId.value != 0) {
+      condition += ("hospitals=${hospitalId.value}&");
+      listDoctorController.condition.value = condition;
+      listDoctorController.getListDoctor(isRefresh: true);
+    }
+  }
+
   //TypeSearch: 1: search with condition, 2: search all, 3: search by 1 major
   searchDoctorByCondition(int typeSearch) {
     String condition = "";
@@ -129,9 +138,7 @@ class FilterController extends GetxController {
           if (nameDoctor.isNotEmpty) {
             condition += ("name-doctor=${nameDoctor.value}&");
           }
-          if (hospitalId.value != 0) {
-            condition += ("hospitals=${hospitalId.value}&");
-          }
+
           listDoctorController.condition.value = condition;
           break;
         }
