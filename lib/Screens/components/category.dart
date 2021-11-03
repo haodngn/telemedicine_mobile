@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:telemedicine_mobile/Screens/covid_screen.dart';
 import 'package:telemedicine_mobile/Screens/hospial_map/hospital_map.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/bottom_navbar_controller.dart';
@@ -30,6 +31,8 @@ class CategoryCard extends StatelessWidget {
           }
         else if (click == 4)
           {Get.to(HospitalMap())}
+        else if (click == 5)
+          {Get.to(Covid19())}
       },
       child: Container(
         width: 130,

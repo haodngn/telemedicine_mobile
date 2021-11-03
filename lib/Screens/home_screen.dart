@@ -140,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
           appBar: AppBar(
-            title: Text("Trang chủ"),
+            title: Text("MetaCine"),
             centerTitle: true,
             automaticallyImplyLeading: false,
             backgroundColor: kBlueColor,
@@ -1426,7 +1426,7 @@ class _HomeScreenState extends State<HomeScreen> {
             'Covid-19\nSymptoms',
             'assets/icons/covid19.png',
             kOrangeColor,
-            3,
+            5,
           ),
           SizedBox(
             width: 10,
