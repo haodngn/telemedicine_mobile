@@ -5,6 +5,7 @@ import 'package:telemedicine_mobile/Screens/hospial_map/hospital_map.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/bottom_navbar_controller.dart';
 import 'package:telemedicine_mobile/controller/filter_controller.dart';
+import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
 
 class CategoryCard extends StatelessWidget {
   var _title;
@@ -15,6 +16,7 @@ class CategoryCard extends StatelessWidget {
   CategoryCard(this._title, this._imageUrl, this._bgColor, this.click);
   final bottomNavbarController = Get.put(BottomNavbarController());
   final filterController = Get.put(FilterController());
+  final listDoctorController = Get.put(ListDoctorController());
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +26,7 @@ class CategoryCard extends StatelessWidget {
           {
             filterController.getListMajor(),
             bottomNavbarController.currentIndex.value = 1,
+            listDoctorController.condition.value = "",
           }
         else if (click == 2)
           {

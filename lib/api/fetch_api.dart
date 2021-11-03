@@ -39,7 +39,8 @@ class FetchAPI {
   static Future<String> loginWithToken(String tokenId) async {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     final storage = new Storage.FlutterSecureStorage();
-    data['tokenId'] = tokenId;
+    data['tokenId'] =
+        "eyJhbGciOiJSUzI1NiIsImtpZCI6IjE1MjU1NWEyMjM3MWYxMGY0ZTIyZjFhY2U3NjJmYzUwZmYzYmVlMGMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiVsSDbiBUw6JtIE5ndXnhu4VuIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FBVFhBSnlxZ3pjYVRhNjlJdWtxZVdkUFh4TC13dExzYnk2UmQ1TTBTOGc0PXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL3RlbGVtZWRpY2luZS1mYzBlZSIsImF1ZCI6InRlbGVtZWRpY2luZS1mYzBlZSIsImF1dGhfdGltZSI6MTYzNTk0OTcyOCwidXNlcl9pZCI6IlYwY05VbER2OVZoY2tXTGw5RGxnV29HeTFyRjIiLCJzdWIiOiJWMGNOVWxEdjlWaGNrV0xsOURsZ1dvR3kxckYyIiwiaWF0IjoxNjM1OTQ5NzI4LCJleHAiOjE2MzU5NTMzMjgsImVtYWlsIjoidmFudGFtMTQxN0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNjc5ODQ1NDM5NDI4ODgyNzAyOSJdLCJlbWFpbCI6WyJ2YW50YW0xNDE3QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.OnxTsZwzpuX_Xq6v92JRe1nE8DedHAVokZht65WFNWpVit5ULN1MINK0tQ4gAMgQxlW9J_sek2Phj6bEoUdhOi9amfP85C0NsGxsggqlIcPY0x7U-ysQhm-WkhBw76EoekQnWUjjMAwQCTb2ta_SA6cZM_g9S_6Hd2E0NtTFzgAKFb_qw_1UqQoDY5hXwIzw2s44d__bSPy3_xf1PLmiwb24hR51EvkF-PNdAhip08MwuBlm9HgOdWo_o7-q_BYF0-tivc5n2Peaoc_pdSf-_3tbhHimOI-lkM8164CoLRjiJpXjTEWMGU60ciDqG59aFJr8ebW9Peqcaqhm2s9TKQ";
     data['loginType'] = 3;
     final accountController = GetX.Get.put(AccountController());
     try {
@@ -182,7 +183,6 @@ class FetchAPI {
     if (response.statusCode == 200) {
       var contentJSon = json.decode(utf8.decode(response.bodyBytes));
       ContentNews contentNews = ContentNews.fromJson(contentJSon);
-      print("TEST:" + contentNews.news.length.toString());
       return contentNews.news;
     } else {
       throw Exception("Internal server error");
@@ -645,10 +645,8 @@ class FetchAPI {
               options: Options(headers: <String, String>{
                 HttpHeaders.contentTypeHeader: 'multipart/form-data',
               }));
-      print("TYU" + response.statusCode.toString());
       return response.statusCode!;
     } on DioError catch (e) {
-      print(e);
       return e.response!.statusCode!;
     }
   }
@@ -912,8 +910,9 @@ class FetchAPI {
     } else {
       final accountController = GetX.Get.put(AccountController());
       final response = await http.get(
-          Uri.parse("https://binhtt.tech/api/v1/notifications?user-id=${accountController.account.value.id}" +
-              "&page-offset=1&limit=20"),
+          Uri.parse(
+              "https://binhtt.tech/api/v1/notifications?user-id=${accountController.account.value.id}" +
+                  "&page-offset=1&limit=20"),
           headers: <String, String>{
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: 'Bearer $token',

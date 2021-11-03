@@ -1,3 +1,4 @@
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,7 +9,14 @@ import 'package:telemedicine_mobile/components/google_button.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/account_controller.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final accountController = Get.put(AccountController());
 
   @override
@@ -45,3 +53,9 @@ class LoginScreen extends StatelessWidget {
     );
   }
 }
+
+
+
+  // Future<void> _createDynamicLink() async {
+    
+  // }

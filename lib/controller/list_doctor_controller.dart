@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:telemedicine_mobile/Screens/call_screen/videocall_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
+import 'package:telemedicine_mobile/controller/invite_videocall_controller.dart';
 import 'package:telemedicine_mobile/models/Doctor.dart';
 import 'package:telemedicine_mobile/models/HealthCheck.dart';
 import 'package:telemedicine_mobile/models/HealthCheckPost.dart';
@@ -10,6 +11,8 @@ import 'package:telemedicine_mobile/models/Slot.dart';
 import 'package:telemedicine_mobile/models/SymptomHealthCheckPost.dart';
 
 class ListDoctorController extends GetxController {
+  final inviteVideoCallController = Get.put(InviteVideoCallController());
+
   RxList<dynamic> listDoctor = [].obs;
   RxInt totalCount = 0.obs;
   RxInt pageSize = 0.obs;
@@ -203,6 +206,7 @@ class ListDoctorController extends GetxController {
     FetchAPI.joinCall(healthCheckID).then((valueJoinCall) => {
           FetchAPI.getTokenHealthCheck(healthCheckID).then((value) => {
                 healthCheckToken.value = value,
+                inviteVideoCallController.getLinkVideoCall(healthCheckID),
                 Get.to(CallScreen(
                   uid: valueJoinCall.uid,
                 )),

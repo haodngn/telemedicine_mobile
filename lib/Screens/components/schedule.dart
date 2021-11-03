@@ -48,7 +48,7 @@ class ScheduleCard extends StatelessWidget {
             actions: [
               CupertinoDialogAction(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.pushReplacementNamed(context, "/");
                   listDoctorController.slot.value = slot;
                   Get.to(ChatBotScreen());
                 },
@@ -58,7 +58,7 @@ class ScheduleCard extends StatelessWidget {
               ),
               CupertinoDialogAction(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.pushReplacementNamed(context, "/");
                 },
                 child: Text('Từ chối'),
                 isDefaultAction: false,
@@ -124,32 +124,36 @@ class ScheduleCard extends StatelessWidget {
                     color: kTitleTextColor,
                   ),
                 ),
-                subtitle: bookAllow ? Text(_description) : RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: _description + '\n',
-                        style: TextStyle(
-                          color: kTitleTextColor.withOpacity(0.7),
+                subtitle: bookAllow
+                    ? Text(_description)
+                    : RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: _description + '\n',
+                              style: TextStyle(
+                                color: kTitleTextColor.withOpacity(0.7),
+                              ),
+                            ),
+                            TextSpan(
+                                text: healthCheckID < 1
+                                    ? "Buổi tư vấn sẵn sàng"
+                                    : emailPatient ==
+                                            accountController
+                                                .account.value.email
+                                        ? "Bạn đã đăng ký buổi này"
+                                        : "Đã có người đăng ký",
+                                style: TextStyle(
+                                    color: healthCheckID < 1
+                                        ? Colors.green
+                                        : emailPatient ==
+                                                accountController
+                                                    .account.value.email
+                                            ? Colors.blue
+                                            : Colors.red)),
+                          ],
                         ),
                       ),
-                      TextSpan(
-                          text: healthCheckID < 1
-                              ? "Buổi tư vấn sẵn sàng"
-                              : emailPatient ==
-                                      accountController.account.value.email
-                                  ? "Bạn đã đăng ký buổi này"
-                                  : "Đã có người đăng ký",
-                          style: TextStyle(
-                              color: healthCheckID < 1
-                                  ? Colors.green
-                                  : emailPatient ==
-                                          accountController.account.value.email
-                                      ? Colors.blue
-                                      : Colors.red)),
-                    ],
-                  ),
-                ),
               ),
             ],
           ),
