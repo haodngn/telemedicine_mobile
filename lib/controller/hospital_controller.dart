@@ -51,7 +51,7 @@ class HospitalController extends GetxController {
                   title: e.name,
                   onTap: () {
                     filterController.hospitalId.value = e.id;
-                    filterController.searchDoctorByCondition(1);
+                    filterController.searchDoctorByNearest();
                     Get.to(ListDoctorScreen());
                   },
                   snippet: e.address)))
