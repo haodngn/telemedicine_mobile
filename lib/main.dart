@@ -63,11 +63,12 @@ Future main() async {
     );
     FirebaseMessaging.onBackgroundMessage(_messageHandler);
   }
+  final inviteVideoCallController = Get.put(InviteVideoCallController());
 
   runApp(MaterialApp(
     routes: <String, WidgetBuilder>{
       '/': (BuildContext context) => MyApp(),
-      '/eNh4': (BuildContext context) => DynamicLinkScreen(),
+      '/guest': (BuildContext context) => DynamicLinkScreen(),
     },
   ));
 }
@@ -122,21 +123,22 @@ class _MyAppState extends State<MyApp> {
       // ignore: unawaited_futures
       Navigator.pushNamed(context, deepLink.path);
     }
-    print("sssssssssssssssssssssss");
     FirebaseDynamicLinks.instance.onLink(
         onSuccess: (PendingDynamicLinkData? dynamicLink) async {
           final Uri? deepLink = dynamicLink?.link;
-          print("onlinkkkkkkkkkkkkkkk");
+
           String? healthCheckID =
               deepLink?.queryParameters['healthCheckID'].toString();
           inviteVideoCallController.healthCheckIDInvite.value =
               int.parse(healthCheckID.toString());
+          print("heal: " + deepLink!.path.toString().split("/")[1]);
           if (deepLink != null) {
             // ignore: unawaited_futures
-            Navigator.pushNamed(context, deepLink.path);
+            Navigator.pushNamed(
+                context, "/" + deepLink.path.toString().split("/")[1]);
           }
         },
-        onError: (OnLinkErrorException e) async {    print("vbbbbbbbbbbbbbbbbbbbb");});
+        onError: (OnLinkErrorException e) async {});
   }
 
   @override
