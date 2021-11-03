@@ -189,7 +189,6 @@ class _FilterScreenState extends State<FilterScreen> {
                       },
                       onSaved: (val) => (val) => {
                             filterController.endTime.value = val!,
-                            print(val),
                           },
                     ),
                   ),

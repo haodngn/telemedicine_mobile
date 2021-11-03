@@ -182,7 +182,6 @@ class FetchAPI {
     if (response.statusCode == 200) {
       var contentJSon = json.decode(utf8.decode(response.bodyBytes));
       ContentNews contentNews = ContentNews.fromJson(contentJSon);
-      print("TEST:" + contentNews.news.length.toString());
       return contentNews.news;
     } else {
       throw Exception("Internal server error");
@@ -645,10 +644,8 @@ class FetchAPI {
               options: Options(headers: <String, String>{
                 HttpHeaders.contentTypeHeader: 'multipart/form-data',
               }));
-      print("TYU" + response.statusCode.toString());
       return response.statusCode!;
     } on DioError catch (e) {
-      print(e);
       return e.response!.statusCode!;
     }
   }
@@ -912,8 +909,9 @@ class FetchAPI {
     } else {
       final accountController = GetX.Get.put(AccountController());
       final response = await http.get(
-          Uri.parse("https://binhtt.tech/api/v1/notifications?user-id=${accountController.account.value.id}" +
-              "&page-offset=1&limit=20"),
+          Uri.parse(
+              "https://binhtt.tech/api/v1/notifications?user-id=${accountController.account.value.id}" +
+                  "&page-offset=1&limit=20"),
           headers: <String, String>{
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: 'Bearer $token',

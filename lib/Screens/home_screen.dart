@@ -235,6 +235,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         onTap: () {
                           filterController.getListMajor();
                           bottomNavbarController.currentIndex.value = 1;
+                          listDoctorController.condition.value = "";
                         },
                         child: Container(
                           width: double.infinity,
@@ -377,6 +378,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                         const EdgeInsets.fromLTRB(250, 0, 0, 0),
                                     child: InkWell(
                                       onTap: () => {
+                                        listDoctorController
+                                            .getTokenHealthCheck(
+                                                patientProfileController
+                                                    .nearestHealthCheck
+                                                    .value
+                                                    .id),
                                         if (DateTime.now().compareTo(DateTime
                                                 .parse(DateFormat("yyyy-MM-dd")
                                                         .format(DateTime.parse(
@@ -402,24 +409,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                           }
                                         else
                                           {
-                                            showDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  return AlertDialog(
-                                                    title: Text("Thông báo"),
-                                                    content: Text(
-                                                        "Chưa tới giờ tư vấn"),
-                                                    actions: [
-                                                      OutlinedButton(
-                                                        onPressed: () =>
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop(),
-                                                        child: Text("Đóng"),
-                                                      )
-                                                    ],
-                                                  );
-                                                })
+                                            // showDialog(
+                                            //     context: context,
+                                            //     builder: (context) {
+                                            //       return AlertDialog(
+                                            //         title: Text("Thông báo"),
+                                            //         content: Text(
+                                            //             "Chưa tới giờ tư vấn"),
+                                            //         actions: [
+                                            //           OutlinedButton(
+                                            //             onPressed: () =>
+                                            //                 Navigator.of(
+                                            //                         context)
+                                            //                     .pop(),
+                                            //             child: Text("Đóng"),
+                                            //           )
+                                            //         ],
+                                            //       );
+                                            //     })
                                           }
                                       },
                                       child: Icon(

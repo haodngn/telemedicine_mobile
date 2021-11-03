@@ -7,6 +7,7 @@ import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 import 'package:telemedicine_mobile/Screens/feedback_screen.dart';
 import 'package:telemedicine_mobile/controller/account_controller.dart';
+import 'package:telemedicine_mobile/controller/invite_videocall_controller.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 import 'package:telemedicine_mobile/firestore/firestore_service.dart';
@@ -405,6 +406,7 @@ class _CallScreenState extends State<CallScreen> {
 
   void _onHealthCheckInfo() {
     final listDoctorController = Get.put(ListDoctorController());
+    final inviteVideoCallController = Get.put(InviteVideoCallController());
     showModalBottomSheet(
         context: context,
         builder: (context) {
@@ -475,6 +477,24 @@ class _CallScreenState extends State<CallScreen> {
                     style: TextStyle(
                       fontSize: 22,
                     ),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Link:",
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: TextFormField(
+                    initialValue:
+                        inviteVideoCallController.linkVideoCall.value,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                    ),
+                    readOnly: true,
                   ),
                 ),
               ],

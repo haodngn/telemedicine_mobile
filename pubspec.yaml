@@ -50,6 +50,7 @@ dependencies:
   pull_to_refresh: ^2.0.0
   fluttertoast: ^8.0.8
   screen: ^0.0.5
+  firebase_dynamic_links: ^2.0.11
 
   #Icon
   font_awesome_flutter: ^9.0.0
