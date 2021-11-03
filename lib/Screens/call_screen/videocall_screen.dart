@@ -149,8 +149,21 @@ class _CallScreenState extends State<CallScreen> {
   }
 
   /// Video view row wrapper
-  Widget _expandedVideoRow(List<Widget> views) {
+  Widget _expandedVideoRow(List<Widget> views, {int indexLocal = -1}) {
     final wrappedViews = views.map<Widget>(_videoView).toList();
+    if (indexLocal != -1 && disableCamera) {
+      return Expanded(
+        child: Row(
+          children: [
+            ShowAvatar(
+                patientProfileController: patientProfileController,
+                width: 120,
+                height: 120),
+            wrappedViews.last,
+          ],
+        ),
+      );
+    }
     return Expanded(
       child: Row(
         children: wrappedViews,
@@ -187,7 +200,13 @@ class _CallScreenState extends State<CallScreen> {
             children: [
               Column(
                 children: <Widget>[
-                  _expandedVideoRow([views[0]])
+                  !disableCamera
+                      ? _expandedVideoRow([views[0]])
+                      : ShowAvatar(
+                          patientProfileController: patientProfileController,
+                          width: 150,
+                          height: 150,
+                        )
                 ],
               ),
               Positioned.fill(
@@ -214,18 +233,23 @@ class _CallScreenState extends State<CallScreen> {
         );
       case 2:
         return Container(
-          child: Column(
-            children: <Widget>[
-              _expandedVideoRow([views[0]]),
-              _expandedVideoRow([views[1]])
-            ],
-          ),
-        );
+            child: Column(
+          children: <Widget>[
+            !disableCamera
+                ? _expandedVideoRow([views[0]])
+                : ShowAvatar(
+                    patientProfileController: patientProfileController,
+                    width: 120,
+                    height: 120,
+                  ),
+            _expandedVideoRow([views[1]])
+          ],
+        ));
       case 3:
         return Container(
             child: Column(
           children: <Widget>[
-            _expandedVideoRow(views.sublist(0, 2)),
+            _expandedVideoRow(views.sublist(0, 2), indexLocal: 0),
             _expandedVideoRow(views.sublist(2, 3))
           ],
         ));
@@ -233,7 +257,7 @@ class _CallScreenState extends State<CallScreen> {
         return Container(
             child: Column(
           children: <Widget>[
-            _expandedVideoRow(views.sublist(0, 2)),
+            _expandedVideoRow(views.sublist(0, 2), indexLocal: 0),
             _expandedVideoRow(views.sublist(2, 4))
           ],
         ));
@@ -460,43 +484,43 @@ class _CallScreenState extends State<CallScreen> {
   }
 }
 
-// class ShowAvatar extends StatelessWidget {
-//   const ShowAvatar({
-//     Key? key,
-//     required this.patientProfileController,
-//     required this.width,
-//     required this.height,
-//   }) : super(key: key);
-//
-//   final PatientProfileController patientProfileController;
-//   final double width, height;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Expanded(
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         crossAxisAlignment: CrossAxisAlignment.center,
-//         children: [
-//           Container(
-//             padding: EdgeInsets.all(10.0),
-//             width: width,
-//             height: height,
-//             decoration: BoxDecoration(
-//               border: Border.all(color: Colors.white70, width: 2),
-//               shape: BoxShape.circle,
-//               image: DecorationImage(
-//                 fit: BoxFit.cover,
-//                 image: NetworkImage(patientProfileController
-//                     .patient.value.avatar ==
-//                     ""
-//                     ? 'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg'
-//                     : patientProfileController.patient.value.avatar),
-//               ),
-//             ),
-//           )
-//         ],
-//       ),
-//     );
-//   }
-// }
+class ShowAvatar extends StatelessWidget {
+  const ShowAvatar({
+    Key? key,
+    required this.patientProfileController,
+    required this.width,
+    required this.height,
+  }) : super(key: key);
+
+  final PatientProfileController patientProfileController;
+  final double width, height;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            padding: EdgeInsets.all(10.0),
+            width: width,
+            height: height,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.white70, width: 2),
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: NetworkImage(patientProfileController
+                            .patient.value.avatar ==
+                        ""
+                    ? 'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg'
+                    : patientProfileController.patient.value.avatar),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
