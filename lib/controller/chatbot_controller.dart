@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
@@ -85,8 +84,6 @@ class ChatBotController extends GetxController {
   delayThank() {
     new Future.delayed(const Duration(seconds: 2), () {
       delayTks.value = true;
-      Fluttertoast.showToast(
-          msg: "Đăng ký buổi tư vấn thành công", fontSize: 18, gravity: ToastGravity.TOP);
       new Future.delayed(const Duration(seconds: 2), () {
         Get.back();
         Get.back();

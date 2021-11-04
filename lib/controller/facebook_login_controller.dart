@@ -2,12 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:telemedicine_mobile/Screens/login_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
-import 'package:telemedicine_mobile/main.dart';
-
 import 'account_controller.dart';
 
 class FacebookSignInController with ChangeNotifier {
@@ -38,8 +35,6 @@ class FacebookSignInController with ChangeNotifier {
       }
       return "";
     } catch (e) {
-      print("err");
-      print(e.toString());
       Get.to(LoginScreen());
       statusLogin = "";
     } finally {

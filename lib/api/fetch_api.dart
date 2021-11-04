@@ -39,8 +39,7 @@ class FetchAPI {
   static Future<String> loginWithToken(String tokenId) async {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     final storage = new Storage.FlutterSecureStorage();
-    data['tokenId'] =
-        "eyJhbGciOiJSUzI1NiIsImtpZCI6IjY5NGNmYTAxOTgyMDNlMjgwN2Q4MzRkYmE2MjBlZjczZjI4ZTRlMmMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiVsSDbiBUw6JtIE5ndXnhu4VuIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FBVFhBSnlxZ3pjYVRhNjlJdWtxZVdkUFh4TC13dExzYnk2UmQ1TTBTOGc0PXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL3RlbGVtZWRpY2luZS1mYzBlZSIsImF1ZCI6InRlbGVtZWRpY2luZS1mYzBlZSIsImF1dGhfdGltZSI6MTYzNjAzNDMwOCwidXNlcl9pZCI6IlYwY05VbER2OVZoY2tXTGw5RGxnV29HeTFyRjIiLCJzdWIiOiJWMGNOVWxEdjlWaGNrV0xsOURsZ1dvR3kxckYyIiwiaWF0IjoxNjM2MDM0MzA4LCJleHAiOjE2MzYwMzc5MDgsImVtYWlsIjoidmFudGFtMTQxN0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNjc5ODQ1NDM5NDI4ODgyNzAyOSJdLCJlbWFpbCI6WyJ2YW50YW0xNDE3QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.g7GNjZYhh1NNLeKSYQYO9dFO_kxPvekO2opVE8n9v-nX7VLc0tLI7JMhEZWw_oqE7XRQqsmlNSQCn9zL2wX-aE1uFNA-k_fFDb7obaLb4rh9Xz7hIkbeLmggTKBc1I8PMGO5pqyR68i0W5DkZJnc6mtC0tzsdUEyPYRzqKM8-jPMnsJcb2n4kjjYt6VWjkp_i_XuYrlXLR_vSIS73T-LIdcK0JxQA5v_PdGc2Rq6YhAb3d9X2F9Lozq4_fTHNcHsagigCAqTfnMzvion-LpJZyeh6qFRQxbZF48zkpRF8hD-1_zggwSEJz_T012XWU3cb6ta6GlBmU70XZFH-2NU4Q";
+    data['tokenId'] = tokenId;
     data['loginType'] = 3;
     final accountController = GetX.Get.put(AccountController());
     try {

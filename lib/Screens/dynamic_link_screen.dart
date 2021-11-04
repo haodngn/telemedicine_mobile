@@ -23,7 +23,6 @@ class _DynamicLinkScreenState extends State<DynamicLinkScreen> {
 
   initStore() async {
     // token = await storage.read(key: "accessToken") ?? "";
-    // print("dmmmmmmmmmmmmmmmmmm:" + token);
   }
 
   @override

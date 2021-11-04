@@ -1,111 +1,170 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
-// import 'package:get/get.dart';
-// import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
-// import 'package:telemedicine_mobile/Screens/components/rounded_input_field.dart';
-// import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
-// import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
-// import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:get/get.dart';
+import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
+import 'package:telemedicine_mobile/constant.dart';
+import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
+import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
 
-// class FeedbackScreen extends StatefulWidget {
-//   const FeedbackScreen({
-//     Key? key,
-//     this.id,
-//   }) : super(key: key);
-//   final int? id;
-//   @override
-//   _FeedbackState createState() => _FeedbackState();
-// }
+class FeedbackScreen extends StatefulWidget {
+  const FeedbackScreen({
+    Key? key,
+    this.id,
+  }) : super(key: key);
+  final int? id;
+  @override
+  _FeedbackState createState() => _FeedbackState();
+}
 
-// class _FeedbackState extends State<FeedbackScreen> {
-//   final TextEditingController FeddbackTextEditingController =
-//       TextEditingController();
-//   int star = 3;
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text("Mức độ hài lòng của bạn"),
-//       ),
-//       body: SafeArea(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           crossAxisAlignment: CrossAxisAlignment.stretch,
-//           children: <Widget>[
-//             ClipRRect(
-//               borderRadius: BorderRadius.circular(25),
-//               child: Container(
-//                 color: const Color(0xFFCFE9F1),
-//                 // color: Colors.blueGrey,
-//                 child: Column(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: <Widget>[
-//                     const SizedBox(
-//                       height: 15,
-//                     ),
-//                     Padding(
-//                       padding: const EdgeInsets.only(left: 30, right: 30),
-//                       child: RatingBar.builder(
-//                         initialRating: 3,
-//                         minRating: 1,
-//                         direction: Axis.horizontal,
-//                         itemCount: 5,
-//                         itemPadding:
-//                             const EdgeInsets.symmetric(horizontal: 4.0),
-//                         itemBuilder: (context, _) => const Icon(
-//                           Icons.star,
-//                           color: Colors.amber,
-//                         ),
-//                         onRatingUpdate: (rating) {
-//                           setState(() {
-//                             star = rating.round();
-//                           });
-//                         },
-//                       ),
-//                     ),
-//                     const SizedBox(
-//                       height: 15,
-//                     ),
-//                     RoundedInputField(
-//                       controller: FeddbackTextEditingController,
-//                       hintText: "đánh giá",
-//                       onChanged: (value) {
-//                         controller:
-//                         FeddbackTextEditingController;
-//                       },
-//                     ),
-//                     FlatButton(
-//                       onPressed: () {
-//                         PatientHistoryController patientHistoryController =
-//                             Get.put(PatientHistoryController());
-//                         ListDoctorController listDoctorController =
-//                             Get.put(ListDoctorController());
-//                         patientHistoryController.editHealthCheckInfo(
-//                             star,
-//                             FeddbackTextEditingController.text.toString(),
-//                             listDoctorController.healthCheckToken.value,
-//                             0,
-//                             0);
-//                         displayToastMessage("Đánh giá thành công", context);
-//                         Navigator.push(
-//                             context,
-//                             MaterialPageRoute(
-//                                 builder: (context) => BottomNavScreen()));
-//                       },
-//                       child: const Text("GỬI ĐÁNH GIÁ"),
-//                     )
-//                   ],
-//                 ),
-//               ),
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// displayToastMessage(String message, BuildContext context) {
-//   Fluttertoast.showToast(msg: message);
-// }
+class _FeedbackState extends State<FeedbackScreen> {
+  final listDoctorController = Get.put(ListDoctorController());
+  final patientHistoryController = Get.put(PatientHistoryController());
+  final TextEditingController FeddbackTextEditingController =
+      TextEditingController();
+  late int rating = 3;
+  TextEditingController comment = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Mức độ hài lòng của bạn"),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Đánh giá của bạn",
+                  style: TextStyle(
+                    fontSize: 30,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Text(
+                  "Bạn cảm thấy thế nào?",
+                  style: TextStyle(fontSize: 18, color: Colors.black),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Center(
+                  child: Container(
+                    height: 50,
+                    padding: EdgeInsets.only(top: 8, bottom: 8),
+                    child: RatingBar.builder(
+                      onRatingUpdate: (ratingValue) {
+                        rating = ratingValue.round();
+                      },
+                      initialRating: rating + 0,
+                      direction: Axis.horizontal,
+                      allowHalfRating: false,
+                      unratedColor: Colors.amber.withAlpha(50),
+                      itemSize: 60.0,
+                      itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                      itemBuilder: (context, _) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 100,
+                ),
+                Text(
+                  "Bình luận của bạn",
+                  style: TextStyle(fontSize: 18, color: Colors.black),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                TextField(
+                  controller: comment,
+                  decoration: InputDecoration(
+                    errorText: patientHistoryController.emptyComment.value
+                        ? "Vui lòng nhập bình luận"
+                        : null,
+                    errorStyle: TextStyle(fontSize: 14),
+                    border: OutlineInputBorder(),
+                    hintText: "Bình luận của bạn",
+                  ),
+                  maxLines: 10,
+                ),
+                SizedBox(
+                  height: 50,
+                ),
+                Container(
+                  height: 50,
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => {
+                      FocusScope.of(context).unfocus(),
+                      patientHistoryController.editHealthCheckInfo(
+                          rating,
+                          comment.text,
+                          listDoctorController.healthCheckToken.value,
+                          0,
+                          0),
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            Future.delayed(const Duration(milliseconds: 2000),
+                                () {
+                              Navigator.of(context).pop();
+                              Get.to(BottomNavScreen());
+                            });
+                            return AlertDialog(
+                                content: Container(
+                              height: 110,
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.check_circle,
+                                    color: Colors.green,
+                                    size: 80,
+                                  ),
+                                  SizedBox(
+                                    height: 7,
+                                  ),
+                                  Text(
+                                    "Hoàn thành cuộc hẹn",
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                ],
+                              ),
+                            ));
+                          }),
+                    },
+                    style: ButtonStyle(
+                      elevation: MaterialStateProperty.all(6),
+                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.pressed))
+                          return Colors.white70;
+                        return kBlueColor; // Defer to the widget's default.
+                      }),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(40),
+                      )),
+                    ),
+                    child: Text(
+                      "Gửi đánh giá",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

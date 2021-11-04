@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
-import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/chatbot_controller.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
@@ -98,7 +97,8 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                                             child: Text(
                                               "Chào bạn, bạn vui lòng trả lời các câu hỏi sau để hoàn thành đăng ký?",
                                               style: TextStyle(
-                                                  color: Colors.black,),
+                                                color: Colors.black,
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -128,7 +128,8 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                                                       .indexQuestion.value]
                                                   .question,
                                               style: TextStyle(
-                                                  color: Colors.black,),
+                                                color: Colors.black,
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -277,7 +278,8 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                                             child: Text(
                                               "Chào bạn, bạn vui lòng trả lời các câu hỏi sau để hoàn thành đăng ký!!!",
                                               style: TextStyle(
-                                                  color: Colors.black,),
+                                                color: Colors.black,
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -435,7 +437,8 @@ class BoxChat extends StatelessWidget {
                               child: Text(
                                 "Chào bạn, bạn vui lòng trả lời các câu hỏi sau để hoàn thành đăng ký?",
                                 style: TextStyle(
-                                    color: Colors.black,),
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                           ],
@@ -467,7 +470,8 @@ class BoxChat extends StatelessWidget {
                         child: Text(
                           messageBot,
                           style: TextStyle(
-                              color: Colors.black,),
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                     ],
@@ -494,7 +498,8 @@ class BoxChat extends StatelessWidget {
                         child: Text(
                           messagePatient,
                           style: TextStyle(
-                              color: Colors.white,),
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ],
@@ -546,7 +551,8 @@ class BoxChat extends StatelessWidget {
                                   child: Text(
                                     chatbot.question,
                                     style: TextStyle(
-                                        color: Colors.black,),
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -649,6 +655,40 @@ class BoxChat extends StatelessWidget {
                                                 chatbotcontroller
                                                     .listChatbot.length)
                                               {
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      Future.delayed(
+                                                          const Duration(
+                                                              milliseconds:
+                                                                  2000), () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      });
+                                                      return AlertDialog(
+                                                          content: Container(
+                                                        height: 110,
+                                                        child: Column(
+                                                          children: [
+                                                            Icon(
+                                                              Icons
+                                                                  .check_circle,
+                                                              color:
+                                                                  Colors.green,
+                                                              size: 80,
+                                                            ),
+                                                            SizedBox(
+                                                              height: 7,
+                                                            ),
+                                                            Text(
+                                                              "Đăng ký thành công",
+                                                              style: TextStyle(
+                                                                  fontSize: 20),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ));
+                                                    }),
                                                 chatbotcontroller.delayThank(),
                                                 listDoctorController.bookHealthCheck(
                                                     int.parse(chatbotcontroller
@@ -729,7 +769,8 @@ class BoxChat extends StatelessWidget {
                               child: Text(
                                 "Cảm ơn bạn đã trả lời các câu hỏi. Đăng ký tư vấn thành công.",
                                 style: TextStyle(
-                                    color: Colors.black,),
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                           ],

@@ -1,9 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
@@ -12,7 +10,6 @@ import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:telemedicine_mobile/Screens/components/category.dart';
 import 'package:telemedicine_mobile/Screens/detail_screen.dart';
-import 'package:telemedicine_mobile/Screens/feedback_screen.dart';
 import 'package:telemedicine_mobile/Screens/notification_screen.dart';
 import 'package:telemedicine_mobile/Screens/patient_detail_history_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
@@ -53,7 +50,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void getNews() async {
     var newsList = await FetchAPI.fetchContentNews();
-    print(newsList.length);
     setState(() {
       listNews = newsList;
     });
@@ -71,19 +67,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     _firebaseMessaging.subscribeToTopic('all');
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {
-      print("message recieved");
-      print(event);
-      print(event.notification!.title);
-      print(event.notification!.body);
-      print(accountController.countNotificationUnread.value);
       accountController.countNotificationUnread.value =
           accountController.countNotificationUnread.value + 1;
       showNotification(
           event.notification!.title ?? "", event.notification!.body ?? "");
     });
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      print('Message clicked!');
-      print(message.data.toString());
       if (message.data['page'] != null) {
         listDoctorController.getTokenHealthCheck(
             patientProfileController.nearestHealthCheck.value.id);
@@ -390,11 +379,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: InkWell(
                                       onTap: () => {
                                         listDoctorController
-                                                .getTokenHealthCheck(
-                                                    patientProfileController
-                                                        .nearestHealthCheck
-                                                        .value
-                                                        .id),
+                                            .getTokenHealthCheck(
+                                                patientProfileController
+                                                    .nearestHealthCheck
+                                                    .value
+                                                    .id),
                                         if (DateTime.now().compareTo(DateTime
                                                 .parse(DateFormat("yyyy-MM-dd")
                                                         .format(DateTime.parse(
