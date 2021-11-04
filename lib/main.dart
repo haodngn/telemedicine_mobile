@@ -61,6 +61,11 @@ Future main() async {
       sound: true,
     );
     FirebaseMessaging.onBackgroundMessage(_messageHandler);
+
+    // FirebaseMessaging.onMessageOpenedApp.listen((message) {
+    //   print('Message clicked!');
+    //   print(message.data.toString());
+    // });
   }
 
   runApp(MaterialApp(

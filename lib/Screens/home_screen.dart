@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:telemedicine_mobile/Screens/components/category.dart';
 import 'package:telemedicine_mobile/Screens/detail_screen.dart';
+import 'package:telemedicine_mobile/Screens/feedback_screen.dart';
 import 'package:telemedicine_mobile/Screens/notification_screen.dart';
 import 'package:telemedicine_mobile/Screens/patient_detail_history_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
@@ -80,6 +81,11 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
       print('Message clicked!');
+      print(message.data.toString());
+      if (message.data['page'] != null) {
+        listDoctorController.getTokenHealthCheck(
+            patientProfileController.nearestHealthCheck.value.id);
+      }
     });
     _firebaseMessaging
         .getToken()
