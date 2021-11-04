@@ -8,7 +8,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:telemedicine_mobile/Screens/components/loading.dart';
 import 'package:telemedicine_mobile/Screens/dynamic_link_screen.dart';
-import 'package:telemedicine_mobile/controller/account_controller.dart';
 import 'package:telemedicine_mobile/controller/invite_videocall_controller.dart';
 import 'controller/facebook_login_controller.dart';
 import 'controller/google_login_controller.dart';
@@ -63,7 +62,6 @@ Future main() async {
     );
     FirebaseMessaging.onBackgroundMessage(_messageHandler);
   }
-  final inviteVideoCallController = Get.put(InviteVideoCallController());
 
   runApp(MaterialApp(
     routes: <String, WidgetBuilder>{
@@ -131,7 +129,6 @@ class _MyAppState extends State<MyApp> {
               deepLink?.queryParameters['healthCheckID'].toString();
           inviteVideoCallController.healthCheckIDInvite.value =
               int.parse(healthCheckID.toString());
-          print("heal: " + deepLink!.path.toString().split("/")[1]);
           if (deepLink != null) {
             // ignore: unawaited_futures
             Navigator.pushNamed(

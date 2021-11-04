@@ -42,7 +42,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Chat Bot",
+          "Trar lời nhanh",
           style: TextStyle(color: Colors.white),
         ),
         elevation: 1,

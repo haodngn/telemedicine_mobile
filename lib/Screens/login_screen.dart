@@ -1,4 +1,4 @@
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' as Storage;
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -18,6 +18,17 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final accountController = Get.put(AccountController());
+  final storage = new Storage.FlutterSecureStorage();
+
+  @override
+  void initState() {
+    clearStorage();
+    super.initState();
+  }
+
+  clearStorage() async {
+    await storage.deleteAll();
+  }
 
   @override
   Widget build(BuildContext context) {

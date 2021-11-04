@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
@@ -408,96 +410,120 @@ class _CallScreenState extends State<CallScreen> {
     final listDoctorController = Get.put(ListDoctorController());
     final inviteVideoCallController = Get.put(InviteVideoCallController());
     showModalBottomSheet(
+        isScrollControlled: true,
         context: context,
         builder: (context) {
-          return Container(
-            padding: EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "Thông tin của tôi",
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Row(
+          return SafeArea(
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.8,
+              padding: EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Chiều cao: " +
-                            listDoctorController.healthCheckToken.value.height
-                                .toString(),
+                        "Thông tin của tôi",
                         style: TextStyle(
-                          fontSize: 22,
+                            fontSize: 22, fontWeight: FontWeight.bold),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Row(
+                          children: [
+                            Text(
+                              "Chiều cao: " +
+                                  listDoctorController
+                                      .healthCheckToken.value.height
+                                      .toString(),
+                              style: TextStyle(
+                                fontSize: 22,
+                              ),
+                            ),
+                            Expanded(child: Container()),
+                            Text(
+                              "Cân nặng: " +
+                                  listDoctorController
+                                      .healthCheckToken.value.weight
+                                      .toString(),
+                              style: TextStyle(
+                                fontSize: 22,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      Expanded(child: Container()),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                        child: Text(
+                          "Triệu chứng: " +
+                              listDoctorController
+                                  .healthCheckToken.value.symptomHealthChecks
+                                  .map((e) {
+                                    return e.symptom.name;
+                                  })
+                                  .toList()
+                                  .toString()
+                                  .replaceAll("[", "")
+                                  .replaceAll("]", ""),
+                          style: TextStyle(
+                            fontSize: 22,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
                       Text(
-                        "Cân nặng: " +
-                            listDoctorController.healthCheckToken.value.weight
-                                .toString(),
+                        "Thông tin bác sĩ",
                         style: TextStyle(
-                          fontSize: 22,
+                            fontSize: 22, fontWeight: FontWeight.bold),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Text(
+                          "Tên: " +
+                              listDoctorController
+                                  .healthCheckToken.value.slots[0].doctor.name,
+                          style: TextStyle(
+                            fontSize: 22,
+                          ),
                         ),
                       ),
                     ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                  child: Text(
-                    "Triệu chứng: " +
-                        listDoctorController
-                            .healthCheckToken.value.symptomHealthChecks
-                            .map((e) {
-                              return e.symptom.name;
-                            })
-                            .toList()
-                            .toString()
-                            .replaceAll("[", "")
-                            .replaceAll("]", ""),
-                    style: TextStyle(
-                      fontSize: 22,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "Thông tin bác sĩ",
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Text(
-                    "Tên: " +
-                        listDoctorController
-                            .healthCheckToken.value.slots[0].doctor.name,
-                    style: TextStyle(
-                      fontSize: 22,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "Link:",
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: TextFormField(
-                    initialValue:
-                        inviteVideoCallController.linkVideoCall.value,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
-                    readOnly: true,
-                  ),
-                ),
-              ],
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Link:",
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.bold),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: TextFormField(
+                          onTap: () {
+                            Fluttertoast.showToast(
+                                msg: "Lưu thành công", fontSize: 14);
+                            Clipboard.setData(ClipboardData(
+                                text: inviteVideoCallController
+                                    .linkVideoCall.value));
+                          },
+                          initialValue:
+                              inviteVideoCallController.linkVideoCall.value,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                          ),
+                          readOnly: true,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           );
         });

@@ -48,7 +48,7 @@ class ScheduleCard extends StatelessWidget {
             actions: [
               CupertinoDialogAction(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, "/");
+                  Navigator.of(context, rootNavigator: true).pop();
                   listDoctorController.slot.value = slot;
                   Get.to(ChatBotScreen());
                 },
@@ -58,7 +58,7 @@ class ScheduleCard extends StatelessWidget {
               ),
               CupertinoDialogAction(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, "/");
+                  Navigator.of(context, rootNavigator: true).pop();
                 },
                 child: Text('Từ chối'),
                 isDefaultAction: false,
