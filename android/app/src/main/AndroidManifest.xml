@@ -11,8 +11,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <application
-        android:label="telemedicine_mobile"
-        android:icon="@mipmap/ic_launcher">
+        android:label="MetaCine"
+        android:icon="@drawable/metacine">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
