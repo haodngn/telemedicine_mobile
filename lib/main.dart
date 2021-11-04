@@ -6,6 +6,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:telemedicine_mobile/Screens/chatbot_screen.dart';
 import 'package:telemedicine_mobile/Screens/components/loading.dart';
 import 'package:telemedicine_mobile/Screens/dynamic_link_screen.dart';
 import 'package:telemedicine_mobile/controller/invite_videocall_controller.dart';

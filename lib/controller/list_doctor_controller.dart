@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:telemedicine_mobile/Screens/call_screen/videocall_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/controller/invite_videocall_controller.dart';
+import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 import 'package:telemedicine_mobile/models/Doctor.dart';
 import 'package:telemedicine_mobile/models/HealthCheck.dart';
 import 'package:telemedicine_mobile/models/HealthCheckPost.dart';
@@ -12,6 +13,7 @@ import 'package:telemedicine_mobile/models/SymptomHealthCheckPost.dart';
 
 class ListDoctorController extends GetxController {
   final inviteVideoCallController = Get.put(InviteVideoCallController());
+  final patientProfileController = Get.put(PatientProfileController());
 
   RxList<dynamic> listDoctor = [].obs;
   RxInt totalCount = 0.obs;
@@ -223,7 +225,9 @@ class ListDoctorController extends GetxController {
         slotId: slotN.id,
         symptomHealthChecks: symp);
 
-    FetchAPI.createNewHealthCheck(healthCheckPost)
-        .then((value) => getListDoctorSlot(slot.value.doctorId));
+    FetchAPI.createNewHealthCheck(healthCheckPost).then((value) {
+      getListDoctorSlot(slot.value.doctorId);
+      patientProfileController.getNearestHealthCheck();
+    });
   }
 }

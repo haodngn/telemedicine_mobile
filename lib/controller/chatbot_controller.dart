@@ -18,7 +18,7 @@ class ChatBotController extends GetxController {
       typeInput: TextInputType.number,
     ),
     new Chatbot(
-      question: "Cân nặng của bạn là bao nhiêu??",
+      question: "Cân nặng của bạn là bao nhiêu?",
       listAnswer: [],
       typeInput: TextInputType.number,
     ),
@@ -35,7 +35,7 @@ class ChatBotController extends GetxController {
       typeInput: TextInputType.text,
     ),
     new Chatbot(
-      question: "Nhóm máu của bạn là gì",
+      question: "Nhóm máu của bạn là gì?",
       listAnswer: [
         "Nhóm máu A",
         "Nhóm máu B",

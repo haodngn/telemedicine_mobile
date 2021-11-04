@@ -2,15 +2,18 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
+import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
 import 'package:telemedicine_mobile/Screens/feedback_screen.dart';
 import 'package:telemedicine_mobile/controller/account_controller.dart';
 import 'package:telemedicine_mobile/controller/invite_videocall_controller.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
+import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 import 'package:telemedicine_mobile/firestore/firestore_service.dart';
 import 'package:screen/screen.dart';
@@ -380,11 +383,126 @@ class _CallScreenState extends State<CallScreen> {
   void _onCallEnd(BuildContext context, bool finish) {
     // destroy sdk
     final listDoctorController = Get.put(ListDoctorController());
+    PatientHistoryController patientHistoryController =
+        Get.put(PatientHistoryController());
+    late int rating = 3;
+    TextEditingController comment = TextEditingController();
     _engine.leaveChannel();
     Navigator.pop(context);
     if (finish) {
-      Get.to(
-          FeedbackScreen(id: listDoctorController.healthCheckToken.value.id));
+      patientHistoryController.emptyComment.value = false;
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Center(child: Text("Đánh giá")),
+              content: Container(
+                height: 380,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                          child: Container(
+                        width: 100,
+                        height: 100,
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(80),
+                            child: Image(
+                              image: NetworkImage(
+                                listDoctorController.healthCheckToken.value
+                                    .slots[0].doctor.avatar,
+                              ),
+                            )),
+                      )),
+                      Center(
+                        child: Text(
+                          "Bs. " +
+                              listDoctorController
+                                  .healthCheckToken.value.slots[0].doctor.name,
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "Bình luận",
+                        style: TextStyle(fontSize: 18, color: Colors.black),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Obx(
+                        () => TextField(
+                          controller: comment,
+                          decoration: InputDecoration(
+                            errorText:
+                                patientHistoryController.emptyComment.value
+                                    ? "Vui lòng nhập bình luận"
+                                    : null,
+                            errorStyle: TextStyle(fontSize: 14),
+                            border: OutlineInputBorder(),
+                            hintText: "Bình luận của bạn",
+                          ),
+                          maxLines: 4,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Center(
+                        child: Container(
+                          height: 50,
+                          padding: EdgeInsets.only(top: 8, bottom: 8),
+                          child: RatingBar.builder(
+                            onRatingUpdate: (ratingValue) {
+                              rating = ratingValue.round();
+                            },
+                            initialRating: rating + 0,
+                            direction: Axis.horizontal,
+                            allowHalfRating: false,
+                            unratedColor: Colors.amber.withAlpha(50),
+                            itemSize: 30.0,
+                            itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                            itemBuilder: (context, _) => Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              actions: [
+                MaterialButton(
+                  elevation: 5,
+                  child: Text("Gửi"),
+                  onPressed: () {
+                    if (comment.text.isEmpty) {
+                      patientHistoryController.emptyComment.value = true;
+                    } else {
+                      patientHistoryController.editHealthCheckInfo(
+                          rating,
+                          comment.text,
+                          listDoctorController.healthCheckToken.value,
+                          0,
+                          0);
+                      Navigator.of(context).pop();
+                      Fluttertoast.showToast(
+                          msg: "Đánh giá của bạn đã được gửi", fontSize: 18);
+                      Get.to(BottomNavScreen());
+                    }
+                  },
+                ),
+              ],
+            );
+          });
     }
   }
 

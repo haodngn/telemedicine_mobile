@@ -1,7 +1,9 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
@@ -142,6 +144,9 @@ class _HomeScreenState extends State<HomeScreen> {
         await listDoctorController.getListDoctor(isRefresh: isRefresh);
     return isSuccess;
   }
+
+  late int rating = 3;
+  TextEditingController comment = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -385,11 +390,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: InkWell(
                                       onTap: () => {
                                         listDoctorController
-                                            .getTokenHealthCheck(
-                                                patientProfileController
-                                                    .nearestHealthCheck
-                                                    .value
-                                                    .id),
+                                                .getTokenHealthCheck(
+                                                    patientProfileController
+                                                        .nearestHealthCheck
+                                                        .value
+                                                        .id),
                                         if (DateTime.now().compareTo(DateTime
                                                 .parse(DateFormat("yyyy-MM-dd")
                                                         .format(DateTime.parse(
@@ -406,12 +411,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         .startTime)) ==
                                             1)
                                           {
-                                            listDoctorController
-                                                .getTokenHealthCheck(
-                                                    patientProfileController
-                                                        .nearestHealthCheck
-                                                        .value
-                                                        .id),
+                                            // listDoctorController
+                                            //     .getTokenHealthCheck(
+                                            //         patientProfileController
+                                            //             .nearestHealthCheck
+                                            //             .value
+                                            //             .id),
                                           }
                                         else
                                           {
