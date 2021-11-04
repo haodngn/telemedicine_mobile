@@ -6,7 +6,7 @@ import 'package:telemedicine_mobile/models/Symptom.dart';
 import 'package:telemedicine_mobile/models/SymptomHealthCheck.dart';
 
 class PatientHistoryController extends GetxController {
-  RxInt patientID = 1.obs;
+  RxInt patientID = 0.obs;
   RxString dobDoctor = "".obs;
   RxBool genderDoctor = true.obs;
 
