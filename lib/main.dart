@@ -63,8 +63,7 @@ Future main() async {
     FirebaseMessaging.onBackgroundMessage(_messageHandler);
 
     // FirebaseMessaging.onMessageOpenedApp.listen((message) {
-    //   print('Message clicked!');
-    //   print(message.data.toString());
+
     // });
   }
 
@@ -78,7 +77,6 @@ Future main() async {
 }
 
 Future<void> _messageHandler(RemoteMessage message) async {
-  print('background message ${message.notification!.body}');
   showNotification(
       message.notification!.title ?? "", message.notification!.body ?? "");
 }
@@ -174,135 +172,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
-// // ignore_for_file: require_trailing_commas
-// // Copyright 2019 The Chromium Authors. All rights reserved.
-// // Use of this source code is governed by a BSD-style license that can be
-// // found in the LICENSE file.
-
-// import 'dart:async';
-// import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:telemedicine_mobile/Screens/dynamic_link_screen.dart';
-// import 'package:url_launcher/url_launcher.dart';
-
-// void main() {
-//   runApp(MaterialApp(
-//     title: 'Dynamic Links Example',
-//     routes: <String, WidgetBuilder>{
-//       '/': (BuildContext context) => MyApp(),
-//       '/eNh4': (BuildContext context) => DynamicLinkScreen(),
-//     },
-//   ));
-// }
-
-// class MyApp extends StatefulWidget {
-//   @override
-//   State<StatefulWidget> createState() => _MainScreenState();
-// }
-
-// class _MainScreenState extends State<MyApp> {
-//   String? _linkMessage;
-//   bool _isCreatingLink = false;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     initDynamicLinks();
-//   }
-
-//   Future<void> initDynamicLinks() async {
-//     FirebaseDynamicLinks.instance.onLink(
-//         onSuccess: (PendingDynamicLinkData? dynamicLink) async {
-//       final Uri? deepLink = dynamicLink?.link;
-
-//       if (deepLink != null) {
-//         // ignore: unawaited_futures
-//         Navigator.pushNamed(context, deepLink.path);
-//       }
-//     }, onError: (OnLinkErrorException e) async {
-//       print('onLinkError');
-//       print(e.message);
-//     });
-
-//     final PendingDynamicLinkData? data =
-//         await FirebaseDynamicLinks.instance.getInitialLink();
-//     final Uri? deepLink = data?.link;
-
-//     if (deepLink != null) {
-//       // ignore: unawaited_futures
-//       Navigator.pushNamed(context, deepLink.path);
-//     }
-//   }
-
-//   Future<void> _createDynamicLink() async {
-//     setState(() {
-//       _isCreatingLink = true;
-//     });
-
-//     final DynamicLinkParameters parameters = DynamicLinkParameters(
-//       uriPrefix: 'https://metacine.page.link/',
-//       link: Uri.parse('https://metacine.page.link/eNh4'),
-//       androidParameters: AndroidParameters(
-//         packageName: 'com.example.telemedicine_mobile',
-//       ),
-//     );
-
-//     Uri url;
-//     final ShortDynamicLink shortLink = await parameters.buildShortLink();
-//     url = shortLink.shortUrl;
-
-//     setState(() {
-//       _linkMessage = url.toString();
-//       _isCreatingLink = false;
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Material(
-//       child: Scaffold(
-//         appBar: AppBar(
-//           title: const Text('Dynamic Links Example'),
-//         ),
-//         body: Builder(builder: (BuildContext context) {
-//           return Center(
-//             child: Column(
-//               mainAxisAlignment: MainAxisAlignment.center,
-//               children: <Widget>[
-//                 ButtonBar(
-//                   alignment: MainAxisAlignment.center,
-//                   children: <Widget>[
-//                     ElevatedButton(
-//                       onPressed:
-//                           !_isCreatingLink ? () => _createDynamicLink() : null,
-//                       child: const Text('Get Short Link'),
-//                     ),
-//                   ],
-//                 ),
-//                 InkWell(
-//                   onTap: () async {
-//                     if (_linkMessage != null) {
-//                       await launch(_linkMessage!);
-//                     }
-//                   },
-//                   onLongPress: () {
-//                     Clipboard.setData(ClipboardData(text: _linkMessage));
-//                     ScaffoldMessenger.of(context).showSnackBar(
-//                       const SnackBar(content: Text('Copied Link!')),
-//                     );
-//                   },
-//                   child: Text(
-//                     _linkMessage ?? '',
-//                     style: const TextStyle(color: Colors.blue),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           );
-//         }),
-//       ),
-//     );
-//   }
-// }

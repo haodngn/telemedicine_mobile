@@ -29,7 +29,6 @@ class _Covid19State extends State<Covid19> {
 
   void getNews() async {
     var newsList = await FetchAPI.fetchContentNews();
-    print(newsList.length);
     setState(() {
       listNews = newsList;
     });

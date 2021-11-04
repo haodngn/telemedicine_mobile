@@ -40,8 +40,6 @@ class HospitalController extends GetxController {
     List<Marker> listMarker = [];
     Uint8List markerIcon =
         await getBytesFromAsset('assets/icons/hospital.png', 50);
-    print("object");
-    print(markerIcon);
     contentHospital.hospital.forEach((e) => {
           listMarker.add(new Marker(
               markerId: MarkerId(e.id.toString()),
@@ -57,6 +55,5 @@ class HospitalController extends GetxController {
                   snippet: e.address)))
         });
     listMarkers.value = listMarker;
-    print(listMarkers.toString());
   }
 }

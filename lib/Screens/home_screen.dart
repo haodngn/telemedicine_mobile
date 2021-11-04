@@ -10,7 +10,6 @@ import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:telemedicine_mobile/Screens/components/category.dart';
 import 'package:telemedicine_mobile/Screens/detail_screen.dart';
-import 'package:telemedicine_mobile/Screens/feedback_screen.dart';
 import 'package:telemedicine_mobile/Screens/notification_screen.dart';
 import 'package:telemedicine_mobile/Screens/patient_detail_history_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
@@ -51,7 +50,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void getNews() async {
     var newsList = await FetchAPI.fetchContentNews();
-    print(newsList.length);
     setState(() {
       listNews = newsList;
     });
@@ -69,19 +67,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     _firebaseMessaging.subscribeToTopic('all');
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {
-      print("message recieved");
-      print(event);
-      print(event.notification!.title);
-      print(event.notification!.body);
-      print(accountController.countNotificationUnread.value);
       accountController.countNotificationUnread.value =
           accountController.countNotificationUnread.value + 1;
       showNotification(
           event.notification!.title ?? "", event.notification!.body ?? "");
     });
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      print('Message clicked!');
-      print(message.data.toString());
       if (message.data['page'] != null) {
         listDoctorController.getTokenHealthCheck(
             patientProfileController.nearestHealthCheck.value.id);
@@ -142,6 +133,9 @@ class _HomeScreenState extends State<HomeScreen> {
         await listDoctorController.getListDoctor(isRefresh: isRefresh);
     return isSuccess;
   }
+
+  late int rating = 3;
+  TextEditingController comment = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -406,12 +400,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         .startTime)) ==
                                             1)
                                           {
-                                            listDoctorController
-                                                .getTokenHealthCheck(
-                                                    patientProfileController
-                                                        .nearestHealthCheck
-                                                        .value
-                                                        .id),
+                                            // listDoctorController
+                                            //     .getTokenHealthCheck(
+                                            //         patientProfileController
+                                            //             .nearestHealthCheck
+                                            //             .value
+                                            //             .id),
                                           }
                                         else
                                           {

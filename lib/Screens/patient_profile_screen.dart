@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:telemedicine_mobile/Screens/edit_healthcheck_info_screen.dart';
 import 'package:telemedicine_mobile/Screens/edit_patient_profile_screen.dart';
-import 'package:telemedicine_mobile/Screens/login_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/bottom_navbar_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';

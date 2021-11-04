@@ -41,8 +41,9 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
-          "Trar lời nhanh",
+          "Trả lời nhanh",
           style: TextStyle(color: Colors.white),
         ),
         elevation: 1,
@@ -84,8 +85,9 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                                   padding: const EdgeInsets.only(right: 120),
                                   child: Bubble(
                                     radius: Radius.circular(15.0),
-                                    color: Colors.grey.shade200,
+                                    color: Color(0xffE4E6EB),
                                     alignment: Alignment.bottomLeft,
+                                    nip: BubbleNip.leftTop,
                                     child: Padding(
                                       padding: EdgeInsets.all(5.0),
                                       child: Column(
@@ -95,8 +97,8 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                                             child: Text(
                                               "Chào bạn, bạn vui lòng trả lời các câu hỏi sau để hoàn thành đăng ký?",
                                               style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold),
+                                                color: Colors.black,
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -111,8 +113,9 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                                   padding: const EdgeInsets.only(right: 120),
                                   child: Bubble(
                                     radius: Radius.circular(15.0),
-                                    color: Colors.grey.shade200,
+                                    color: Color(0xffE4E6EB),
                                     alignment: Alignment.bottomLeft,
+                                    nip: BubbleNip.leftTop,
                                     child: Padding(
                                       padding: EdgeInsets.all(5.0),
                                       child: Column(
@@ -125,8 +128,8 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                                                       .indexQuestion.value]
                                                   .question,
                                               style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold),
+                                                color: Colors.black,
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -263,8 +266,9 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                                   padding: const EdgeInsets.only(right: 120),
                                   child: Bubble(
                                     radius: Radius.circular(15.0),
-                                    color: Colors.grey.shade200,
+                                    color: Color(0xffE4E6EB),
                                     alignment: Alignment.bottomLeft,
+                                    nip: BubbleNip.leftTop,
                                     child: Padding(
                                       padding: EdgeInsets.all(5.0),
                                       child: Column(
@@ -272,10 +276,10 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                                         children: <Widget>[
                                           Flexible(
                                             child: Text(
-                                              "Chào bạn, bạn vui lòng trả lời các câu hỏi sau để hoàn thành đăng ký?",
+                                              "Chào bạn, bạn vui lòng trả lời các câu hỏi sau để hoàn thành đăng ký!!!",
                                               style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold),
+                                                color: Colors.black,
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -289,7 +293,8 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                                 chatbotcontroller.startBubble.value
                                     ? Bubble(
                                         radius: Radius.circular(15.0),
-                                        color: Colors.grey.shade200,
+                                        color: Color(0xffE4E6EB),
+                                        nip: BubbleNip.leftTop,
                                         alignment: Alignment.bottomLeft,
                                         child: Container(
                                           width: 45,
@@ -420,8 +425,9 @@ class BoxChat extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 120),
                     child: Bubble(
                       radius: Radius.circular(15.0),
-                      color: Colors.grey.shade200,
+                      color: Color(0xffE4E6EB),
                       alignment: Alignment.bottomLeft,
+                      nip: BubbleNip.leftTop,
                       child: Padding(
                         padding: EdgeInsets.all(5.0),
                         child: Column(
@@ -431,8 +437,8 @@ class BoxChat extends StatelessWidget {
                               child: Text(
                                 "Chào bạn, bạn vui lòng trả lời các câu hỏi sau để hoàn thành đăng ký?",
                                 style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                           ],
@@ -452,8 +458,9 @@ class BoxChat extends StatelessWidget {
               padding: const EdgeInsets.only(right: 120),
               child: Bubble(
                 radius: Radius.circular(15.0),
-                color: Colors.grey.shade200,
+                color: Color(0xffE4E6EB),
                 alignment: Alignment.bottomLeft,
+                nip: BubbleNip.leftTop,
                 child: Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Column(
@@ -463,7 +470,8 @@ class BoxChat extends StatelessWidget {
                         child: Text(
                           messageBot,
                           style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.bold),
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                     ],
@@ -480,6 +488,7 @@ class BoxChat extends StatelessWidget {
                 radius: Radius.circular(15.0),
                 color: Colors.blue,
                 alignment: Alignment.bottomRight,
+                nip: BubbleNip.rightBottom,
                 child: Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Column(
@@ -489,7 +498,8 @@ class BoxChat extends StatelessWidget {
                         child: Text(
                           messagePatient,
                           style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ],
@@ -497,6 +507,7 @@ class BoxChat extends StatelessWidget {
                 ),
               ),
             ),
+            SizedBox(height: 10),
             indexQuestion < 1 &&
                     chatbotcontroller.listMessage.length >
                         chatbotcontroller.indexQuestion.value &&
@@ -504,8 +515,9 @@ class BoxChat extends StatelessWidget {
                         chatbotcontroller.indexQuestion.value
                 ? Bubble(
                     radius: Radius.circular(15.0),
-                    color: Colors.grey.shade200,
+                    color: Color(0xffE4E6EB),
                     alignment: Alignment.bottomLeft,
+                    nip: BubbleNip.leftTop,
                     child: Container(
                       width: 45,
                       height: 30,
@@ -527,8 +539,9 @@ class BoxChat extends StatelessWidget {
                         padding: const EdgeInsets.only(right: 120),
                         child: Bubble(
                           radius: Radius.circular(15.0),
-                          color: Colors.grey.shade200,
+                          color: Color(0xffE4E6EB),
                           alignment: Alignment.bottomLeft,
+                          nip: BubbleNip.leftTop,
                           child: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Column(
@@ -538,8 +551,8 @@ class BoxChat extends StatelessWidget {
                                   child: Text(
                                     chatbot.question,
                                     style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold),
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -642,6 +655,40 @@ class BoxChat extends StatelessWidget {
                                                 chatbotcontroller
                                                     .listChatbot.length)
                                               {
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      Future.delayed(
+                                                          const Duration(
+                                                              milliseconds:
+                                                                  2000), () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      });
+                                                      return AlertDialog(
+                                                          content: Container(
+                                                        height: 110,
+                                                        child: Column(
+                                                          children: [
+                                                            Icon(
+                                                              Icons
+                                                                  .check_circle,
+                                                              color:
+                                                                  Colors.green,
+                                                              size: 80,
+                                                            ),
+                                                            SizedBox(
+                                                              height: 7,
+                                                            ),
+                                                            Text(
+                                                              "Đăng ký thành công",
+                                                              style: TextStyle(
+                                                                  fontSize: 20),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ));
+                                                    }),
                                                 chatbotcontroller.delayThank(),
                                                 listDoctorController.bookHealthCheck(
                                                     int.parse(chatbotcontroller
@@ -688,8 +735,9 @@ class BoxChat extends StatelessWidget {
                     !chatbotcontroller.delayTks.value
                 ? Bubble(
                     radius: Radius.circular(15.0),
-                    color: Colors.grey.shade200,
+                    color: Color(0xffE4E6EB),
                     alignment: Alignment.bottomLeft,
+                    nip: BubbleNip.leftTop,
                     child: Container(
                       width: 45,
                       height: 30,
@@ -709,8 +757,9 @@ class BoxChat extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 120),
                     child: Bubble(
                       radius: Radius.circular(15.0),
-                      color: Colors.grey.shade200,
+                      color: Color(0xffE4E6EB),
                       alignment: Alignment.bottomLeft,
+                      nip: BubbleNip.leftTop,
                       child: Padding(
                         padding: EdgeInsets.all(5.0),
                         child: Column(
@@ -720,8 +769,8 @@ class BoxChat extends StatelessWidget {
                               child: Text(
                                 "Cảm ơn bạn đã trả lời các câu hỏi. Đăng ký tư vấn thành công.",
                                 style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                           ],

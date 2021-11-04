@@ -11,7 +11,6 @@ import 'package:telemedicine_mobile/gg_map_service/DirectionService.dart';
 import 'package:telemedicine_mobile/gg_map_service/PlaceService.dart';
 import 'package:telemedicine_mobile/gg_map_service/model/Direction.dart';
 import 'package:telemedicine_mobile/gg_map_service/model/Place.dart';
-import 'package:telemedicine_mobile/models/Hospital.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class HospitalMap extends StatefulWidget {

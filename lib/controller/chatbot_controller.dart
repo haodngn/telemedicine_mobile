@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
@@ -18,7 +17,7 @@ class ChatBotController extends GetxController {
       typeInput: TextInputType.number,
     ),
     new Chatbot(
-      question: "Cân nặng của bạn là bao nhiêu??",
+      question: "Cân nặng của bạn là bao nhiêu?",
       listAnswer: [],
       typeInput: TextInputType.number,
     ),
@@ -35,7 +34,7 @@ class ChatBotController extends GetxController {
       typeInput: TextInputType.text,
     ),
     new Chatbot(
-      question: "Nhóm máu của bạn là gì",
+      question: "Nhóm máu của bạn là gì?",
       listAnswer: [
         "Nhóm máu A",
         "Nhóm máu B",
@@ -85,8 +84,6 @@ class ChatBotController extends GetxController {
   delayThank() {
     new Future.delayed(const Duration(seconds: 2), () {
       delayTks.value = true;
-      Fluttertoast.showToast(
-          msg: "Đăng ký buổi tư vấn thành công", fontSize: 18, gravity: ToastGravity.TOP);
       new Future.delayed(const Duration(seconds: 2), () {
         Get.back();
         Get.back();

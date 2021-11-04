@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:get/get.dart';
 
@@ -12,7 +10,9 @@ class InviteVideoCallController extends GetxController {
       uriPrefix: 'https://metacine.page.link/',
       link: Uri.parse(
         'https://telemedicine-doctor-121fb.web.app/guest/' +
-            healthCheckID.toString() + '?healthCheckID=' + healthCheckID.toString(),
+            healthCheckID.toString() +
+            '?healthCheckID=' +
+            healthCheckID.toString(),
       ),
       androidParameters: AndroidParameters(
         packageName: 'com.example.telemedicine_mobile',
@@ -22,7 +22,6 @@ class InviteVideoCallController extends GetxController {
     Uri url; // = await parameters.buildUrl();
     final ShortDynamicLink shortLink = await parameters.buildShortLink();
     url = shortLink.shortUrl;
-    print("yyyyyyyyy: " + url.toString());
 
     linkVideoCall.value = url.toString();
   }

@@ -7,7 +7,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
 import 'package:telemedicine_mobile/Screens/login_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_address_api.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
@@ -201,7 +200,8 @@ class FormAfterLoginController extends GetxController {
             done.value = true;
             isLoading.value = false;
             Get.to(LoginScreen());
-            Fluttertoast.showToast(msg: "Đăng ký tài khoản thành công", fontSize: 18);
+            Fluttertoast.showToast(
+                msg: "Đăng ký tài khoản thành công", fontSize: 18);
           });
         }
         isLoading.value = false;

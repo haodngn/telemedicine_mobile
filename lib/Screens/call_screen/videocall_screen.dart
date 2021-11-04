@@ -62,7 +62,6 @@ class _CallScreenState extends State<CallScreen> {
       if (event.exists) {
         setState(() {
           users = event.data()!;
-          print(users.toString());
         });
       } else {
         _onCallEnd(context, true);
@@ -101,7 +100,6 @@ class _CallScreenState extends State<CallScreen> {
           });
         },
         userJoined: (uid, elapsed) {
-          print(uid);
           setState(() {
             if (!_users.contains(uid)) {
               _users.add(uid);
@@ -194,8 +192,6 @@ class _CallScreenState extends State<CallScreen> {
 
   Widget _viewRows() {
     final views = _getRenderViews();
-    print("TEST" + views.length.toString());
-    print(views);
     switch (views.length) {
       case 1:
         return Container(
@@ -379,12 +375,10 @@ class _CallScreenState extends State<CallScreen> {
 
   void _onCallEnd(BuildContext context, bool finish) {
     // destroy sdk
-    final listDoctorController = Get.put(ListDoctorController());
     _engine.leaveChannel();
     Navigator.pop(context);
     if (finish) {
-      Get.to(
-          FeedbackScreen(id: listDoctorController.healthCheckToken.value.id));
+      Get.to(FeedbackScreen());
     }
   }
 
