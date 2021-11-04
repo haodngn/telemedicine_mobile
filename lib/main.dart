@@ -70,6 +70,7 @@ Future main() async {
   }
 
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     routes: <String, WidgetBuilder>{
       '/': (BuildContext context) => MyApp(),
       '/guest': (BuildContext context) => DynamicLinkScreen(),
