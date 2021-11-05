@@ -38,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<News>? listNews;
   var statisticCovid;
   NumberFormat formatter = NumberFormat('###,000');
+
   @override
   void initState() {
     super.initState();
@@ -51,7 +52,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void getNews() async {
     var newsList = await FetchAPI.fetchContentNews();
-    print(newsList.length);
     setState(() {
       listNews = newsList;
     });
@@ -1168,24 +1168,73 @@ class _HomeScreenState extends State<HomeScreen> {
                                       SizedBox(
                                         height: 4,
                                       ),
-                                      Text(
-                                        "Hôm nay",
-                                        style: TextStyle(color: Colors.black54),
-                                      ),
+                                      patientProfileController
+                                                      .statusCovid.value ==
+                                                  "VietNam" &&
+                                              statisticCovid['today']
+                                                      .internal
+                                                      .cases >
+                                                  0
+                                          ? Text(
+                                              "Hôm nay",
+                                              style: TextStyle(
+                                                  color: Colors.black54),
+                                            )
+                                          : Container(),
+                                      patientProfileController
+                                                      .statusCovid.value ==
+                                                  "World" &&
+                                              statisticCovid['today']
+                                                      .world
+                                                      .cases >
+                                                  0
+                                          ? Text(
+                                              "Hôm nay",
+                                              style: TextStyle(
+                                                  color: Colors.black54),
+                                            )
+                                          : Container(),
                                       SizedBox(
                                         height: 4,
                                       ),
-                                      Text(
-                                        "+${patientProfileController.statusCovid.value == "VietNam" ? statisticCovid['today'].internal.cases > 100 ? formatter.format(statisticCovid['today'].internal.cases).replaceAll(",", ".") : statisticCovid['today'].internal.cases : statisticCovid['today'].world.cases > 100 ? formatter.format(statisticCovid['today'].world.cases).replaceAll(",", ".") : statisticCovid['today'].world.cases}",
-                                        softWrap: false,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          color:
-                                              Colors.black87.withOpacity(0.7),
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      )
+                                      patientProfileController
+                                                      .statusCovid.value ==
+                                                  "VietNam" &&
+                                              statisticCovid['today']
+                                                      .internal
+                                                      .cases >
+                                                  0
+                                          ? Text(
+                                              "+${statisticCovid['today'].internal.cases > 100 ? formatter.format(statisticCovid['today'].internal.cases).replaceAll(",", ".") : statisticCovid['today'].internal.cases}",
+                                              softWrap: false,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: 13,
+                                                color: Colors.black87
+                                                    .withOpacity(0.7),
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            )
+                                          : Container(),
+                                      patientProfileController
+                                                      .statusCovid.value ==
+                                                  "World" &&
+                                              statisticCovid['today']
+                                                      .world
+                                                      .cases >
+                                                  0
+                                          ? Text(
+                                              "+${statisticCovid['today'].world.cases > 100 ? formatter.format(statisticCovid['today'].world.cases).replaceAll(",", ".") : statisticCovid['today'].world.cases}",
+                                              softWrap: false,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: 13,
+                                                color: Colors.black87
+                                                    .withOpacity(0.7),
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            )
+                                          : Container(),
                                     ],
                                   ),
                                 ),
@@ -1227,12 +1276,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ? formatter
                                                 .format(statisticCovid['total']
                                                     .internal
-                                                    .treating)
+                                                    .recovered)
                                                 .replaceAll(",", ".")
                                             : NumberFormat.compact()
                                                 .format(statisticCovid['total']
                                                     .world
-                                                    .treating)
+                                                    .recovered)
                                                 .replaceAll(",", "."),
                                         softWrap: false,
                                         overflow: TextOverflow.ellipsis,
@@ -1245,24 +1294,73 @@ class _HomeScreenState extends State<HomeScreen> {
                                       SizedBox(
                                         height: 4,
                                       ),
-                                      Text(
-                                        "Hôm nay",
-                                        style: TextStyle(color: Colors.black54),
-                                      ),
+                                      patientProfileController
+                                                      .statusCovid.value ==
+                                                  "VietNam" &&
+                                              statisticCovid['today']
+                                                      .internal
+                                                      .recovered >
+                                                  0
+                                          ? Text(
+                                              "Hôm nay",
+                                              style: TextStyle(
+                                                  color: Colors.black54),
+                                            )
+                                          : Container(),
+                                      patientProfileController
+                                                      .statusCovid.value ==
+                                                  "World" &&
+                                              statisticCovid['today']
+                                                      .world
+                                                      .recovered >
+                                                  0
+                                          ? Text(
+                                              "Hôm nay",
+                                              style: TextStyle(
+                                                  color: Colors.black54),
+                                            )
+                                          : Container(),
                                       SizedBox(
                                         height: 4,
                                       ),
-                                      Text(
-                                        "+${patientProfileController.statusCovid.value == "VietNam" ? statisticCovid['today'].internal.treating > 100 ? formatter.format(statisticCovid['today'].internal.treating).replaceAll(",", ".") : statisticCovid['today'].internal.treating : statisticCovid['today'].world.treating > 100 ? formatter.format(statisticCovid['today'].world.treating).replaceAll(",", ".") : statisticCovid['today'].world.treating}",
-                                        softWrap: false,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          color:
-                                              Colors.black87.withOpacity(0.7),
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      )
+                                      patientProfileController
+                                                      .statusCovid.value ==
+                                                  "VietNam" &&
+                                              statisticCovid['today']
+                                                      .internal
+                                                      .recovered >
+                                                  0
+                                          ? Text(
+                                              "+${statisticCovid['today'].internal.recovered > 100 ? formatter.format(statisticCovid['today'].internal.recovered).replaceAll(",", ".") : statisticCovid['today'].internal.recovered}",
+                                              softWrap: false,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: 13,
+                                                color: Colors.black87
+                                                    .withOpacity(0.7),
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            )
+                                          : Container(),
+                                      patientProfileController
+                                                      .statusCovid.value ==
+                                                  "World" &&
+                                              statisticCovid['today']
+                                                      .world
+                                                      .cases >
+                                                  0
+                                          ? Text(
+                                              "+${statisticCovid['today'].world.cases > 100 ? formatter.format(statisticCovid['today'].world.cases).replaceAll(",", ".") : statisticCovid['today'].world.cases}",
+                                              softWrap: false,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: 13,
+                                                color: Colors.black87
+                                                    .withOpacity(0.7),
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            )
+                                          : Container(),
                                     ],
                                   ),
                                 ),
@@ -1322,24 +1420,73 @@ class _HomeScreenState extends State<HomeScreen> {
                                       SizedBox(
                                         height: 4,
                                       ),
-                                      Text(
-                                        "Hôm nay",
-                                        style: TextStyle(color: Colors.black54),
-                                      ),
+                                      patientProfileController
+                                                      .statusCovid.value ==
+                                                  "VietNam" &&
+                                              statisticCovid['today']
+                                                      .internal
+                                                      .death >
+                                                  0
+                                          ? Text(
+                                              "Hôm nay",
+                                              style: TextStyle(
+                                                  color: Colors.black54),
+                                            )
+                                          : Container(),
+                                      patientProfileController
+                                                      .statusCovid.value ==
+                                                  "World" &&
+                                              statisticCovid['today']
+                                                      .world
+                                                      .death >
+                                                  0
+                                          ? Text(
+                                              "Hôm nay",
+                                              style: TextStyle(
+                                                  color: Colors.black54),
+                                            )
+                                          : Container(),
                                       SizedBox(
                                         height: 4,
                                       ),
-                                      Text(
-                                        "+${patientProfileController.statusCovid.value == "VietNam" ? statisticCovid['today'].internal.death > 100 ? formatter.format(statisticCovid['today'].internal.death).replaceAll(",", ".") : statisticCovid['today'].internal.death : statisticCovid['today'].world.death > 100 ? formatter.format(statisticCovid['today'].world.death).replaceAll(",", ".") : statisticCovid['today'].world.death}",
-                                        softWrap: false,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          color:
-                                              Colors.black87.withOpacity(0.7),
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      )
+                                      patientProfileController
+                                                      .statusCovid.value ==
+                                                  "VietNam" &&
+                                              statisticCovid['today']
+                                                      .internal
+                                                      .death >
+                                                  0
+                                          ? Text(
+                                              "+${statisticCovid['today'].internal.death > 100 ? formatter.format(statisticCovid['today'].internal.death).replaceAll(",", ".") : statisticCovid['today'].internal.death}",
+                                              softWrap: false,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: 13,
+                                                color: Colors.black87
+                                                    .withOpacity(0.7),
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            )
+                                          : Container(),
+                                      patientProfileController
+                                                      .statusCovid.value ==
+                                                  "World" &&
+                                              statisticCovid['today']
+                                                      .world
+                                                      .death >
+                                                  0
+                                          ? Text(
+                                              "+${statisticCovid['today'].world.death > 100 ? formatter.format(statisticCovid['today'].world.death).replaceAll(",", ".") : statisticCovid['today'].world.death}",
+                                              softWrap: false,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: 13,
+                                                color: Colors.black87
+                                                    .withOpacity(0.7),
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            )
+                                          : Container(),
                                     ],
                                   ),
                                 ),
@@ -1383,7 +1530,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   listNews != null
                       ? Column(
                           children: [
-                            ...listNews!.map((e) => BuildNewsList(
+                            ...listNews!.take(5).map((e) => BuildNewsList(
                                 title: e.title,
                                 desc: e.description,
                                 url: e.url,
@@ -1805,6 +1952,8 @@ class BuildNewsList extends StatelessWidget {
                   child: Image.network(
                     urlImage,
                     fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) =>
+                        Image.asset("assets/images/default_avatar.png"),
                   )),
             ),
             Expanded(

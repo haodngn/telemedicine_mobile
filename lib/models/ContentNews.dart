@@ -9,10 +9,9 @@ class ContentNews {
         required this.news});
 
   ContentNews.fromJson(Map<String, dynamic> json) {
-    total = json['total'];
-    if (json['items'] != null) {
-      json['items'].forEach((v) {
-        news.add(new News.fromJson(v));
+    if (json['data']['items'] != null) {
+      json['data']['items'].forEach((v) {
+        v != null ? news.add(new News.fromJson(v)) : "";
       });
     }
   }
