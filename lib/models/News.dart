@@ -1,13 +1,11 @@
 class News {
-  late int nid;
+  late String nid;
   late String title;
   late String description;
   late String content;
   late String author;
   late String url;
   late String urlToImage;
-  late String publishedAt;
-  late int status;
 
   News({
     required this.nid,
@@ -17,18 +15,13 @@ class News {
     required this.author,
     required this.url,
     required this.urlToImage,
-    required this.publishedAt,
-    required this.status});
+    });
 
   News.fromJson(Map<String, dynamic> json) {
-    nid = json['nid'];
-    content = json['content'];
-    title = json['title'];
-    description = json['description'];
-    author = json['author'];
-    url = json['url'];
-    urlToImage = json['urlToImage'];
-    publishedAt = json['publishedAt'];
-    status = json['status'];
+    nid = json['id'].toString().isEmpty ? json['id'] : "http://avitech.uet.vnu.edu.vn/wp-content/uploads/2021/03/News.jpg";
+    title = json['title'] != null ? json['title'] : "http://avitech.uet.vnu.edu.vn/wp-content/uploads/2021/03/News.jpg";
+    description = json['description'] != null ? json['description'] : "http://avitech.uet.vnu.edu.vn/wp-content/uploads/2021/03/News.jpg";;
+    url = json['url'] != null ? json['url'] : "http://avitech.uet.vnu.edu.vn/wp-content/uploads/2021/03/News.jpg";
+    urlToImage = json['thumb'] != null ? json['thumb'] : "http://avitech.uet.vnu.edu.vn/wp-content/uploads/2021/03/News.jpg";
   }
 }

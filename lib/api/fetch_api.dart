@@ -174,7 +174,7 @@ class FetchAPI {
   static Future<List<News>> fetchContentNews() async {
     final response = await http.get(
       Uri.parse(
-          "https://api.coronatracker.com/news/trending?limit=5&offset=0&language=vi&fbclid=IwAR2rQ_ijG1GnzHDAH7gkag_A1ljj6d1NVkDC_5CG8QOlV4HYpellcQ8o3Lo"),
+          "https://baomoi.com/api/v1/content/get/list-by-type?listType=6&listId=328&isNoAd=true&page=2&ctime=1636073976&version=0.1.76&sig=a0a538b686dd7c6801916ca6f677fa4ef5d9308193494892889d344da5598c38&apiKey=kI44ARvPwaqL7v0KuDSM0rGORtdY1nnw&fbclid=IwAR156l5oSTJ2zijQslXNQE2uVvNAMhSTNmcDkGOpeE1ZtS6yawBQ59rlzsg"),
       headers: <String, String>{
         HttpHeaders.contentTypeHeader: 'application/json',
       },
@@ -182,6 +182,7 @@ class FetchAPI {
     if (response.statusCode == 200) {
       var contentJSon = json.decode(utf8.decode(response.bodyBytes));
       ContentNews contentNews = ContentNews.fromJson(contentJSon);
+
       return contentNews.news;
     } else {
       throw Exception("Internal server error");
