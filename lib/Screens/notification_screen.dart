@@ -125,18 +125,6 @@ class BoxNotification extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          !date.endsWith(sameDate) || sameDate.isEmpty
-              ? Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 200, 10),
-                  child: Text(
-                    date.endsWith(
-                            DateFormat('dd/MM/yyyy').format(DateTime.now()))
-                        ? "Hôm nay"
-                        : date,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                )
-              : Container(),
           textfield(
             content: content,
             doctorName: doctorName,

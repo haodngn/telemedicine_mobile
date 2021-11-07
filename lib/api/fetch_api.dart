@@ -604,7 +604,7 @@ class FetchAPI {
               assignedDate +
               "&doctor-id=" +
               doctorID.toString() +
-              "&order-by=AssignedDate&order-type=desc&page-offset=1&limit=50"),
+              "&order-by=AssignedDate&order-type=asc&page-offset=1&limit=50"),
           headers: <String, String>{
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: 'Bearer $token',

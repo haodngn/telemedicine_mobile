@@ -7,6 +7,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:telemedicine_mobile/Screens/list_doctor_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
+import 'package:telemedicine_mobile/controller/address_controller.dart';
 import 'package:telemedicine_mobile/controller/filter_controller.dart';
 import 'package:telemedicine_mobile/models/ContentHospital.dart';
 import 'dart:ui' as ui;
@@ -16,11 +17,12 @@ class HospitalController extends GetxController {
   RxList<Marker> listMarkers = RxList();
 
   FilterController filterController = Get.put(FilterController());
-
+  AddressController addressController = Get.put(AddressController());
   @override
   void onInit() {
     super.onInit();
-    getNearHospital(10.848425114854084, 106.79768431248772);
+    getNearHospital(addressController.location.value.lat,
+        addressController.location.value.lng);
   }
 
   Future<Uint8List> getBytesFromAsset(String path, int width) async {

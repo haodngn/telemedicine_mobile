@@ -77,11 +77,13 @@ Future main() async {
 }
 
 Future<void> _messageHandler(RemoteMessage message) async {
+  print("xxxxxxxxxxxxxxxxxxx");
   showNotification(
       message.notification!.title ?? "", message.notification!.body ?? "");
 }
 
 void showNotification(String title, String body) async {
+  print("mmmmmmmmmmmmmmmmmm");
   await _demoNotification(title, body);
 }
 

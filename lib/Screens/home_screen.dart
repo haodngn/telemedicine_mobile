@@ -68,6 +68,11 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     _firebaseMessaging.subscribeToTopic('all');
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+      print("message recieved");
+      print(event);
+      print(event.notification!.title);
+      print(event.notification!.body);
+      print(accountController.countNotificationUnread.value);
       accountController.countNotificationUnread.value =
           accountController.countNotificationUnread.value + 1;
       showNotification(
@@ -89,6 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void showNotification(String title, String body) async {
+    print("kkkkkkkkk");
     await _demoNotification(title, body);
   }
 
@@ -103,9 +109,10 @@ class _HomeScreenState extends State<HomeScreen> {
     var iOSChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics, iOS: iOSChannelSpecifics);
-
+    print("mm");
     await flutterLocalNotificationsPlugin
         .show(0, title, body, platformChannelSpecifics, payload: 'test');
+    print("nn");
   }
 
   final patientProfileController = Get.put(PatientProfileController());
