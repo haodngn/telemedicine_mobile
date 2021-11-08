@@ -100,15 +100,10 @@ class ChatBotController extends GetxController {
   getListSymptom() {
     FetchAPI.fetchContentSymptom().then((dataFromServer) {
       listSymptom.value = dataFromServer;
+      listSymptomItem.value = listSymptom
+          .map((symptom) => MultiSelectItem(symptom, symptom.name))
+          .toList();
     });
-
-    new Future.delayed(
-        const Duration(seconds: 2),
-        () => {
-              listSymptomItem.value = listSymptom
-                  .map((symptom) => MultiSelectItem(symptom, symptom.name))
-                  .toList()
-            });
   }
 
   RxBool multiSelect = true.obs;

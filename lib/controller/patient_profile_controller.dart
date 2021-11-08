@@ -49,6 +49,8 @@ class PatientProfileController extends GetxController {
           role: new Role(id: 0, name: "", isActive: true))
       .obs;
 
+  RxBool isLoading = false.obs;
+
   Rx<HealthCheck> nearestHealthCheck = new HealthCheck(
       id: 0,
       height: 0,
@@ -95,9 +97,11 @@ class PatientProfileController extends GetxController {
   }
 
   getNearestHealthCheck() {
+    isLoading.value = true;
     FetchAPI.fetchNearestHealthCheck(patientHistoryController.patientID.value)
         .then((dataFromServer) {
       nearestHealthCheck.value = dataFromServer;
+      isLoading.value = false;
     });
   }
 
@@ -140,6 +144,7 @@ class PatientProfileController extends GetxController {
   }
 
   getMyAccount() {
+    isLoading.value = true;
     String myEmail = accountController.account.value.email;
     if (myEmail.isEmpty) {
       Get.offAll(LoginScreen(),
@@ -155,6 +160,7 @@ class PatientProfileController extends GetxController {
       city.value = account.value.city;
       district.value = account.value.locality;
       ward.value = account.value.ward;
+      isLoading.value = false;
     });
   }
 
@@ -215,7 +221,6 @@ class PatientProfileController extends GetxController {
   RxBool emptyDistrict = false.obs;
   RxBool emptyWard = false.obs;
 
-  RxBool isLoading = false.obs;
   updateAccountInfo(
       String fName, String lName, String phoneNumber, String street) {
     if (fName.isEmpty) {
