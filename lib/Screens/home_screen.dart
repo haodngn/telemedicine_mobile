@@ -148,9 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => patientProfileController.isLoading.value ? Container(
-              child: LoadingIcon(),
-            ) : Scaffold(
+    return Obx(() => Scaffold(
           appBar: AppBar(
             title: Text("MetaCine"),
             centerTitle: true,
