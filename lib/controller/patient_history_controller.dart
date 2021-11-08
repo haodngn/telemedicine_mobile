@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
+import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 import 'package:telemedicine_mobile/models/HealthCheck.dart';
 import 'package:telemedicine_mobile/models/HealthCheckChangeSTT.dart';
 import 'package:telemedicine_mobile/models/Symptom.dart';
@@ -78,7 +79,9 @@ class PatientHistoryController extends GetxController {
             prescriptions: healthCheck.prescriptions,
             slots: healthCheck.slots,
             symptomHealthChecks: listNewSymptom.cast<SymptomHealthCheck>());
-    FetchAPI.editHealthCheck(newHealthCheck).then((value) => getMyHistory());
+    FetchAPI.editHealthCheck(newHealthCheck).then((value) {
+      getMyHistory();
+    });
   }
 
   RxList<dynamic> listMySymptom = [].obs;

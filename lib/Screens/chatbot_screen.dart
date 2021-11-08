@@ -35,6 +35,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
     chatbotcontroller.getListSymptom();
     chatbotcontroller.delayTks.value = false;
     chatbotcontroller.multiSelect.value = true;
+    chatbotcontroller.listMessage.clear();
   }
 
   @override
