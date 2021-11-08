@@ -97,11 +97,9 @@ class PatientProfileController extends GetxController {
   }
 
   getNearestHealthCheck() {
-    isLoading.value = true;
     FetchAPI.fetchNearestHealthCheck(patientHistoryController.patientID.value)
         .then((dataFromServer) {
       nearestHealthCheck.value = dataFromServer;
-      isLoading.value = false;
     });
   }
 
@@ -144,7 +142,6 @@ class PatientProfileController extends GetxController {
   }
 
   getMyAccount() {
-    isLoading.value = true;
     String myEmail = accountController.account.value.email;
     if (myEmail.isEmpty) {
       Get.offAll(LoginScreen(),
@@ -160,7 +157,6 @@ class PatientProfileController extends GetxController {
       city.value = account.value.city;
       district.value = account.value.locality;
       ward.value = account.value.ward;
-      isLoading.value = false;
     });
   }
 

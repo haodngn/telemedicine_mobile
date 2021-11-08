@@ -61,11 +61,7 @@ class _PatientProfileState extends State<PatientProfile> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => patientProfileController.isLoading.value
-        ? Container(
-            child: LoadingIcon(),
-          )
-        : Scaffold(
+    return Obx(() => Scaffold(
             appBar: AppBar(
               elevation: 8,
               title: Text("Thông tin của tôi"),
